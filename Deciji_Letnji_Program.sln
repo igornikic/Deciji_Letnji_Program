@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36221.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deciji_Letnji_Program", "Deciji_Letnji_Program.csproj", "{DAD05D3B-0F30-4D3B-A43C-828224FC3DF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deciji_Letnji_Program/FAZA2", "Deciji_Letnji_Program.csproj", "{DAD05D3B-0F30-4D3B-A43C-828224FC3DF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
