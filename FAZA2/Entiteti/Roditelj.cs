@@ -9,17 +9,14 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
 
-        public virtual IList<Starateljstvo> Starateljstvo { get; set; } // N:M
-        public virtual IList<TelefonRoditelja> Telefoni { get; set; } // 1:N
-        public virtual IList<EmailRoditelja> EmailAdrese { get; set; } // 1:N
-        public virtual IList<Komentar> Komentari { get; set; } = new List<Komentar>();
+        public virtual IList<Dete> Deca { get; set; } // N:M
+        
+        public virtual IList<string> Komentari { get; set; } = new List<string>();
 
         public Roditelj()
         {
-            Starateljstvo = new List<Starateljstvo>();
-            Telefoni = new List<TelefonRoditelja>();
-            EmailAdrese = new List<EmailRoditelja>();
-            Komentari = new List<Komentar>();
+            Deca = new List<Dete>();
+            Komentari = new List<string>();
         }
     }
 }

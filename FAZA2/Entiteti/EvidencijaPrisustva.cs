@@ -12,11 +12,11 @@ namespace Deciji_Letnji_Program.Entiteti
 
         public virtual Dete Dete { get; set; } // FK ka Dete
         public virtual Aktivnost Aktivnost { get; set; } // FK ka Aktivnost
-        public virtual IList<Komentar> Komentari { get; set; } // 1:N
+        public virtual IList<string> Komentari { get; set; } // 1:N
 
         public EvidencijaPrisustva()
         {
-            Komentari = new List<Komentar>();
+            Komentari = new List<string>();
         }
     }
 }

@@ -16,10 +16,11 @@ namespace Deciji_Letnji_Program.Entiteti
 
         public virtual IList<Prijava> Prijave { get; set; } // 1:N
         public virtual IList<EvidencijaPrisustva> EvidencijaPrisustva { get; set; } // 1:N
-        public virtual IList<PratilacDeteAktivnost> PratilacDeteAktivnosti { get; set; } // N:M
+        public virtual IList<Pratilac> Pratioci{ get; set; } // 1:N
         public virtual Evaluacija Evaluacija { get; set; }  // 1:1
         public virtual IList<Povreda> Povrede { get; set; } // 1:N
-        public virtual IList<Ucesce> Ucesca { get; set; } // N:M
+
+        public virtual IList<AngazovanoLice> AngazovanaLica { get; set; } // N:M
 
         public virtual IList<Obrok> Obrok { get; set; } // 1:N
 
@@ -27,9 +28,8 @@ namespace Deciji_Letnji_Program.Entiteti
         {
             Prijave = new List<Prijava>();
             EvidencijaPrisustva = new List<EvidencijaPrisustva>();
-            PratilacDeteAktivnosti = new List<PratilacDeteAktivnost>();
+            Pratioci = new List<Pratilac>();
             Povrede = new List<Povreda>();
-            Ucesca = new List<Ucesce>();
             Obrok = new List<Obrok>();
         }
     }

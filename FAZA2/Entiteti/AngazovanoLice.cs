@@ -18,13 +18,13 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string StrucnaSprema { get; set; }
         public virtual string OblastRada { get; set; }
 
-        public virtual IList<Ucesce> Ucesca { get; set; } // 1:N
+        public virtual IList<Aktivnost> Aktivnosti { get; set; } // M:N
         public virtual Evaluacija Evaluacija { get; set; }  // 1:1
-        public virtual IList<Povreda> Povrede { get; set; } // N:M
+        public virtual IList<Povreda> Povrede { get; set; } // 1:N
 
         public AngazovanoLice()
         {
-            Ucesca = new List<Ucesce>();
+            Aktivnosti = new List<Aktivnost>();
             Povrede = new List<Povreda>();
         }
     }

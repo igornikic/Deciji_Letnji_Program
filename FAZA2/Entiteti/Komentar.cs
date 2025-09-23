@@ -12,15 +12,14 @@ namespace Deciji_Letnji_Program.Entiteti
         public string Tekst { get; set; }
 
         // Komentar je vezan za evidenciju prisustva
-        public int EvidencijaId { get; set; }
-        public EvidencijaPrisustva EvidencijaPrisustva { get; set; }
+
+        public EvidencijaPrisustva EvidencijaPrisustva { get; set; } // 1 prema 1
 
         // Autor komentara može biti dete ili roditelj (jedno od ta dva)
-        public int? RoditeljId { get; set; }
-        public Roditelj Roditelj { get; set; }
+       
+        public Roditelj Roditelj { get; set; } // 1 prema 1
 
-        public int? DeteId { get; set; }
-        public Dete Dete { get; set; }
+        public Dete Dete { get; set; } //1 prema 1
 
         public Komentar() { 
         

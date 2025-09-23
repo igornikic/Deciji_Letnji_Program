@@ -13,10 +13,10 @@ namespace Deciji_Letnji_Program.Entiteti
         public DateTime Datum { get; set; }
         public string Opis { get; set; }
 
-        public int AktivnostId { get; set; }
+
         public Aktivnost Aktivnost { get; set; }  // FK za Aktivnost
 
-        public string JMBG { get; set; }
+    
         public AngazovanoLice AngazovanoLice { get; set; } // FK za AngazovanoLice
 
         public Evaluacija() 

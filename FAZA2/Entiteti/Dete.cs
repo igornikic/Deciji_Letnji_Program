@@ -15,24 +15,26 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string EmailDeteta { get; set; }
         public virtual string PosebnePotrebe { get; set; }
 
-        public virtual IList<Starateljstvo> Starateljstvo { get; set; } // N:M
+        public virtual IList<Pratilac> Pratioci { get; set; } // 1:N
+        public virtual IList<string> Telefoni { get; set; } // 1:N
+        public virtual IList<string> EmailAdrese { get; set; } // 1:N
+        public virtual IList<Roditelj> Roditelji { get; set; } // N:M
         public virtual IList<Povreda> Povrede { get; set; } // 1:N
-        public virtual IList<PratilacDeteAktivnost> PratilacDeTeAktivnosti { get; set; } // 1:N
         public virtual IList<Prijava> Prijave { get; set; } // 1:N
         public virtual IList<EvidencijaPrisustva> EvidencijePrisustva { get; set; } // N:M
-        public virtual IList<JeDat> Obrok { get; set; } // N:M
+        public virtual IList<Obrok> Obroci { get; set; } // N:M
 
-        public virtual IList<Komentar> Komentari { get; set; }
+        public virtual IList<string> Komentari { get; set; }
 
         public Dete()
         {
-            Starateljstvo = new List<Starateljstvo>();
+            Roditelji = new List<Roditelj>();
             Povrede = new List<Povreda>();
-            PratilacDeTeAktivnosti = new List<PratilacDeteAktivnost>();
+            Pratioci = new List<Pratilac>();
             Prijave = new List<Prijava>();
             EvidencijePrisustva = new List<EvidencijaPrisustva>();
-            Obrok = new List<JeDat>();
-            Komentari = new List<Komentar>();
+            Obroci = new List<Obrok>();
+            Komentari = new List<string>();
         }
     }
 }

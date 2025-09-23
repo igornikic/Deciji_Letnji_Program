@@ -11,11 +11,12 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual char Pol { get; set; }
         public virtual string BrojTelefona { get; set; }
 
-        public virtual IList<PratilacDeteAktivnost> PratilacDeteAktivnosti { get; set; } // N:M
-
+       
+        public virtual Dete Dete { get; set; } //fk za dete
+        public virtual Aktivnost Aktivnost { get; set; } // fk za aktivnost
         public Pratilac()
         {
-            PratilacDeteAktivnosti = new List<PratilacDeteAktivnost>();
+            
         }
     }
 }
