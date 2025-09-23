@@ -1,12 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deciji_Letnji_Program.Entiteti
 {
-    internal class JeDat
+    public class JeDat
     {
+        public virtual int Id { get; protected set; }
+
+        public virtual Dete Dete { get; set; } // FK za Dete
+        public virtual Obrok Obrok { get; set; } // FK za Obrok
+
+        public JeDat() 
+        {
+
+        }
     }
 }
