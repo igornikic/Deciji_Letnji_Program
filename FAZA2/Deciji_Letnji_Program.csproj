@@ -104,6 +104,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer.cs" />
+    <Compile Include="DTOs.cs" />
     <Compile Include="Entiteti\Aktivnost.cs" />
     <Compile Include="Entiteti\AngazovanoLice.cs" />
     <Compile Include="Entiteti\Animator.cs" />
