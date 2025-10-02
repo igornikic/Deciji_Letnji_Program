@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleWebAPIService", "OracleWebAPIService.csproj", "{E5A8A19E-24D2-430B-92B3-89D9A01478A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAccess", "..\DatabaseAccess\DatabaseAccess.csproj", "{62C32E03-125C-4826-881D-48BBD5FDF45A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5A8A19E-24D2-430B-92B3-89D9A01478A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A8A19E-24D2-430B-92B3-89D9A01478A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A8A19E-24D2-430B-92B3-89D9A01478A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A8A19E-24D2-430B-92B3-89D9A01478A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C32E03-125C-4826-881D-48BBD5FDF45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C32E03-125C-4826-881D-48BBD5FDF45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C32E03-125C-4826-881D-48BBD5FDF45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C32E03-125C-4826-881D-48BBD5FDF45A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0855FC49-0D54-4DAA-98A9-5E1E11135F4A}
+	EndGlobalSection
+EndGlobal
