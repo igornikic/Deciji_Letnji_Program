@@ -9,32 +9,37 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
         public virtual DateTime DatumRodjenja { get; set; }
-        public virtual char Pol { get; set; }
         public virtual string Adresa { get; set; }
         public virtual string TelefonDeteta { get; set; }
         public virtual string EmailDeteta { get; set; }
         public virtual string PosebnePotrebe { get; set; }
 
-        public virtual IList<Pratilac> Pratioci { get; set; } // 1:N
-        public virtual IList<string> Telefoni { get; set; } // 1:N
-        public virtual IList<string> EmailAdrese { get; set; } // 1:N
-        public virtual IList<Roditelj> Roditelji { get; set; } // N:M
-        public virtual IList<Povreda> Povrede { get; set; } // 1:N
-        public virtual IList<Prijava> Prijave { get; set; } // 1:N
-        public virtual IList<EvidencijaPrisustva> EvidencijePrisustva { get; set; } // N:M
-        public virtual IList<Obrok> Obroci { get; set; } // N:M
+        // M:N veza sa roditeljima preko STARATELJSTVO
+        public virtual IList<Roditelj> Roditelji { get; set; }
 
-        public virtual IList<string> Komentari { get; set; }
+        // 1:N veza sa povredama
+        public virtual IList<Povreda> Povrede { get; set; }
+
+        // M:N veza sa obrocima preko JE_DAT
+        public virtual IList<Obrok> Obroci { get; set; }
+
+        // N:M veza sa aktivnostima preko UCESTVUJE
+        public virtual IList<Ucesce> Ucesca { get; set; }
+
+        // Telefoni roditelja - relacija iz TELEFON
+        public virtual IList<TelefonRoditelja> TelefoniRoditelja { get; set; }
+
+        // Emailovi roditelja - relacija iz EMAIL
+        public virtual IList<EmailRoditelja> EmailoviRoditelja { get; set; }
 
         public Dete()
         {
-            Roditelji = new List<Roditelj>();
+            Staratelji = new List<Roditelj>();
             Povrede = new List<Povreda>();
-            Pratioci = new List<Pratilac>();
-            Prijave = new List<Prijava>();
-            EvidencijePrisustva = new List<EvidencijaPrisustva>();
             Obroci = new List<Obrok>();
-            Komentari = new List<string>();
+            Ucesca = new List<Ucesce>();
+            TelefoniRoditelja = new List<Telefon>();
+            EmailoviRoditelja = new List<Email>();
         }
     }
 }

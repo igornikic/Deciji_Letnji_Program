@@ -1,0 +1,72 @@
+-- =========================================
+-- INSERT TEST PODATAKA
+-- =========================================
+
+INSERT INTO LOKACIJA (Naziv, Tip, Adresa, Kapacitet, Dostupna_oprema) 
+VALUES ('Sportska hala A', 'zatvoreni prostor', 'Ulica Sportista 12', 100, 'lopte, mreže, strunjače'); 
+INSERT INTO LOKACIJA (Naziv, Tip, Adresa, Kapacitet, Dostupna_oprema) 
+VALUES ('Park Mladosti', 'otvoreni prostor', 'Aleja Omladine bb', 200, 'klupe, rekviziti, senila'); 
+INSERT INTO LOKACIJA (Naziv, Tip, Adresa, Kapacitet, Dostupna_oprema) 
+VALUES ('Dečji Centar Kreativa', 'zatvoreni prostor', 'Nemanjina 45', 60, 'bojice, stolice, projektor'); 
+INSERT INTO ANGAZOVANO_LICE (JMBG, Ime, Prezime, Pol, Adresa, Broj_telefona, Email, Strucna_sprema, Volonter, Trener, Animator, Zdravstveni_radnik) 
+VALUES ('1201990789012', 'Marko', 'Petrović', 'M', 'Zmaj Jovina 10', '+38160111222', 'marko.petrovic@mail.com', 'profesor sporta', 'N','Y','N','N'); 
+INSERT INTO ANGAZOVANO_LICE (JMBG, Ime, Prezime, Pol, Adresa, Broj_telefona, Email, Strucna_sprema, Volonter, Trener, Animator, Zdravstveni_radnik) 
+VALUES ('1507990789013', 'Ana', 'Jovanović', 'Z', 'Kralja Petra 4', '+38160222333', 'ana.jovanovic@mail.com', 'vaspitačica', 'N','N','Y','N'); 
+INSERT INTO ANGAZOVANO_LICE (JMBG, Ime, Prezime, Pol, Adresa, Broj_telefona, Email, Strucna_sprema, Volonter, Trener, Animator, Zdravstveni_radnik) 
+VALUES ('0101990789014', 'Petar', 'Milić', 'M', 'Laze Telečkog 8', '+38160333444', 'petar.milic@mail.com', 'medicinski tehničar', 'N','N','N','Y'); 
+INSERT INTO ANGAZOVANO_LICE (JMBG, Ime, Prezime, Pol, Adresa, Broj_telefona, Email, Strucna_sprema, Volonter, Trener, Animator, Zdravstveni_radnik) 
+VALUES ('2204990789015', 'Ivana', 'Kostić', 'Z', 'Bul. Oslobođenja 9', '+38160444555', 'ivana.kostic@mail.com', 'psiholog', 'Y','N','N','N'); 
+INSERT INTO RODITELJ (Ime, Prezime) VALUES ('Milan', 'Nikolić'); 
+INSERT INTO RODITELJ (Ime, Prezime) VALUES ('Jelena', 'Ilić'); 
+INSERT INTO RODITELJ (Ime, Prezime) VALUES ('Stefan', 'Marinković'); 
+INSERT INTO DETE (Ime, Prezime, Datum_rodjenja, Pol, Adresa, Telefon_deteta, Email_deteta, Posebne_potrebe) 
+VALUES ('Luka', 'Nikolić', TO_DATE('2015-03-12', 'YYYY-MM-DD'), 'M', 'Zmaj Jovina 10', '+38160100100', 'luka.n@mail.com', NULL); 
+INSERT INTO DETE (Ime, Prezime, Datum_rodjenja, Pol, Adresa, Telefon_deteta, Email_deteta, Posebne_potrebe) 
+VALUES ('Mila', 'Ilić', TO_DATE('2016-07-21', 'YYYY-MM-DD'), 'Z', 'Kralja Petra 4', '+38160200200', 'mila.i@mail.com', 'Alergija na kikiriki'); 
+INSERT INTO DETE (Ime, Prezime, Datum_rodjenja, Pol, Adresa, Telefon_deteta, Email_deteta, Posebne_potrebe) 
+VALUES ('Nikola', 'Marinković', TO_DATE('2014-11-05', 'YYYY-MM-DD'), 'M', 'Cara Dušana 8', '+38160300300', NULL, NULL); 
+INSERT INTO STARATELJSTVO (ID_roditelj, ID_dete) VALUES (1, 1); 
+INSERT INTO STARATELJSTVO (ID_roditelj, ID_dete) VALUES (2, 2); 
+INSERT INTO STARATELJSTVO (ID_roditelj, ID_dete) VALUES (3, 3); 
+INSERT INTO TELEFON_RODITELJA (Telefon, ID_deteta) VALUES ('+38164111222', 1); 
+INSERT INTO TELEFON_RODITELJA (Telefon, ID_deteta) VALUES ('+38164111333', 2); 
+INSERT INTO TELEFON_RODITELJA (Telefon, ID_deteta) VALUES ('+38164111444', 3); 
+INSERT INTO EMAIL_RODITELJA (Email, ID_deteta) VALUES ('milan.nikolic@mail.com', 1); 
+INSERT INTO EMAIL_RODITELJA (Email, ID_deteta) VALUES ('jelena.ilic@mail.com', 2); 
+INSERT INTO EMAIL_RODITELJA (Email, ID_deteta) VALUES ('stefan.marinkovic@mail.com', 3); 
+INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Obroci, Sport, Posebna_oprema) 
+VALUES ('Izlet', 'Izlet na Frušku Goru', TO_DATE('2025-06-10', 'YYYY-MM-DD'), '7-10', 50, NULL, 'Park Mladosti', 'autobus', 'Polazak 8h, povratak 18h', 'ranac, kapa', 'Ivana Kostić', 'ručak', NULL, NULL); 
+INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Obroci, Sport, Posebna_oprema) 
+VALUES ('Sportski trening', 'Fudbalski kamp', TO_DATE('2025-07-15', 'YYYY-MM-DD'), '8-12', 40, NULL, 'Sportska hala A', NULL, NULL, 'patike, dres', 'Marko Petrović', NULL, 'fudbal', NULL); 
+INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Obroci, Sport, Posebna_oprema) 
+VALUES ('Radionica', 'Kreativna umetnost', TO_DATE('2025-05-10', 'YYYY-MM-DD'), '6-9', 30, NULL, 'Dečji Centar Kreativa', NULL, NULL, 'bojice', 'Ana Jovanović', 'užina', NULL, NULL);
+INSERT INTO OBROK (Tip, Uzrast, Jelovnik, Posebne_opcije, Naziv_lokacije, ID_aktivnosti) 
+VALUES ('ručak', '7-10', 'pileći file, pirinač, salata', 'vegetarijanski meni', 'Park Mladosti', 1); 
+INSERT INTO OBROK (Tip, Uzrast, Jelovnik, Posebne_opcije, Naziv_lokacije, ID_aktivnosti) 
+VALUES ('užina', '6-9', 'voće, jogurt', 'bez kikirikija', 'Dečji Centar Kreativa', 3);
+INSERT INTO PRIJAVA (Datum_prijave, Status, ID_aktivnosti, ID_roditelja, ID_deteta) 
+VALUES (TO_DATE('2025-04-01', 'YYYY-MM-DD'), 'odobreno', 1, 1, 1); 
+INSERT INTO PRIJAVA (Datum_prijave, Status, ID_aktivnosti, ID_roditelja, ID_deteta) 
+VALUES (TO_DATE('2025-04-05', 'YYYY-MM-DD'), 'na čekanju', 2, 2, 2); 
+INSERT INTO PRIJAVA (Datum_prijave, Status, ID_aktivnosti, ID_roditelja, ID_deteta) 
+VALUES (TO_DATE('2025-04-10', 'YYYY-MM-DD'), 'odobreno', 3, 3, 3); 
+INSERT INTO JE_DAT (ID_dete, ID_obrok) VALUES (1, 1); 
+INSERT INTO JE_DAT (ID_dete, ID_obrok) VALUES (2, 2);
+INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (1, '2204990789015'); 
+INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (2, '1201990789012'); 
+INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (3, '1507990789013'); 
+INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (1, '0101990789014');
+INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
+VALUES (1, 1, 1, 'Da', 9, 'Sjajno iskustvo!', 'Da'); 
+INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
+VALUES (2, 2, 2, 'Ne', 1, 'Nije prisustvovala', 'Ne'); 
+INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
+VALUES (3, 3, 3, 'Da', 10, 'Veoma korisno za dete', 'Da'); 
+INSERT INTO POVREDA (ID, ID_dete, ID_aktivnosti, Datum, Opis, Odgovorno_osoblje_JMBG, Preduzete_mere) 
+VALUES (1, 1, 2, TO_DATE('2025-07-15','YYYY-MM-DD'), 'Uganut zglob pri treningu', '0101990789014', 'Hlađenje i previjanje'); 
+INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
+VALUES (1, '2204990789015', 9, TO_DATE('2025-06-11', 'YYYY-MM-DD'), 'Odlična organizacija i saradnja'); 
+INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
+VALUES (2, '1201990789012', 8, TO_DATE('2025-07-16', 'YYYY-MM-DD'), 'Deca su bila motivisana'); 
+INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
+VALUES (3, '1507990789013', 10, TO_DATE('2025-05-11', 'YYYY-MM-DD'), 'Kreativna i korisna radionica');
