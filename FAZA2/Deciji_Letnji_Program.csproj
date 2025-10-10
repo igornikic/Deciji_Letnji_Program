@@ -109,26 +109,17 @@
     <Compile Include="DTOs.cs" />
     <Compile Include="Entiteti\Aktivnost.cs" />
     <Compile Include="Entiteti\AngazovanoLice.cs" />
-    <Compile Include="Entiteti\Animator.cs" />
     <Compile Include="Entiteti\Dete.cs" />
     <Compile Include="Entiteti\EmailRoditelja.cs" />
     <Compile Include="Entiteti\Evaluacija.cs" />
     <Compile Include="Entiteti\EvidencijaPrisustva.cs" />
-    <Compile Include="Entiteti\Izlet.cs" />
-    <Compile Include="Entiteti\Komentar.cs" />
-    <Compile Include="Entiteti\KulturniProgram.cs" />
     <Compile Include="Entiteti\Lokacija.cs" />
     <Compile Include="Entiteti\Obrok.cs" />
     <Compile Include="Entiteti\Povreda.cs" />
-    <Compile Include="Entiteti\Pratilac.cs" />
     <Compile Include="Entiteti\Prijava.cs" />
-    <Compile Include="Entiteti\Radionica.cs" />
     <Compile Include="Entiteti\Roditelj.cs" />
-    <Compile Include="Entiteti\SportskiTrening.cs" />
     <Compile Include="Entiteti\TelefonRoditelja.cs" />
-    <Compile Include="Entiteti\Trener.cs" />
-    <Compile Include="Entiteti\Volonter.cs" />
-    <Compile Include="Entiteti\ZdravstveniRadnik.cs" />
+    <Compile Include="Entiteti\Ucestvuje.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
