@@ -16,7 +16,6 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string PlanPuta { get; set; }
         public virtual string PotrebnaOprema { get; set; }
         public virtual string Vodic { get; set; }
-        public virtual string Obroci { get; set; }
         public virtual string Sport { get; set; }
         public virtual string PosebnaOprema { get; set; }
         public virtual Lokacija Lokacija { get; set; } // FK za Lokaciju
