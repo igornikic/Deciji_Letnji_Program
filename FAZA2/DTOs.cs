@@ -308,14 +308,14 @@ namespace Deciji_Letnji_Program
 
             public IList<PrijavaBasic> Prijave { get; set; }
             public IList<PovredaBasic> Povrede { get; set; }
-            //public IList<UcestvujeBasic> Ucestvuje { get; set; }
+            public IList<UcestvujeBasic> Ucestvuje { get; set; }
             public IList<AngazovanoLiceBasic> AngazovanaLica { get; set; }
             public IList<ObrokBasic> Obroci { get; set; }
 
             public AktivnostBasic()
             {
                 Prijave = new List<PrijavaBasic>();
-                //Ucestvuje = new List<UcestvujeBasic>();
+                Ucestvuje = new List<UcestvujeBasic>();
                 Povrede = new List<PovredaBasic>();
                 AngazovanaLica = new List<AngazovanoLiceBasic>();
                 Obroci = new List<ObrokBasic>();
