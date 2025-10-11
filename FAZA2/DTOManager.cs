@@ -1,10 +1,10 @@
 ﻿using Deciji_Letnji_Program.Entiteti;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using static Deciji_Letnji_Program.DTOs;
 using System.Windows.Forms;
 
@@ -15,7 +15,7 @@ namespace Deciji_Letnji_Program
 
         #region Dete
 
-        public static void DodajDete(DeteBasic dete)
+        public static async Task DodajDete(DeteBasic dete)
         {
             try
             {
@@ -33,8 +33,8 @@ namespace Deciji_Letnji_Program
                         PosebnePotrebe = dete.PosebnePotrebe
                     };
 
-                    s.Save(novoDete);
-                    s.Flush();
+                    await s.SaveAsync(novoDete);
+                    await s.FlushAsync();
                 }
             }
             catch (Exception ex)
@@ -43,15 +43,15 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        public static DeteBasic VratiDete(int id)
+        public static async Task<DeteBasic?> VratiDete(int id)
         {
             try
             {
-                using (var s = DataLayer.GetSession())
+                using (ISession s = DataLayer.GetSession())
                 {
-                    var dete = s.Load<Dete>(id);
+                    Dete dete = s.Get<Dete>(id);
                     return new DeteBasic(
-                        dete.Id,
+                        dete.ID,
                         dete.Ime,
                         dete.Prezime,
                         dete.DatumRodjenja,
@@ -74,11 +74,11 @@ namespace Deciji_Letnji_Program
         {
             try
             {
-                using (var s = DataLayer.GetSession())
+                using (ISession s = DataLayer.GetSession())
                 {
                     var svaDeca = s.Query<Dete>().ToList();
                     var listaDecaPregled = svaDeca.Select(dete => new DetePregled(
-                        dete.Id,
+                        dete.ID,
                         dete.Ime,
                         dete.Prezime,
                         dete.DatumRodjenja,
