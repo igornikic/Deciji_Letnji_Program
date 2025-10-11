@@ -14,7 +14,7 @@ namespace Deciji_Letnji_Program.Mapiranja
         {
             Table("OBROK");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Tip, "Tip");
             Map(x => x.Uzrast, "Uzrast");

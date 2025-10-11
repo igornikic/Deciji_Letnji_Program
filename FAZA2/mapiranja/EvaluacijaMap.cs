@@ -15,7 +15,7 @@ namespace Deciji_Letnji_Program.Mapiranja
         {
             Table("EVALUACIJA");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Ocena, "Ocena");
             Map(x => x.Datum, "Datum");

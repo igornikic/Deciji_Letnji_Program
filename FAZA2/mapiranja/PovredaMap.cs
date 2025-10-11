@@ -14,7 +14,7 @@ namespace Deciji_Letnji_Program.Mapiranja
         {
             Table("POVREDA");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Datum, "Datum");
             Map(x => x.PreduzeteMere, "Preduzete_mere");

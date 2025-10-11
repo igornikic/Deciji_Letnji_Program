@@ -24,7 +24,11 @@ namespace Deciji_Letnji_Program.Mapiranja
             Map(x => x.BrojTelefona, "Broj_telefona");
             Map(x => x.Email, "Email");
             Map(x => x.StrucnaSprema, "Strucna_sprema");
-            Map(x => x.OblastRada, "Oblast_rad");
+            Map(x => x.Volonter, "Volonter");
+            Map(x => x.Trener, "Trener");
+            Map(x => x.Animator, "Animator");
+            Map(x => x.ZdravstveniRadnik, "Zdravstveni_radnik");
+            
 
             HasManyToMany(x => x.Aktivnosti)
                .Table("UCESCE")
