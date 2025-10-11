@@ -10,7 +10,7 @@ namespace Deciji_Letnji_Program.Mapiranja
 {
     internal class EmailRoditeljaMap : ClassMap<EmailRoditelja>
     {
-        public EmailRoditeljaMap() 
+        public EmailRoditeljaMap()
         {
             Table("EMAIL_RODITELJA");
 

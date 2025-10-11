@@ -10,7 +10,7 @@ namespace Deciji_Letnji_Program.Mapiranja
 {
     internal class ObrokMap : ClassMap<Obrok>
     {
-        public ObrokMap() 
+        public ObrokMap()
         {
             Table("OBROK");
 

@@ -21,8 +21,12 @@ namespace Deciji_Letnji_Program.Mapiranja
             Map(x => x.Datum, "Datum");
             Map(x => x.Opis, "Opis");
 
-            References(x => x.Aktivnost).Column("ID_aktivnosti").LazyLoad();
             References(x => x.AngazovanoLice).Column("JMBG_lice").LazyLoad();
+
+            References(x => x.Aktivnost)
+                .Column("ID_aktivnosti")
+                .Unique() // 1:1 — samo jedna evaluacija po aktivnosti
+                .Cascade.None();
 
         }
     }

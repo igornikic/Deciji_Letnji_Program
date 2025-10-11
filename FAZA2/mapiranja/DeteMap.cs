@@ -18,9 +18,9 @@ namespace Deciji_Letnji_Program.Mapiranje
 
             Map(x => x.Ime, "Ime");
             Map(x => x.Prezime, "Prezime");
-            Map(x => x.DatumRodjenja , "Datum_rodjenja");
-            Map(x => x.Pol , "Pol");
-            Map(x => x.Adresa , "Adresa");
+            Map(x => x.DatumRodjenja, "Datum_rodjenja");
+            Map(x => x.Pol, "Pol");
+            Map(x => x.Adresa, "Adresa");
             Map(x => x.TelefonDeteta, "Telefon_deteta");
             Map(x => x.EmailDeteta, "Email_deteta");
             Map(x => x.PosebnePotrebe, "Posebne_potrebe");
@@ -33,7 +33,7 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .ChildKeyColumn("ID_roditelj")
                 .Cascade.All()
                 .Inverse();//Dete nije vlasnik veze
-                
+
 
             HasMany(x => x.Povrede)
                 .KeyColumn("Id_dete")

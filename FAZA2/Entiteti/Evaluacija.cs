@@ -14,12 +14,12 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Opis { get; set; }
 
 
-        public Aktivnost Aktivnost { get; set; }  // FK za Aktivnost
-        public AngazovanoLice AngazovanoLice { get; set; } // FK za AngazovanoLice
+        public virtual Aktivnost Aktivnost { get; set; }  // FK za Aktivnost
+        public virtual AngazovanoLice AngazovanoLice { get; set; } // FK za AngazovanoLice
 
-        public Evaluacija() 
+        public Evaluacija()
         {
-        
+
         }
     }
 

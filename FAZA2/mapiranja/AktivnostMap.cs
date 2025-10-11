@@ -10,7 +10,7 @@ namespace Deciji_Letnji_Program.Mapiranja
 {
     internal class AktivnostMap : ClassMap<Aktivnost>
     {
-        public AktivnostMap() 
+        public AktivnostMap()
         {
             Table("AKTIVNOST");
 
@@ -32,24 +32,22 @@ namespace Deciji_Letnji_Program.Mapiranja
 
             //Veza prema lokacijama 
             References(x => x.Lokacija).Column("Naziv_lokacije").LazyLoad();
-            
-            References(x => x.Evaluacija).Column("ID_evaluacije").LazyLoad();
-            
+
             HasMany(x => x.Prijave)
                 .KeyColumn("ID_aktivnosti")
                 .Inverse()
                 .Cascade.All();
-             
+
             HasMany(x => x.Povrede)
                 .KeyColumn("ID_aktivnosti")
                 .Inverse()
                 .Cascade.All();
-           
+
             HasMany(x => x.Obrok)
                 .KeyColumn("ID_aktivnosti")
                 .Inverse()
-                .Cascade.All();
-            
+            .Cascade.All();
+
             HasManyToMany(x => x.AngazovanaLica)
                 .Table("Ucesce")
                 .ParentKeyColumn("Id_aktivnosti")
@@ -61,17 +59,15 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .Inverse()
                 .Cascade.All();
 
+            HasOne(x => x.Evaluacija)
+                            .PropertyRef("Aktivnost")
+                            .Cascade.All();
 
-                
 
-            
 
-           
 
-            
 
-           
-                
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deciji_Letnji_Program.Forme;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,17 @@ namespace Deciji_Letnji_Program
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void dete_Click(object sender, EventArgs e)
+        {
+            FormDeteDetalji form = new FormDeteDetalji();
+            form.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DataLayer.ProveriKonekciju();
         }
     }
 }

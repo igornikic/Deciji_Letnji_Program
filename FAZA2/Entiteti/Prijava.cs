@@ -15,7 +15,7 @@ namespace Deciji_Letnji_Program.Entiteti
 
         public Prijava()
         {
-           
+
         }
     }
 }

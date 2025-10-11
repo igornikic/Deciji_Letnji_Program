@@ -10,7 +10,7 @@ namespace Deciji_Letnji_Program.Mapiranja
 {
     internal class PrijavaMap : ClassMap<Prijava>
     {
-        public PrijavaMap() 
+        public PrijavaMap()
         {
             Table("PRIJAVA");
 

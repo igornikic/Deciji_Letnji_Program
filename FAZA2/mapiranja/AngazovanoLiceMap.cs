@@ -28,7 +28,7 @@ namespace Deciji_Letnji_Program.Mapiranja
             Map(x => x.Trener, "Trener");
             Map(x => x.Animator, "Animator");
             Map(x => x.ZdravstveniRadnik, "Zdravstveni_radnik");
-            
+
 
             HasManyToMany(x => x.Aktivnosti)
                .Table("UCESCE")
@@ -43,7 +43,7 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .KeyColumn(" Odgovorno_osoblje_JMBG")
                 .Inverse()
                 .Cascade.All();
-                
+
         }
     }
 }

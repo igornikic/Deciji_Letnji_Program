@@ -14,14 +14,14 @@ namespace Deciji_Letnji_Program.Mapiranja
         {
             Table("RODITELJ");
 
-            
+
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Ime, "Ime");
             Map(x => x.Prezime, "Prezime");
 
             HasManyToMany(x => x.Deca)
-                .Table("STARTELJSTVO")
+                .Table("STARATELJSTVO")
                 .ParentKeyColumn("ID_roditelj")
                 .ChildKeyColumn("ID_dete")
                 .Cascade.All(); //Roditelj je vlasnik veze

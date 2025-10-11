@@ -32,7 +32,26 @@ namespace Deciji_Letnji_Program
 
             return _factory.OpenSession();
         }
+        public static void ProveriKonekciju()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Pokusavamo da otvorimo transakciju i odmah zatvorimo
+                    using (var tx = session.BeginTransaction())
+                    {
+                        tx.Commit();
+                    }
+                }
 
+                MessageBox.Show("Uspesno povezano sa bazom!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Greška prilikom povezivanja sa bazom: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         //konfiguracija i kreiranje session factory
         private static ISessionFactory CreateSessionFactory()
         {
@@ -40,7 +59,10 @@ namespace Deciji_Letnji_Program
             {
                 var cfg = OracleManagedDataClientConfiguration.Oracle10
                 .ConnectionString(c =>
-                    c.Is("Data Source==ORCL;User Id=##testuser;Password=12345678;"));
+                    c.Is("Data Source=gislab-oracle.elfak.ni.ac.rs:1521/SBP_PDB;User Id=S19297;Password=S19297;"));
+                    //c.Is("Data Source=localhost/Free;User Id=c##testuser;Password=12345678;"));
+
+                Console.WriteLine(cfg);
 
                 return Fluently.Configure()
                     .Database(cfg.ShowSql())
