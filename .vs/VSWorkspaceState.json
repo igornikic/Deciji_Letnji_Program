@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\FAZA2",
+    "\\FAZA2\\Entiteti"
   ],
-  "SelectedNode": "\\Deciji_Letnji_Program.sln",
+  "SelectedNode": "\\FAZA2\\Entiteti\\Aktivnost.cs",
   "PreviewInSolutionExplorer": false
 }

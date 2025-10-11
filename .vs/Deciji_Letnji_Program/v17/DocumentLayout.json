@@ -1,7 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Home\\source\\repos\\Deciji_Letnji_Program\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\1.Data\\LetnjiProgram\\Deciji_Letnji_Program\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\1.Data\\LetnjiProgram\\Deciji_Letnji_Program\\FAZA2\\Entiteti\\Aktivnost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:FAZA2\\Entiteti\\Aktivnost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Aktivnost.cs",
+              "DocumentMoniker": "C:\\1.Data\\LetnjiProgram\\Deciji_Letnji_Program\\FAZA2\\Entiteti\\Aktivnost.cs",
+              "RelativeDocumentMoniker": "FAZA2\\Entiteti\\Aktivnost.cs",
+              "ToolTip": "C:\\1.Data\\LetnjiProgram\\Deciji_Letnji_Program\\FAZA2\\Entiteti\\Aktivnost.cs",
+              "RelativeToolTip": "FAZA2\\Entiteti\\Aktivnost.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-11T10:49:28.607Z",
+              "EditorCaption": ""
             }
           ]
         }

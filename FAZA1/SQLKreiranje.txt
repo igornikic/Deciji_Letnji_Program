@@ -74,7 +74,6 @@ CREATE TABLE AKTIVNOST(
     Plan_puta VARCHAR2(256),
     Potrebna_oprema VARCHAR2(100),
     Vodic VARCHAR2(50),
-    Obroci VARCHAR2(100),
     Sport VARCHAR2(30),
     Posebna_oprema VARCHAR2(100)
 );
