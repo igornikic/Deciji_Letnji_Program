@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHibernate.Event.Default;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Deciji_Letnji_Program
 
         public class DetePregled
         {
-            public int Id { get; set; }
+            public int ID { get; set; }
             public string Ime { get; set; }
             public string Prezime { get; set; }
             public DateTime DatumRodjenja { get; set; }
@@ -22,7 +23,7 @@ namespace Deciji_Letnji_Program
 
             public DetePregled(int id, string ime, string prezime, DateTime datumRodjenja, char pol)
             {
-                Id = id;
+                ID = id;
                 Ime = ime;
                 Prezime = prezime;
                 DatumRodjenja = datumRodjenja;
@@ -42,34 +43,28 @@ namespace Deciji_Letnji_Program
             public string EmailDeteta { get; set; }
             public string PosebnePotrebe { get; set; }
 
-            public IList<string> Telefoni { get; set; }
-            public IList<string> EmailAdrese { get; set; }
-            public IList<string> Komentari { get; set; }
+            public IList<string> TelefoniRoditelja { get; set; }
+            public IList<string> EmailoviRoditeja { get; set; }
 
             public IList<RoditeljBasic> Roditelji { get; set; }
-            public IList<PratilacBasic> Pratioci { get; set; }
             public IList<PovredaBasic> Povrede { get; set; }
-            public IList<PrijavaBasic> Prijave { get; set; }
-            public IList<EvidencijaPrisustvaBasic> EvidencijePrisustva { get; set; }
+            public IList<PrijavaBasic> Prijava { get; set; }
             public IList<ObrokBasic> Obroci { get; set; }
+            public IList<UcestvujeBasic> Ucestvuje { get; set; }
 
             public DeteBasic()
             {
-                Telefoni = new List<string>();
-                EmailAdrese = new List<string>();
-                Komentari = new List<string>();
+                TelefoniRoditelja = new List<string>();
+                EmailoviRoditeja = new List<string>();
 
                 Roditelji = new List<RoditeljBasic>();
-                Pratioci = new List<PratilacBasic>();
                 Povrede = new List<PovredaBasic>();
-                Prijave = new List<PrijavaBasic>();
-                EvidencijePrisustva = new List<EvidencijaPrisustvaBasic>();
+                Prijava = new List<PrijavaBasic>();
                 Obroci = new List<ObrokBasic>();
             }
 
             public DeteBasic(int id, string ime, string prezime, DateTime datumRodjenja, char pol,
                 string adresa, string telefonDeteta, string emailDeteta, string posebnePotrebe)
-                : this()
             {
                 Id = id;
                 Ime = ime;
@@ -109,66 +104,22 @@ namespace Deciji_Letnji_Program
             public string Ime { get; set; }
             public string Prezime { get; set; }
 
-            public IList<DetePregled> Deca { get; set; }
-            public IList<string> Komentari { get; set; }
+            public IList<DeteBasic> Deca { get; set; }
+            public IList<PrijavaBasic> Prijava { get; set; }
+            public IList<UcestvujeBasic> Ucestvuje { get; set; }
 
             public RoditeljBasic()
             {
-                Deca = new List<DetePregled>();
-                Komentari = new List<string>();
+                Deca = new List<DeteBasic>();
+                Prijava = new List<PrijavaBasic>();
+                Ucestvuje = new List<UcestvujeBasic>();
             }
 
             public RoditeljBasic(int id, string ime, string prezime)
-                : this()
             {
                 Id = id;
                 Ime = ime;
                 Prezime = prezime;
-            }
-        }
-
-        #endregion
-
-        #region Pratilac
-
-        public class PratilacPregled
-        {
-            public int Id { get; set; }
-            public string Ime { get; set; }
-            public string Prezime { get; set; }
-            public char Pol { get; set; }
-
-            public PratilacPregled() { }
-
-            public PratilacPregled(int id, string ime, string prezime, char pol)
-            {
-                Id = id;
-                Ime = ime;
-                Prezime = prezime;
-                Pol = pol;
-            }
-        }
-
-        public class PratilacBasic
-        {
-            public int Id { get; set; }
-            public string Ime { get; set; }
-            public string Prezime { get; set; }
-            public char Pol { get; set; }
-            public string BrojTelefona { get; set; }
-
-            public DetePregled Dete { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
-
-            public PratilacBasic() { }
-
-            public PratilacBasic(int id, string ime, string prezime, char pol, string brojTelefona)
-            {
-                Id = id;
-                Ime = ime;
-                Prezime = prezime;
-                Pol = pol;
-                BrojTelefona = brojTelefona;
             }
         }
 
@@ -199,18 +150,24 @@ namespace Deciji_Letnji_Program
             public string PreduzeteMere { get; set; }
             public string Opis { get; set; }
 
-            public DetePregled Dete { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
-            public AngazovanoLicePregled OdgovornoOsoblje { get; set; }
+            public DeteBasic Dete { get; set; }
+            public AktivnostBasic Aktivnost { get; set; }
+            public AngazovanoLiceBasic OdgovornoOsoblje { get; set; }
 
-            public PovredaBasic() { }
+            public PovredaBasic() 
+            {
+            }
 
-            public PovredaBasic(int id, DateTime datum, string preduzeteMere, string opis)
+            public PovredaBasic(int id, DateTime datum, string preduzeteMere, string opis,
+                DeteBasic dete,AktivnostBasic aktivnost, AngazovanoLiceBasic odgovornoOsoblje)
             {
                 Id = id;
                 Datum = datum;
                 PreduzeteMere = preduzeteMere;
                 Opis = opis;
+                Dete = dete;
+                Aktivnost = aktivnost;
+                OdgovornoOsoblje = odgovornoOsoblje;
             }
         }
 
@@ -240,64 +197,21 @@ namespace Deciji_Letnji_Program
             public DateTime DatumPrijave { get; set; }
             public string Status { get; set; }
 
-            public AktivnostPregled Aktivnost { get; set; }
-            public RoditeljPregled Roditelj { get; set; }
-            public DetePregled Dete { get; set; }
+            public AktivnostBasic Aktivnost { get; set; }
+            public RoditeljBasic Roditelj { get; set; }
+            public DeteBasic Dete { get; set; }
 
             public PrijavaBasic() { }
 
-            public PrijavaBasic(int idPrijave, DateTime datum, string status)
+            public PrijavaBasic(int idPrijave, DateTime datum, string status,
+                AktivnostBasic aktivnost, RoditeljBasic roditelj, DeteBasic dete)
             {
                 IdPrijave = idPrijave;
                 DatumPrijave = datum;
                 Status = status;
-            }
-        }
-
-        #endregion
-
-        #region EvidencijaPrisustva
-
-        public class EvidencijaPrisustvaPregled
-        {
-            public int Id { get; set; }
-            public char Prisustvo { get; set; }
-            public int OcenaAktivnosti { get; set; }
-
-            public EvidencijaPrisustvaPregled() { }
-
-            public EvidencijaPrisustvaPregled(int id, char prisustvo, int ocena)
-            {
-                Id = id;
-                Prisustvo = prisustvo;
-                OcenaAktivnosti = ocena;
-            }
-        }
-
-        public class EvidencijaPrisustvaBasic
-        {
-            public int Id { get; set; }
-            public char Prisustvo { get; set; }
-            public int OcenaAktivnosti { get; set; }
-            public string Sugestije { get; set; }
-
-            public IList<string> Komentari { get; set; }
-
-            public DetePregled Dete { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
-
-            public EvidencijaPrisustvaBasic()
-            {
-                Komentari = new List<string>();
-            }
-
-            public EvidencijaPrisustvaBasic(int id, char prisustvo, int ocena, string sugestije)
-                : this()
-            {
-                Id = id;
-                Prisustvo = prisustvo;
-                OcenaAktivnosti = ocena;
-                Sugestije = sugestije;
+                Aktivnost = aktivnost;
+                Roditelj = roditelj;
+                Dete = dete;
             }
         }
 
@@ -329,24 +243,26 @@ namespace Deciji_Letnji_Program
             public string Jelovnik { get; set; }
             public string PosebneOpcije { get; set; }
 
-            public LokacijaPregled Lokacija { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
+            public LokacijaBasic Lokacija { get; set; }
+            public AktivnostBasic Aktivnost { get; set; }
 
-            public IList<DetePregled> Deca { get; set; }
+            public IList<DeteBasic> Deca { get; set; }
 
             public ObrokBasic()
             {
-                Deca = new List<DetePregled>();
+                Deca = new List<DeteBasic>();
             }
 
-            public ObrokBasic(int id, string tip, string uzrast, string jelovnik, string posebneOpcije)
-                : this()
+            public ObrokBasic(int id, string tip, string uzrast, string jelovnik, string posebneOpcije,
+                LokacijaBasic lokacija, AktivnostBasic aktivnost)
             {
                 Id = id;
                 Tip = tip;
                 Uzrast = uzrast;
                 Jelovnik = jelovnik;
                 PosebneOpcije = posebneOpcije;
+                Lokacija = lokacija;
+                Aktivnost = aktivnost;
             }
         }
 
@@ -385,8 +301,8 @@ namespace Deciji_Letnji_Program
             public LokacijaPregled Lokacija { get; set; }
 
             public IList<PrijavaPregled> Prijave { get; set; }
-            public IList<EvidencijaPrisustvaPregled> EvidencijePrisustva { get; set; }
-            public IList<PratilacPregled> Pratioci { get; set; }
+            //public IList<EvidencijaPrisustvaPregled> EvidencijePrisustva { get; set; }
+            //public IList<PratilacPregled> Pratioci { get; set; }
             public EvaluacijaPregled Evaluacija { get; set; }
             public IList<PovredaPregled> Povrede { get; set; }
             public IList<AngazovanoLicePregled> AngazovanaLica { get; set; }
@@ -395,8 +311,8 @@ namespace Deciji_Letnji_Program
             public AktivnostBasic()
             {
                 Prijave = new List<PrijavaPregled>();
-                EvidencijePrisustva = new List<EvidencijaPrisustvaPregled>();
-                Pratioci = new List<PratilacPregled>();
+                //EvidencijePrisustva = new List<EvidencijaPrisustvaPregled>();
+                //Pratioci = new List<PratilacPregled>();
                 Povrede = new List<PovredaPregled>();
                 AngazovanaLica = new List<AngazovanoLicePregled>();
                 Obroci = new List<ObrokPregled>();
@@ -561,6 +477,52 @@ namespace Deciji_Letnji_Program
                 Ocena = ocena;
                 Datum = datum;
                 Opis = opis;
+            }
+        }
+
+        #endregion
+
+        #region Ucestvuje
+
+        public class UcestvujePregled
+        {
+            public int ID { get; set; }
+            public string OcenaAktivnosti { get; set; }
+            public string Komentri { get; set; }
+
+            public UcestvujePregled() { }
+            public UcestvujePregled(int id, string ocenaAktivnosti, string komentsri)
+            {
+                ID = id;
+                OcenaAktivnosti = ocenaAktivnosti;
+                Komentri = komentsri;
+            }
+        }
+
+        public class UcestvujeBasic
+        {
+            public int ID { get; set; }
+            public string Prisustvo { get; set; }
+            public int OcenaAktvinost { get; set; }
+            public string Komentri { get; set; }
+            public string Pratilac { get; set; }
+
+            public DeteBasic Dete { get; set; }
+            public AktivnostBasic Aktivnost { get; set; }
+            public RoditeljBasic Roditelj { get; set; }
+
+            public UcestvujeBasic() { }
+            public UcestvujeBasic(int id, string prisustvo, int ocenaAktivnosti,string komentari,
+                string pratilac, DeteBasic dete, AktivnostBasic aktivnost, RoditeljBasic roditelj)
+            {
+                ID = id;
+                Prisustvo = prisustvo;
+                OcenaAktvinost = ocenaAktivnosti;
+                Komentri = komentari;
+                Pratilac = pratilac;
+                Dete = dete;
+                Aktivnost = aktivnost;
+                Roditelj = roditelj;
             }
         }
 
