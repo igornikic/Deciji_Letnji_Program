@@ -5,13 +5,20 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Aktivnost
     {
-        public virtual int Id { get; protected set; }
+        public virtual int ID_aktivnosti { get; protected set; }
         public virtual string Tip { get; set; }
         public virtual string Naziv { get; set; }
         public virtual DateTime? Datum { get; set; }
-        public virtual string StarosnaGrupa { get; set; }
-        public virtual int MaxUcesnika { get; set; }
+        public virtual string Starosna_grupa { get; set; }
+        public virtual int Max_ucesnika { get; set; }
         public virtual string Ogranicenja { get; set; }
+        public virtual string Prevozno_sredstvo { get; set; }
+        public virtual string Plan_puta { get; set; }
+        public virtual string Potrebna_oprema { get; set; }
+        public virtual string Vodic { get; set; }
+        public virtual string Obroci { get; set; }
+        public virtual string Sport { get; set; }
+        public virtual string Posebna_oprema { get; set; }
         public virtual Lokacija Lokacija { get; set; } // FK za Lokaciju
 
         public virtual IList<Prijava> Prijave { get; set; } // 1:N

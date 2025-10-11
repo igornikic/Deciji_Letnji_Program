@@ -5,14 +5,16 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Dete
     {
-        public virtual int Id { get; protected set; }
+        public virtual int ID { get; protected set; }
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
-        public virtual DateTime DatumRodjenja { get; set; }
+        public virtual char Pol { get; set; }
+        public virtual DateTime Datum_rodjenja { get; set; }
         public virtual string Adresa { get; set; }
-        public virtual string TelefonDeteta { get; set; }
-        public virtual string EmailDeteta { get; set; }
-        public virtual string PosebnePotrebe { get; set; }
+        public virtual string Telefon_deteta { get; set; }
+        public virtual string Email_deteta { get; set; }
+        public virtual string Posebne_potrebe { get; set; }
+
 
         // M:N veza sa roditeljima preko STARATELJSTVO
         public virtual IList<Roditelj> Roditelji { get; set; }
@@ -34,12 +36,12 @@ namespace Deciji_Letnji_Program.Entiteti
 
         public Dete()
         {
-            Staratelji = new List<Roditelj>();
+            Roditelji = new List<Roditelj>();
             Povrede = new List<Povreda>();
             Obroci = new List<Obrok>();
             Ucesca = new List<Ucesce>();
-            TelefoniRoditelja = new List<Telefon>();
-            EmailoviRoditelja = new List<Email>();
+            TelefoniRoditelja = new List<TelefonRoditelja>();
+            EmailoviRoditelja = new List<EmailRoditelja>();
         }
     }
 }

@@ -112,13 +112,15 @@
     <Compile Include="Entiteti\Dete.cs" />
     <Compile Include="Entiteti\EmailRoditelja.cs" />
     <Compile Include="Entiteti\Evaluacija.cs" />
-    <Compile Include="Entiteti\EvidencijaPrisustva.cs" />
+    <Compile Include="Entiteti\JeDat.cs" />
     <Compile Include="Entiteti\Lokacija.cs" />
     <Compile Include="Entiteti\Obrok.cs" />
     <Compile Include="Entiteti\Povreda.cs" />
     <Compile Include="Entiteti\Prijava.cs" />
     <Compile Include="Entiteti\Roditelj.cs" />
+    <Compile Include="Entiteti\Starateljstvo.cs" />
     <Compile Include="Entiteti\TelefonRoditelja.cs" />
+    <Compile Include="Entiteti\Ucesce.cs" />
     <Compile Include="Entiteti\Ucestvuje.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

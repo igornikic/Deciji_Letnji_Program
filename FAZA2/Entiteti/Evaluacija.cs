@@ -8,15 +8,13 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Evaluacija
     {
-        public int Id { get; set; }
-        public int Ocena { get; set; }
-        public DateTime Datum { get; set; }
-        public string Opis { get; set; }
+        public virtual int ID { get; set; }
+        public virtual int Ocena { get; set; }
+        public virtual DateTime Datum { get; set; }
+        public virtual string Opis { get; set; }
 
 
         public Aktivnost Aktivnost { get; set; }  // FK za Aktivnost
-
-    
         public AngazovanoLice AngazovanoLice { get; set; } // FK za AngazovanoLice
 
         public Evaluacija() 

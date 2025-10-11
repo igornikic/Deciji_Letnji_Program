@@ -5,7 +5,7 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Roditelj
     {
-        public virtual int Id { get; protected set; }
+        public virtual int ID { get; protected set; }
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
 
