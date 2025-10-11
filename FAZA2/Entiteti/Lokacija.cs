@@ -9,7 +9,7 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Tip { get; set; }
         public virtual string Adresa { get; set; }
         public virtual int Kapacitet { get; set; }
-        public virtual string Dostupna_oprema { get; set; }
+        public virtual string DostupnaOprema { get; set; }
 
 
         public virtual IList<Obrok> Obroci { get; set; } // 1:N

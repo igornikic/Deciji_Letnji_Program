@@ -11,11 +11,13 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual char Pol { get; set; }
         public virtual DateTime Datum_rodjenja { get; set; }
         public virtual string Adresa { get; set; }
-        public virtual string Telefon_deteta { get; set; }
-        public virtual string Email_deteta { get; set; }
-        public virtual string Posebne_potrebe { get; set; }
+        public virtual string TelefonDeteta { get; set; }
+        public virtual string EmailDeteta { get; set; }
+        public virtual string PosebnePotrebe { get; set; }
 
 
+        // 1:N veza sa prijavom preko PRIJAVLJUJE_SE
+        public virtual IList<Prijava> Prijava { get; set; }
         // M:N veza sa roditeljima preko STARATELJSTVO
         public virtual IList<Roditelj> Roditelji { get; set; }
 
@@ -26,7 +28,7 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual IList<Obrok> Obroci { get; set; }
 
         // N:M veza sa aktivnostima preko UCESTVUJE
-        public virtual IList<Ucesce> Ucesca { get; set; }
+        public virtual IList<Ucestvuje> Ucestvuje { get; set; }
 
         // Telefoni roditelja - relacija iz TELEFON
         public virtual IList<TelefonRoditelja> TelefoniRoditelja { get; set; }
@@ -39,7 +41,7 @@ namespace Deciji_Letnji_Program.Entiteti
             Roditelji = new List<Roditelj>();
             Povrede = new List<Povreda>();
             Obroci = new List<Obrok>();
-            Ucesca = new List<Ucesce>();
+            Ucestvuje = new List<Ucestvuje>();
             TelefoniRoditelja = new List<TelefonRoditelja>();
             EmailoviRoditelja = new List<EmailRoditelja>();
         }

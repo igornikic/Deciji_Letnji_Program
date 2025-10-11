@@ -9,7 +9,7 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Tip { get; set; }
         public virtual string Uzrast { get; set; }
         public virtual string Jelovnik { get; set; }
-        public virtual string Posebne_opcije { get; set; }
+        public virtual string PosebneOpcije { get; set; }
         public virtual Lokacija Lokacija { get; set; } // FK ka Lokaciji
         public virtual Aktivnost Aktivnost { get; set; } // FK ka Aktivnosti
 

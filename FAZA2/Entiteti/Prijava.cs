@@ -5,8 +5,8 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Prijava
     {
-        public virtual int Id_prijave { get; protected set; }
-        public virtual DateTime Datum_prijave { get; set; }
+        public virtual int IdPrijave { get; protected set; }
+        public virtual DateTime DatumPrijave { get; set; }
         public virtual string Status { get; set; }
 
         public virtual Aktivnost Aktivnost { get; set; }        // FK Aktivnost
