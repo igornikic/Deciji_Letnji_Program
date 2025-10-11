@@ -38,7 +38,7 @@ INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranice
 VALUES ('Izlet', 'Izlet na Frušku Goru', TO_DATE('2025-06-10', 'YYYY-MM-DD'), '7-10', 50, NULL, 'Park Mladosti', 'autobus', 'Polazak 8h, povratak 18h', 'ranac, kapa', 'Ivana Kostić', NULL, NULL); 
 INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Sport, Posebna_oprema) 
 VALUES ('Sportski trening', 'Fudbalski kamp', TO_DATE('2025-07-15', 'YYYY-MM-DD'), '8-12', 40, NULL, 'Sportska hala A', NULL, NULL, 'patike, dres', 'Marko Petrović', 'fudbal', NULL); 
-INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Obroci, Sport, Posebna_oprema) 
+INSERT INTO AKTIVNOST (Tip, Naziv, Datum, Starosna_grupa, Max_ucesnika, Ogranicenja, Naziv_lokacije, Prevozno_sredstvo, Plan_puta, Potrebna_oprema, Vodic, Sport, Posebna_oprema) 
 VALUES ('Radionica', 'Kreativna umetnost', TO_DATE('2025-05-10', 'YYYY-MM-DD'), '6-9', 30, NULL, 'Dečji Centar Kreativa', NULL, NULL, 'bojice', 'Ana Jovanović', NULL, NULL);
 INSERT INTO OBROK (Tip, Uzrast, Jelovnik, Posebne_opcije, Naziv_lokacije, ID_aktivnosti) 
 VALUES ('ručak', '7-10', 'pileći file, pirinač, salata', 'vegetarijanski meni', 'Park Mladosti', 1); 
