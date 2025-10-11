@@ -9,7 +9,7 @@ namespace Deciji_Letnji_Program.Entiteti
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
         public virtual char Pol { get; set; }
-        public virtual DateTime Datum_rodjenja { get; set; }
+        public virtual DateTime DatumRodjenja { get; set; }
         public virtual string Adresa { get; set; }
         public virtual string TelefonDeteta { get; set; }
         public virtual string EmailDeteta { get; set; }
