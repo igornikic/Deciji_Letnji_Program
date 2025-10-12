@@ -131,6 +131,12 @@
     <Compile Include="Forme\FormDeteDetalji.Designer.cs">
       <DependentUpon>FormDeteDetalji.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\FormDetePregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\FormDetePregled.Designer.cs">
+      <DependentUpon>FormDetePregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapiranja\AktivnostMap.cs" />
     <Compile Include="Mapiranja\AngazovanoLiceMap.cs" />
     <Compile Include="Mapiranja\DeteMap.cs" />
@@ -150,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forme\FormDeteDetalji.resx">
       <DependentUpon>FormDeteDetalji.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forme\FormDetePregled.resx">
+      <DependentUpon>FormDetePregled.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

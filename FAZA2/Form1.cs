@@ -20,7 +20,7 @@ namespace Deciji_Letnji_Program
 
         private void dete_Click(object sender, EventArgs e)
         {
-            FormDeteDetalji form = new FormDeteDetalji();
+            FormDetePregled form = new FormDetePregled();
             form.ShowDialog();
         }
 

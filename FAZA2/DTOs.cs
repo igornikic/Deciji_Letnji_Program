@@ -57,6 +57,7 @@ namespace Deciji_Letnji_Program
                 Povrede = new List<PovredaBasic>();
                 Prijava = new List<PrijavaBasic>();
                 Obroci = new List<ObrokBasic>();
+                Ucestvuje = new List<UcestvujeBasic>();
             }
 
             public DeteBasic(int id, string ime, string prezime, DateTime datumRodjenja, char pol,

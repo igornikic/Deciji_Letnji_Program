@@ -136,6 +136,7 @@ namespace Deciji_Letnji_Program
                 using (ISession session = DataLayer.GetSession())
                 {
                     var dete = await session.GetAsync<Dete>(id);
+
                     if (dete == null)
                         throw new Exception("Dete sa zadatim ID-jem ne postoji.");
 

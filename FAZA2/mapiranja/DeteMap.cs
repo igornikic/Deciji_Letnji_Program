@@ -35,10 +35,10 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .Inverse();//Dete nije vlasnik veze
 
 
-            HasMany(x => x.Povrede)
-                .KeyColumn("Id_dete")
-                .Inverse()
-                .Cascade.All();
+            //HasMany(x => x.Povrede)
+            //    .KeyColumn("Id_dete")
+            //    .Inverse()
+            //    .Cascade.All();
 
             HasManyToMany(x => x.Obroci)
                 .Table("JE_DAT")
