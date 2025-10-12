@@ -17,7 +17,7 @@ namespace Deciji_Letnji_Program.Entiteti
 
 
         // 1:N veza sa prijavom preko PRIJAVLJUJE_SE
-        public virtual IList<Prijava> Prijava { get; set; }
+        public virtual IList<Prijava> Prijave { get; set; }
         // M:N veza sa roditeljima preko STARATELJSTVO
         public virtual IList<Roditelj> Roditelji { get; set; }
 
@@ -44,6 +44,7 @@ namespace Deciji_Letnji_Program.Entiteti
             Ucestvuje = new List<Ucestvuje>();
             TelefoniRoditelja = new List<TelefonRoditelja>();
             EmailoviRoditelja = new List<EmailRoditelja>();
+            Prijave = new List<Prijava>();
         }
     }
 }

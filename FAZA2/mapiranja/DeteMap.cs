@@ -31,14 +31,9 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .Table("STARATELJSTVO")
                 .ParentKeyColumn("ID_dete")//!!!!
                 .ChildKeyColumn("ID_roditelj")
-                .Cascade.All()
+                //.Cascade.All()
+                .Cascade.AllDeleteOrphan()
                 .Inverse();//Dete nije vlasnik veze
-
-
-            //HasMany(x => x.Povrede)
-            //    .KeyColumn("Id_dete")
-            //    .Inverse()
-            //    .Cascade.All();
 
             HasManyToMany(x => x.Obroci)
                 .Table("JE_DAT")
@@ -62,6 +57,19 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .KeyColumn("ID_deteta")
                 .Inverse()
                 .Cascade.All();
+
+
+            HasMany(x => x.Povrede)
+                .KeyColumn("Id_dete")
+                .Inverse()
+                .Cascade.All();
+
+            HasMany(x => x.Prijave)
+                .KeyColumn("ID_dete")   
+                .Inverse()            
+                .Cascade.AllDeleteOrphan(); 
+
+
         }
     }
 }

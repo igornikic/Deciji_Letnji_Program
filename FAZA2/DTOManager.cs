@@ -152,113 +152,137 @@ namespace Deciji_Letnji_Program
 
         #endregion
 
-        //        #region Roditelj 
+        #region Roditelj
 
-        //        public static void DodajRoditelja(RoditeljBasic roditelj)
-        //        {
-        //            try
-        //            {
-        //                ISession s = DataLayer.GetSession();
+        public static async Task<List<RoditeljPregled>> GetAllRoditeljiAsync()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelji = await session.Query<Roditelj>()
+                        .Select(r => new RoditeljPregled(
+                            r.ID,
+                            r.Ime,
+                            r.Prezime))
+                        .ToListAsync();
 
-        //                Roditelj r = new Roditelj
-        //                {
-        //                    Ime = roditelj.Ime,
-        //                    Prezime = roditelj.Prezime
-        //                };
+                    return roditelji;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja roditelja: " + ex.Message, ex);
+            }
+        }
 
-        //                s.Save(r);
-        //                s.Flush();
-        //                s.Close();
-        //            }
-        //            catch (Exception ec)
-        //            {
-        //                MessageBox.Show(ec.Message);
-        //            }
-        //        }
+        public static async Task<RoditeljBasic> GetRoditeljAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelj = await session.GetAsync<Roditelj>(id);
 
-        //        public static RoditeljPregled VratiRoditelja(int id)
-        //        {
-        //            RoditeljPregled roditelj = new RoditeljPregled();
-        //            try
-        //            {
-        //                ISession s = DataLayer.GetSession();
-        //                Roditelj r = s.Load<Roditelj>(id);
+                    if (roditelj == null)
+                        return null;
 
-        //                roditelj = new RoditeljPregled(r.Id, r.Ime, r.Prezime);
-        //                s.Close();
-        //            }
-        //            catch (Exception ec)
-        //            {
-        //                MessageBox.Show(ec.Message);
-        //            }
-        //            return roditelj;
-        //        }
+                    RoditeljBasic rb = new RoditeljBasic
+                    {
+                        Id = roditelj.ID,
+                        Ime = roditelj.Ime,
+                        Prezime = roditelj.Prezime,
+                        Deca = roditelj.Deca.Select(d => new DeteBasic
+                        {
+                            Id = d.ID,
+                            Ime = d.Ime,
+                            Prezime = d.Prezime,
+                            DatumRodjenja = d.DatumRodjenja,
+                            Pol = d.Pol,
+                            Adresa = d.Adresa,
+                            TelefonDeteta = d.TelefonDeteta,
+                            EmailDeteta = d.EmailDeteta,
+                            PosebnePotrebe = d.PosebnePotrebe
+                        }).ToList(),
+                    };
 
-        //        public static List<RoditeljPregled> VratiRoditelje()
-        //        {
-        //            List<RoditeljPregled> roditelji = new List<RoditeljPregled>();
-        //            try
-        //            {
-        //                ISession s = DataLayer.GetSession();
-        //                IEnumerable<Roditelj> sviRoditelji = from r in s.Query<Roditelj>()
-        //                                                     select r;
+                    return rb;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja roditelja: " + ex.Message, ex);
+            }
+        }
 
-        //                foreach (Roditelj r in sviRoditelji)
-        //                {
-        //                    roditelji.Add(new RoditeljPregled(r.Id, r.Ime, r.Prezime));
-        //                }
+        public static async Task AddRoditeljAsync(RoditeljBasic roditelj)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    Roditelj noviRoditelj = new Roditelj
+                    {
+                        Ime = roditelj.Ime,
+                        Prezime = roditelj.Prezime,
+                    };
 
-        //                s.Close();
-        //            }
-        //            catch (Exception ec)
-        //            {
-        //                MessageBox.Show(ec.Message);
-        //            }
+                    await session.SaveAsync(noviRoditelj);
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom dodavanja roditelja: " + ex.Message, ex);
+            }
+        }
 
-        //            return roditelji;
-        //        }
+        public static async Task UpdateRoditeljAsync(RoditeljBasic roditelj)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var postojeciRoditelj = await session.GetAsync<Roditelj>(roditelj.Id);
+                    if (postojeciRoditelj == null)
+                        throw new Exception("Roditelj ne postoji u bazi.");
 
-        //        public static Roditelj AzurirajRoditelja(int id, string ime, string prezime)
-        //        {
-        //            try
-        //            {
-        //                ISession s = DataLayer.GetSession();
-        //                Roditelj r = s.Load<Roditelj>(id);
+                    postojeciRoditelj.Ime = roditelj.Ime;
+                    postojeciRoditelj.Prezime = roditelj.Prezime;
 
-        //                r.Ime = string.IsNullOrEmpty(ime) ? r.Ime : ime;
-        //                r.Prezime = string.IsNullOrEmpty(prezime) ? r.Prezime : prezime;
+                    await session.UpdateAsync(postojeciRoditelj);
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom ažuriranja roditelja: " + ex.Message, ex);
+            }
+        }
 
-        //                s.Update(r);
-        //                s.Flush();
-        //                s.Close();
+        public static async Task DeleteRoditeljAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelj = await session.GetAsync<Roditelj>(id);
 
-        //                return r;
-        //            }
-        //            catch (Exception ec)
-        //            {
-        //                MessageBox.Show(ec.Message);
-        //                return null;
-        //            }
-        //        }
+                    if (roditelj == null)
+                        throw new Exception("Roditelj sa zadatim ID-jem ne postoji.");
 
-        //        public static void ObrisiRoditelja(int id)
-        //        {
-        //            try
-        //            {
-        //                ISession s = DataLayer.GetSession();
-        //                Roditelj r = s.Load<Roditelj>(id);
+                    await session.DeleteAsync(roditelj);
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom brisanja roditelja: " + ex.Message, ex);
+            }
+        }
 
-        //                s.Delete(r);
-        //                s.Flush();
-        //                s.Close();
-        //            }
-        //            catch (Exception ec)
-        //            {
-        //                MessageBox.Show(ec.Message);
-        //            }
-        //        }
+        #endregion
 
-        //        #endregion
 
         //        #region Pratilac
 

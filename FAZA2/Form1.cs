@@ -20,13 +20,19 @@ namespace Deciji_Letnji_Program
 
         private void dete_Click(object sender, EventArgs e)
         {
-            FormDetePregled form = new FormDetePregled();
+            DetePregled form = new DetePregled();
             form.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             DataLayer.ProveriKonekciju();
+        }
+
+        private void roditelj_Click(object sender, EventArgs e)
+        {
+            RoditeljPregled form = new RoditeljPregled();
+            form.ShowDialog();
         }
     }
 }

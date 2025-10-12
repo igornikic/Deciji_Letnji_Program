@@ -1,6 +1,6 @@
 ﻿namespace Deciji_Letnji_Program.Forme
 {
-    partial class FormDeteDetalji
+    partial class DeteDodajIzmeni
     {
         /// <summary>
         /// Required designer variable.

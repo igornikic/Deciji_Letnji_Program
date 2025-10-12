@@ -59,10 +59,8 @@ namespace Deciji_Letnji_Program
             {
                 var cfg = OracleManagedDataClientConfiguration.Oracle10
                 .ConnectionString(c =>
-                    c.Is("Data Source=gislab-oracle.elfak.ni.ac.rs:1521/SBP_PDB;User Id=S19297;Password=S19297;"));
-                    //c.Is("Data Source=localhost/Free;User Id=c##testuser;Password=12345678;"));
-
-                Console.WriteLine(cfg);
+                    //c.Is("Data Source=gislab-oracle.elfak.ni.ac.rs:1521/SBP_PDB;User Id=S19297;Password=S19297;"));
+                    c.Is("Data Source=localhost/Free;User Id=c##testuser;Password=12345678;"));
 
                 return Fluently.Configure()
                     .Database(cfg.ShowSql())

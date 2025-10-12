@@ -1,6 +1,6 @@
 ﻿namespace Deciji_Letnji_Program.Forme
 {
-    partial class FormDetePregled
+    partial class DetePregled
     {
         private System.ComponentModel.IContainer components = null;
 

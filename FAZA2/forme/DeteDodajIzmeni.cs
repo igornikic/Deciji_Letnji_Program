@@ -5,11 +5,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Deciji_Letnji_Program.Forme
 {
-    public partial class FormDeteDetalji : Form
+    public partial class DeteDodajIzmeni : Form
     {
         private int? DeteID;
 
-        public FormDeteDetalji(int? id = null)
+        public DeteDodajIzmeni(int? id = null)
         {
             DeteID = id;
             InitializeComponent();

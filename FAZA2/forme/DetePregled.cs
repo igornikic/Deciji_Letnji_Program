@@ -6,9 +6,9 @@ using static Deciji_Letnji_Program.DTOs;
 
 namespace Deciji_Letnji_Program.Forme
 {
-    public partial class FormDetePregled : Form
+    public partial class DetePregled : Form
     {
-        public FormDetePregled()
+        public DetePregled()
         {
             InitializeComponent();
             this.Load += FormDetePregled_Load;
@@ -43,7 +43,7 @@ namespace Deciji_Letnji_Program.Forme
 
         private void BtnDodaj_Click(object sender, EventArgs e)
         {
-            var forma = new FormDeteDetalji();
+            var forma = new DeteDodajIzmeni();
             forma.ShowDialog();
             _ = UcitajDecuAsync();
         }
@@ -54,7 +54,7 @@ namespace Deciji_Letnji_Program.Forme
                 return;
 
             int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
-            var forma = new FormDeteDetalji(id);
+            var forma = new DeteDodajIzmeni(id);
             forma.ShowDialog();
             _ = UcitajDecuAsync();
         }

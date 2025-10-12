@@ -22,6 +22,7 @@ namespace Deciji_Letnji_Program.Mapiranja
             References(x => x.Aktivnost).Column("ID_aktivnosti").LazyLoad();
             References(x => x.Roditelj).Column("ID_roditelja").LazyLoad();
             References(x => x.Dete).Column("ID_dete").LazyLoad();
+
         }
     }
 }
