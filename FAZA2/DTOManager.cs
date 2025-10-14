@@ -50,6 +50,7 @@ namespace Deciji_Letnji_Program
                     if (dete == null)
                         return null;
 
+                    // Mapaš sve podatke u DTO
                     DeteBasic db = new DeteBasic
                     {
                         Id = dete.ID,
@@ -60,7 +61,7 @@ namespace Deciji_Letnji_Program
                         Adresa = dete.Adresa,
                         TelefonDeteta = dete.TelefonDeteta,
                         EmailDeteta = dete.EmailDeteta,
-                        PosebnePotrebe = dete.PosebnePotrebe
+                        PosebnePotrebe = dete.PosebnePotrebe,
                     };
 
                     return db;
@@ -71,6 +72,7 @@ namespace Deciji_Letnji_Program
                 throw new Exception("Doslo je do greske prilikom ucitavanja deteta: " + ex.Message, ex);
             }
         }
+
 
         public static async Task AddDeteAsync(DeteBasic dete)
         {
@@ -139,6 +141,8 @@ namespace Deciji_Letnji_Program
 
                     if (dete == null)
                         throw new Exception("Dete sa zadatim ID-jem ne postoji.");
+
+
 
                     await session.DeleteAsync(dete);
                     await session.FlushAsync();

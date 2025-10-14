@@ -65,9 +65,9 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .Cascade.All();
 
             HasMany(x => x.Prijave)
-                .KeyColumn("ID_dete")   
-                .Inverse()            
-                .Cascade.AllDeleteOrphan(); 
+                .KeyColumn("Id_deteta")
+                .Inverse()
+                .Cascade.AllDeleteOrphan();
 
 
         }

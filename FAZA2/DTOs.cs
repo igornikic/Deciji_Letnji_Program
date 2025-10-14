@@ -39,14 +39,14 @@ namespace Deciji_Letnji_Program
             public string EmailDeteta { get; set; }
             public string PosebnePotrebe { get; set; }
 
-            public IList<string> TelefoniRoditelja { get; set; }
-            public IList<string> EmailoviRoditeja { get; set; }
+            public IList<string> TelefoniRoditelja { get; set; } = new List<string>();
+            public IList<string> EmailoviRoditeja { get; set; } = new List<string>();
 
-            public IList<RoditeljBasic> Roditelji { get; set; }
-            public IList<PovredaBasic> Povrede { get; set; }
-            public IList<PrijavaBasic> Prijava { get; set; }
-            public IList<ObrokBasic> Obroci { get; set; }
-            public IList<UcestvujeBasic> Ucestvuje { get; set; }
+            public IList<RoditeljBasic> Roditelji { get; set; } = new List<RoditeljBasic>();
+            public IList<PovredaBasic> Povrede { get; set; } = new List<PovredaBasic>();
+            public IList<PrijavaBasic> Prijava { get; set; } = new List<PrijavaBasic>();
+            public IList<ObrokBasic> Obroci { get; set; } = new List<ObrokBasic>();
+            public IList<UcestvujeBasic> Ucestvuje { get; set; } = new List<UcestvujeBasic>();
 
             public DeteBasic()
             {
