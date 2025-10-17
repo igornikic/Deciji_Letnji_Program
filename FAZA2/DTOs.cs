@@ -14,6 +14,7 @@ namespace Deciji_Letnji_Program
             public string Prezime { get; set; }
             public DateTime DatumRodjenja { get; set; }
             public char Pol { get; set; }
+            public string PunoIme => $"{Ime} {Prezime}";
 
             public DetePregled() { }
 
@@ -84,6 +85,8 @@ namespace Deciji_Letnji_Program
             public int Id { get; set; }
             public string Ime { get; set; }
             public string Prezime { get; set; }
+
+            public string ImePrezime => $"{Ime} {Prezime}";
 
             public RoditeljPregled() { }
 

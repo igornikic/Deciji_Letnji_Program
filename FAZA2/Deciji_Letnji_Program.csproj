@@ -125,6 +125,30 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\AktivnostDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\AktivnostDodajIzmeni.Designer.cs">
+      <DependentUpon>AktivnostDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\AktivnostPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\AktivnostPregled.Designer.cs">
+      <DependentUpon>AktivnostPregled.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\AngazovanoLiceDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\AngazovanoLiceDodajIzmeni.Designer.cs">
+      <DependentUpon>AngazovanoLiceDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\AngazovanoLicePregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\AngazovanoLicePregled.Designer.cs">
+      <DependentUpon>AngazovanoLicePregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\DeteDodajIzmeni.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,6 +160,18 @@
     </Compile>
     <Compile Include="Forme\DetePregled.Designer.cs">
       <DependentUpon>DetePregled.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\KontaktDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\KontaktDodajIzmeni.Designer.cs">
+      <DependentUpon>KontaktDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\KontaktPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\KontaktPregled.Designer.cs">
+      <DependentUpon>KontaktPregled.cs</DependentUpon>
     </Compile>
     <Compile Include="Forme\PrijavaDodajIzmeni.cs">
       <SubType>Form</SubType>
@@ -161,6 +197,12 @@
     <Compile Include="Forme\RoditeljPregled.Designer.cs">
       <DependentUpon>RoditeljPregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\StarateljstvoDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\StarateljstvoDodajIzmeni.Designer.cs">
+      <DependentUpon>StarateljstvoDodajIzmeni.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapiranja\AktivnostMap.cs" />
     <Compile Include="Mapiranja\AngazovanoLiceMap.cs" />
     <Compile Include="Mapiranja\DeteMap.cs" />
@@ -173,6 +215,12 @@
     <Compile Include="Mapiranja\RoditeljMap.cs" />
     <Compile Include="Mapiranja\TelefonRoditeljaMap.cs" />
     <Compile Include="Mapiranja\UcestvujeMap.cs" />
+    <Compile Include="Pocetna.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pocetna.Designer.cs">
+      <DependentUpon>Pocetna.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

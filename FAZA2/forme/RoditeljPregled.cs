@@ -16,6 +16,7 @@ namespace Deciji_Letnji_Program.Forme
             btnDodaj.Click += BtnDodaj_Click;
             btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
+            btnDodajStarateljstvo.Click += BtnDodajStarateljstvo_Click;
         }
 
         private async void FormRoditeljPregled_Load(object sender, EventArgs e)
@@ -81,5 +82,19 @@ namespace Deciji_Letnji_Program.Forme
                 }
             }
         }
+        private void BtnDodajStarateljstvo_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewRoditelji.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati roditelja.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int roditeljId = (int)dataGridViewRoditelji.CurrentRow.Cells["Id"].Value;
+
+            var forma = new StarateljstvoDodajIzmeni(roditeljId);
+            forma.ShowDialog();
+        }
+
     }
 }

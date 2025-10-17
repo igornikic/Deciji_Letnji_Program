@@ -21,6 +21,7 @@
             this.btnDodaj = new System.Windows.Forms.Button();
             this.btnIzmeni = new System.Windows.Forms.Button();
             this.btnObrisi = new System.Windows.Forms.Button();
+            this.btnDodajStarateljstvo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoditelji)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +68,15 @@
             this.btnObrisi.Text = "Obriši";
             this.btnObrisi.UseVisualStyleBackColor = true;
             // 
+            // btnDodajStarateljstvo
+            // 
+            this.btnDodajStarateljstvo.Location = new System.Drawing.Point(370, 355);
+            this.btnDodajStarateljstvo.Name = "btnDodajStarateljstvo";
+            this.btnDodajStarateljstvo.Size = new System.Drawing.Size(160, 35);
+            this.btnDodajStarateljstvo.TabIndex = 4;
+            this.btnDodajStarateljstvo.Text = "Dodaj starateljstvo";
+            this.btnDodajStarateljstvo.UseVisualStyleBackColor = true;
+            // 
             // FormRoditeljPregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
@@ -74,6 +84,7 @@
             this.Controls.Add(this.btnIzmeni);
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.dataGridViewRoditelji);
+            this.Controls.Add(this.btnDodajStarateljstvo);
             this.Name = "RoditeljPregled";
             this.Text = "Pregled roditelja";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoditelji)).EndInit();
@@ -86,5 +97,6 @@
         private System.Windows.Forms.Button btnDodaj;
         private System.Windows.Forms.Button btnIzmeni;
         private System.Windows.Forms.Button btnObrisi;
+        private System.Windows.Forms.Button btnDodajStarateljstvo;
     }
 }

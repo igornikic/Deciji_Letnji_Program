@@ -175,6 +175,155 @@ namespace Deciji_Letnji_Program
             }
         }
 
+        public static async Task<List<TelefonRoditeljaPregled>> GetTelefoniRoditeljaAsync(int roditeljId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelj = await session.GetAsync<Roditelj>(roditeljId);
+                    if (roditelj == null)
+                        throw new Exception("Roditelj ne postoji.");
+
+                    var telefoni = roditelj.Deca
+                        .SelectMany(d => d.TelefoniRoditelja)
+                        .Select(t => new TelefonRoditeljaPregled(
+                            t.ID,
+                            t.Telefon
+                        ))
+                        .ToList();
+
+                    return telefoni;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja telefona roditelja: " + ex.Message, ex);
+            }
+        }
+
+
+
+        public static async Task<List<EmailRoditeljaPregled>> GetEmailoviRoditeljaAsync(int roditeljId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelj = await session.GetAsync<Roditelj>(roditeljId);
+                    if (roditelj == null)
+                        throw new Exception("Roditelj ne postoji.");
+
+                    var emailovi = roditelj.Deca
+                        .SelectMany(d => d.EmailoviRoditelja)
+                        .Select(e => new EmailRoditeljaPregled(
+                            e.ID,
+                            e.Email
+                        ))
+                        .ToList();
+
+                    return emailovi;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja emailova roditelja: " + ex.Message, ex);
+            }
+        }
+        public static async Task<List<AktivnostPregled>> GetAktivnostiZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var dete = await session.GetAsync<Dete>(deteId);
+
+                    if (dete == null)
+                        throw new Exception("Dete sa zadatim ID-jem ne postoji.");
+
+                    var aktivnosti = dete.Ucestvuje
+                        .Select(u => u.Aktivnost)
+                        .Select(a => new AktivnostPregled(
+                            a.IdAktivnosti,
+                            a.Tip,
+                            a.Naziv,
+                            a.Datum
+                        ))
+                        .ToList();
+
+                    return aktivnosti;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja aktivnosti za dete: " + ex.Message, ex);
+            }
+        }
+
+        #endregion
+
+        #region Starateljstvo
+        public static async Task DodajStarateljstvoAsync(int deteId, int roditeljId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    var roditelj = await session.GetAsync<Roditelj>(roditeljId);
+
+                    if (dete == null || roditelj == null)
+                        throw new Exception("Dete ili roditelj ne postoje.");
+
+                    // Pošto je Roditelj vlasnik veze (nije inverse), dodajemo dete u roditelja
+                    if (!roditelj.Deca.Contains(dete))
+                    {
+                        roditelj.Deca.Add(dete);
+                    }
+
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom povezivanja deteta sa roditeljem: " + ex.Message, ex);
+            }
+        }
+
+        public static async Task<List<DetePregled>> GetDecaZaDodavanjeStarateljstvaAsync(int roditeljId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var roditelj = await session.GetAsync<Roditelj>(roditeljId);
+                    if (roditelj == null)
+                        throw new Exception("Roditelj ne postoji.");
+
+                    var svaDeca = await session.Query<Dete>().ToListAsync();
+
+                    // Filtriramo decu koja vec nisu pod starateljstvom tog roditelja
+                    var dostupnaDeca = svaDeca
+                        .Where(d => !roditelj.Deca.Contains(d))
+                        .Select(d => new DetePregled(
+                            d.ID,
+                            d.Ime,
+                            d.Prezime,
+                            d.DatumRodjenja,
+                            d.Pol))
+                        .ToList();
+
+                    return dostupnaDeca;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja dostupne dece za starateljstvo: " + ex.Message, ex);
+            }
+        }
+
+
+
         #endregion
 
         #region Roditelj
@@ -310,139 +459,239 @@ namespace Deciji_Letnji_Program
 
         #region Prijava
 
+        public static async Task<List<RoditeljPregled>> GetRoditeljiZaAktivnostAsync(int aktivnostId)
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                // Za roditelje ne filtriramo posebno po aktivnosti, vraćamo sve
+                // jer kasnije dete ograničava izbor
+                var roditelji = await session.Query<Roditelj>()
+                    .Select(r => new RoditeljPregled(r.ID, r.Ime, r.Prezime))
+                    .ToListAsync();
+
+                return roditelji;
+            }
+        }
+
+        public static async Task<List<DetePregled>> GetDecaZaRoditeljaIAktivnostAsync(int roditeljId, int aktivnostId)
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                if (aktivnost == null) throw new Exception("Aktivnost ne postoji.");
+
+                var roditelj = await session.GetAsync<Roditelj>(roditeljId);
+                if (roditelj == null) throw new Exception("Roditelj ne postoji.");
+
+                // Starosna grupa
+                var starosna = aktivnost.StarosnaGrupa.Split('-');
+                int minGod = int.Parse(starosna[0]);
+                int maxGod = int.Parse(starosna[1]);
+                var danas = DateTime.Now;
+
+                var deca = roditelj.Deca
+                    .Where(d =>
+                    {
+                        int godine = danas.Year - d.DatumRodjenja.Year;
+                        if (d.DatumRodjenja.Date > danas.AddYears(-godine)) godine--;
+
+                        // starosna provera
+                        bool okGodine = godine >= minGod && godine <= maxGod;
+                        bool okOgranicenja = string.IsNullOrEmpty(aktivnost.Ogranicenja)
+                                             || string.IsNullOrEmpty(d.PosebnePotrebe)
+                                             || !aktivnost.Ogranicenja.ToLower().Contains(d.PosebnePotrebe.ToLower());
+
+                        return okGodine && okOgranicenja;
+
+                    })
+                    .Select(d => new DetePregled(d.ID, d.Ime, d.Prezime, d.DatumRodjenja, d.Pol))
+                    .ToList();
+
+                return deca;
+            }
+        }
+
+        public static async Task<bool> MozePrijavaAsync(int aktivnostId)
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                if (aktivnost == null) throw new Exception("Aktivnost ne postoji.");
+
+                int brojPrijava = await session.Query<Prijava>()
+                    .Where(p => p.Aktivnost.IdAktivnosti == aktivnostId)
+                    .CountAsync();
+
+                return brojPrijava < aktivnost.MaxUcesnika;
+            }
+        }
+
         public static async Task<List<PrijavaPregled>> GetAllPrijaveAsync()
+    {
+        try
         {
-            try
+            using (ISession session = DataLayer.GetSession())
             {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var prijave = await session.Query<Prijava>()
-                        .Select(p => new PrijavaPregled(
-                            p.IdPrijave,
-                            p.DatumPrijave,
-                            p.Status))
-                        .ToListAsync();
+                var prijave = await session.Query<Prijava>()
+                    .Select(p => new PrijavaPregled(
+                        p.IdPrijave,
+                        p.DatumPrijave,
+                        p.Status
+                    ))
+                    .ToListAsync();
 
-                    return prijave;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Došlo je do greške prilikom učitavanja prijava: " + ex.Message, ex);
+                return prijave;
             }
         }
-
-        public static async Task<PrijavaBasic> GetPrijavaAsync(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var prijava = await session.GetAsync<Prijava>(id);
-                    if (prijava == null)
-                        return null;
+            throw new Exception("Došlo je do greške prilikom učitavanja prijava: " + ex.Message, ex);
+        }
+    }
 
-                    PrijavaBasic pb = new PrijavaBasic
+    public static async Task<PrijavaBasic> GetPrijavaAsync(int id)
+    {
+        try
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                var prijava = await session.GetAsync<Prijava>(id);
+                if (prijava == null)
+                    return null;
+
+                return new PrijavaBasic
+                {
+                    IdPrijave = prijava.IdPrijave,
+                    DatumPrijave = prijava.DatumPrijave,
+                    Status = prijava.Status,
+                    Aktivnost = new AktivnostBasic
                     {
-                        IdPrijave = prijava.IdPrijave,
-                        DatumPrijave = prijava.DatumPrijave,
-                        Status = prijava.Status
-                    };
-
-                    return pb;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Došlo je do greške prilikom učitavanja prijave: " + ex.Message, ex);
-            }
-        }
-
-        public static async Task AddPrijavaAsync(PrijavaBasic prijava)
-        {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var aktivnost = await session.LoadAsync<Aktivnost>(prijava.Aktivnost.Id);
-                    var roditelj = await session.LoadAsync<Roditelj>(prijava.Roditelj.Id);
-                    var dete = await session.LoadAsync<Dete>(prijava.Dete.Id);
-
-                    Prijava novaPrijava = new Prijava
+                        Id = prijava.Aktivnost.IdAktivnosti,
+                        Naziv = prijava.Aktivnost.Naziv,
+                        StarosnaGrupa = prijava.Aktivnost.StarosnaGrupa,
+                        MaxUcesnika = prijava.Aktivnost.MaxUcesnika,
+                        Ogranicenja = prijava.Aktivnost.Ogranicenja
+                    },
+                    Roditelj = new RoditeljBasic
                     {
-                        DatumPrijave = prijava.DatumPrijave,
-                        Status = prijava.Status,
-                        Aktivnost = aktivnost,
-                        Roditelj = roditelj,
-                        Dete = dete
-                    };
-
-                    await session.SaveAsync(novaPrijava);
-                    await session.FlushAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Došlo je do greške prilikom dodavanja prijave: " + ex.Message, ex);
+                        Id = prijava.Roditelj.ID,
+                        Ime = prijava.Roditelj.Ime,
+                        Prezime = prijava.Roditelj.Prezime
+                    },
+                    Dete = new DeteBasic
+                    {
+                        Id = prijava.Dete.ID,
+                        Ime = prijava.Dete.Ime,
+                        Prezime = prijava.Dete.Prezime,
+                        DatumRodjenja = prijava.Dete.DatumRodjenja,
+                        PosebnePotrebe = prijava.Dete.PosebnePotrebe
+                    }
+                };
             }
         }
+        catch (Exception ex)
+        {
+            throw new Exception("Došlo je do greške prilikom učitavanja prijave: " + ex.Message, ex);
+        }
+    }
+
+        public static async Task AddPrijavaAsync(int aktivnostId, int roditeljId, int deteId, DateTime datum, string status)
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                var aktivnost = await session.LoadAsync<Aktivnost>(aktivnostId);
+                var roditelj = await session.LoadAsync<Roditelj>(roditeljId);
+                var dete = await session.LoadAsync<Dete>(deteId);
+
+                // Bez obzira šta UI pošalje — status je uvek "na čekanju"
+                status = "na čekanju";
+
+                Prijava novaPrijava = new Prijava
+                {
+                    DatumPrijave = datum,
+                    Status = status,
+                    Aktivnost = aktivnost,
+                    Roditelj = roditelj,
+                    Dete = dete
+                };
+
+                await session.SaveAsync(novaPrijava);
+                await session.FlushAsync();
+            }
+        }
+
+
 
         public static async Task UpdatePrijavaAsync(PrijavaBasic prijava)
+    {
+        try
         {
-            try
+            using (ISession session = DataLayer.GetSession())
+            using (ITransaction tx = session.BeginTransaction())
             {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var postojeca = await session.GetAsync<Prijava>(prijava.IdPrijave);
-                    if (postojeca == null)
-                        throw new Exception("Prijava ne postoji u bazi.");
+                var postojeca = await session.GetAsync<Prijava>(prijava.IdPrijave);
+                if (postojeca == null)
+                    throw new Exception("Prijava ne postoji u bazi.");
 
-                    postojeca.DatumPrijave = prijava.DatumPrijave;
-                    postojeca.Status = prijava.Status;
+                postojeca.DatumPrijave = prijava.DatumPrijave;
+                postojeca.Status = prijava.Status;
 
-                    // Ukoliko se menjaju relacije:
-                    if (prijava.Aktivnost != null)
-                        postojeca.Aktivnost = await session.LoadAsync<Aktivnost>(prijava.Aktivnost.Id);
-                    if (prijava.Roditelj != null)
-                        postojeca.Roditelj = await session.LoadAsync<Roditelj>(prijava.Roditelj.Id);
-                    if (prijava.Dete != null)
-                        postojeca.Dete = await session.LoadAsync<Dete>(prijava.Dete.Id);
+                if (prijava.Aktivnost != null)
+                    postojeca.Aktivnost = await session.LoadAsync<Aktivnost>(prijava.Aktivnost.Id);
+                if (prijava.Roditelj != null)
+                    postojeca.Roditelj = await session.LoadAsync<Roditelj>(prijava.Roditelj.Id);
+                if (prijava.Dete != null)
+                    postojeca.Dete = await session.LoadAsync<Dete>(prijava.Dete.Id);
 
-                    await session.UpdateAsync(postojeca);
-                    await session.FlushAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Došlo je do greške prilikom ažuriranja prijave: " + ex.Message, ex);
+                await session.UpdateAsync(postojeca);
+                await tx.CommitAsync();
             }
         }
-
-        public static async Task DeletePrijavaAsync(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var prijava = await session.GetAsync<Prijava>(id);
-                    if (prijava == null)
-                        throw new Exception("Prijava sa zadatim ID-jem ne postoji.");
+            throw new Exception("Došlo je do greške prilikom ažuriranja prijave: " + ex.Message, ex);
+        }
+    }
 
-                    await session.DeleteAsync(prijava);
-                    await session.FlushAsync();
-                }
-            }
-            catch (Exception ex)
+    public static async Task DeletePrijavaAsync(int id)
+    {
+        try
+        {
+            using (ISession session = DataLayer.GetSession())
+            using (ITransaction tx = session.BeginTransaction())
             {
-                throw new Exception("Došlo je do greške prilikom brisanja prijave: " + ex.Message, ex);
+                var prijava = await session.GetAsync<Prijava>(id);
+                if (prijava == null)
+                    throw new Exception("Prijava sa zadatim ID-jem ne postoji.");
+
+                await session.DeleteAsync(prijava);
+                await tx.CommitAsync();
             }
         }
+        catch (Exception ex)
+        {
+            throw new Exception("Došlo je do greške prilikom brisanja prijave: " + ex.Message, ex);
+        }
+    }
 
-        #endregion
+    /// <summary>
+    /// Broj prijava za konkretnu aktivnost — koristi se za proveru max učesnika.
+    /// </summary>
+    public static async Task<int> GetBrojPrijavaZaAktivnostAsync(int aktivnostId)
+    {
+        using (ISession session = DataLayer.GetSession())
+        {
+            return await session.Query<Prijava>()
+                .Where(p => p.Aktivnost.IdAktivnosti == aktivnostId)
+                .CountAsync();
+        }
+    }
 
-        #region Povreda
+    #endregion
 
-        public static async Task<List<PovredaPregled>> GetAllPovredeAsync()
+    #region Povreda
+
+    public static async Task<List<PovredaPregled>> GetAllPovredeAsync()
         {
             try
             {
@@ -1482,6 +1731,28 @@ namespace Deciji_Letnji_Program
             }
         }
 
+        public static async Task<List<TelefonRoditeljaPregled>> GetTelefoniRoditeljaZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefoni = await session.Query<TelefonRoditelja>()
+                        .Where(t => t.Dete.ID == deteId)
+                        .Select(t => new TelefonRoditeljaPregled(
+                            t.ID,
+                            t.Telefon))
+                        .ToListAsync();
+
+                    return telefoni;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja telefona roditelja za dete: " + ex.Message, ex);
+            }
+        }
+
         #endregion
 
         #region EmailRoditelja
@@ -1597,6 +1868,28 @@ namespace Deciji_Letnji_Program
             catch (Exception ex)
             {
                 throw new Exception("Došlo je do greške prilikom brisanja emaila roditelja: " + ex.Message, ex);
+            }
+        }
+
+        public static async Task<List<EmailRoditeljaPregled>> GetEmailoviRoditeljaZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var emailovi = await session.Query<EmailRoditelja>()
+                        .Where(e => e.Dete.ID == deteId)
+                        .Select(e => new EmailRoditeljaPregled(
+                            e.ID,
+                            e.Email))
+                        .ToListAsync();
+
+                    return emailovi;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja emailova roditelja za dete: " + ex.Message, ex);
             }
         }
 

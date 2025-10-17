@@ -21,6 +21,8 @@
             this.btnDodaj = new System.Windows.Forms.Button();
             this.btnIzmeni = new System.Windows.Forms.Button();
             this.btnObrisi = new System.Windows.Forms.Button();
+            this.btnKontakti = new System.Windows.Forms.Button();
+            this.btnAktivnosti = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +69,23 @@
             this.btnObrisi.Text = "Obriši";
             this.btnObrisi.UseVisualStyleBackColor = true;
             // 
+            // btnKontakti
+            // 
+            this.btnKontakti.Location = new System.Drawing.Point(370, 355);
+            this.btnKontakti.Name = "btnKontakti";
+            this.btnKontakti.Size = new System.Drawing.Size(100, 35);
+            this.btnKontakti.Text = "Kontakti";
+            this.btnKontakti.UseVisualStyleBackColor = true;
+            // 
+            // btnAktivnosti
+            // 
+            this.btnAktivnosti.Location = new System.Drawing.Point(490, 355);
+            this.btnAktivnosti.Name = "btnAktivnosti";
+            this.btnAktivnosti.Size = new System.Drawing.Size(100, 35);
+            this.btnAktivnosti.TabIndex = 5;
+            this.btnAktivnosti.Text = "Aktivnosti";
+            this.btnAktivnosti.UseVisualStyleBackColor = true;
+            // 
             // FormDetePregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
@@ -74,6 +93,8 @@
             this.Controls.Add(this.btnIzmeni);
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.dataGridViewDeca);
+            this.Controls.Add(this.btnKontakti);
+            this.Controls.Add(this.btnAktivnosti);
             this.Name = "FormDetePregled";
             this.Text = "Pregled dece";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).EndInit();
@@ -86,5 +107,7 @@
         private System.Windows.Forms.Button btnDodaj;
         private System.Windows.Forms.Button btnIzmeni;
         private System.Windows.Forms.Button btnObrisi;
+        private System.Windows.Forms.Button btnKontakti;
+        private System.Windows.Forms.Button btnAktivnosti;
     }
 }

@@ -16,6 +16,8 @@ namespace Deciji_Letnji_Program.Forme
             btnDodaj.Click += BtnDodaj_Click;
             btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
+            btnKontakti.Click += BtnKontakti_Click;
+            btnAktivnosti.Click += BtnAktivnosti_Click;
         }
 
         private async void FormDetePregled_Load(object sender, EventArgs e)
@@ -86,5 +88,33 @@ namespace Deciji_Letnji_Program.Forme
                 }
             }
         }
+
+        private void BtnKontakti_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewDeca.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati dete.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int deteId = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
+
+            var forma = new KontaktPregled(deteId);
+            forma.ShowDialog();
+        }
+        private void BtnAktivnosti_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewDeca.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati dete.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int deteId = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
+
+            var forma = new AktivnostPregled(deteId);
+            forma.ShowDialog();
+        }
+
     }
 }
