@@ -364,10 +364,10 @@ namespace Deciji_Letnji_Program
             public string BrojTelefona { get; set; }
             public string Email { get; set; }
             public string StrucnaSprema { get; set; }
-            public string Volonter { get; set; }
-            public string Trener { get; set; }
-            public string Animator { get; set; }
-            public string ZdravstveniRadnik { get; set; }
+            public char Volonter { get; set; }
+            public char Trener { get; set; }
+            public char Animator { get; set; }
+            public char ZdravstveniRadnik { get; set; }
 
             public IList<AktivnostBasic> Aktivnosti { get; set; }
             public EvaluacijaBasic Evaluacija { get; set; }
@@ -380,8 +380,8 @@ namespace Deciji_Letnji_Program
             }
 
             public AngazovanoLiceBasic(string jmbg, string ime, string prezime, char pol, string adresa,
-                                       string brojTelefona, string email, string strucnaSprema, string volonter,
-                                       string trener, string animator, string zdravstveniRadnik, EvaluacijaBasic evaluacija)
+                                       string brojTelefona, string email, string strucnaSprema, char volonter,
+                                       char trener, char animator, char zdravstveniRadnik, EvaluacijaBasic evaluacija)
             {
                 JMBG = jmbg;
                 Ime = ime;
@@ -573,14 +573,14 @@ namespace Deciji_Letnji_Program
         {
             public int ID { get; set; }
             public string OcenaAktivnosti { get; set; }
-            public string Komentri { get; set; }
+            public string Komentari { get; set; }
 
             public UcestvujePregled() { }
-            public UcestvujePregled(int id, string ocenaAktivnosti, string komentsri)
+            public UcestvujePregled(int id, string ocenaAktivnosti, string komentari)
             {
                 ID = id;
                 OcenaAktivnosti = ocenaAktivnosti;
-                Komentri = komentsri;
+                Komentari = komentari;
             }
         }
 
@@ -588,8 +588,8 @@ namespace Deciji_Letnji_Program
         {
             public int ID { get; set; }
             public string Prisustvo { get; set; }
-            public int OcenaAktvinost { get; set; }
-            public string Komentri { get; set; }
+            public int OcenaAktivnosti { get; set; }
+            public string Komentari { get; set; }
             public string Pratilac { get; set; }
 
             public DeteBasic Dete { get; set; }
@@ -602,8 +602,8 @@ namespace Deciji_Letnji_Program
             {
                 ID = id;
                 Prisustvo = prisustvo;
-                OcenaAktvinost = ocenaAktivnosti;
-                Komentri = komentari;
+                OcenaAktivnosti = ocenaAktivnosti;
+                Komentari = komentari;
                 Pratilac = pratilac;
                 Dete = dete;
                 Aktivnost = aktivnost;

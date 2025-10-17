@@ -108,6 +108,7 @@
             this.rbMusko.Size = new System.Drawing.Size(104, 24);
             this.rbMusko.TabIndex = 7;
             this.rbMusko.Text = "Musko";
+            this.rbMusko.Checked = true;
             // 
             // rbZensko
             // 

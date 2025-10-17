@@ -5,7 +5,7 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class AngazovanoLice
     {
-        public virtual string JMBG { get; protected set; }
+        public virtual string JMBG { get; set; }
         public virtual string Ime { get; set; }
         public virtual string Prezime { get; set; }
         public virtual char Pol { get; set; }

@@ -62,7 +62,10 @@ namespace Deciji_Letnji_Program.Forme
         private async void BtnObrisi_Click(object sender, EventArgs e)
         {
             if (dataGridViewDeca.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati dete za brisanje.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
 
             int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
 

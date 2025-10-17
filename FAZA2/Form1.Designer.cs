@@ -31,6 +31,7 @@
             this.dete = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.roditelj = new System.Windows.Forms.Button();
+            this.prijava = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dete
@@ -63,11 +64,22 @@
             this.roditelj.UseVisualStyleBackColor = true;
             this.roditelj.Click += new System.EventHandler(this.roditelj_Click);
             // 
+            // prijava
+            // 
+            this.prijava.Location = new System.Drawing.Point(361, 162);
+            this.prijava.Name = "prijava";
+            this.prijava.Size = new System.Drawing.Size(75, 23);
+            this.prijava.TabIndex = 3;
+            this.prijava.Text = "Prijava";
+            this.prijava.UseVisualStyleBackColor = true;
+            this.prijava.Click += new System.EventHandler(this.prijava_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.prijava);
             this.Controls.Add(this.roditelj);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dete);
@@ -82,6 +94,7 @@
         private System.Windows.Forms.Button dete;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button roditelj;
+        private System.Windows.Forms.Button prijava;
     }
 }
 

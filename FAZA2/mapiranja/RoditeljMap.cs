@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Deciji_Letnji_Program.Mapiranja
 {
-    internal class RoditeljMap : ClassMap<Roditelj>
+    public class RoditeljMap : ClassMap<Roditelj>
     {
         public RoditeljMap()
         {

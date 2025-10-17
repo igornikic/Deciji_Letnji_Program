@@ -34,5 +34,11 @@ namespace Deciji_Letnji_Program
             RoditeljPregled form = new RoditeljPregled();
             form.ShowDialog();
         }
+
+        private void prijava_Click(object sender, EventArgs e)
+        {
+            PrijavaPregled form = new PrijavaPregled();
+            form.ShowDialog();
+        }
     }
 }

@@ -44,6 +44,11 @@ namespace Deciji_Letnji_Program.Forme
 
         private async void BtnSacuvaj_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtIme.Text) || string.IsNullOrWhiteSpace(txtPrezime.Text))
+            {
+                MessageBox.Show("Ime i Prezime su obavezna polja.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var dete = new DeteBasic
             {
                 Ime = txtIme.Text,

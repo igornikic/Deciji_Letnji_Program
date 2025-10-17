@@ -137,6 +137,18 @@
     <Compile Include="Forme\DetePregled.Designer.cs">
       <DependentUpon>DetePregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\PrijavaDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\PrijavaDodajIzmeni.Designer.cs">
+      <DependentUpon>PrijavaDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\PrijavaPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\PrijavaPregled.Designer.cs">
+      <DependentUpon>PrijavaPregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\RoditeljDodajIzmeni.cs">
       <SubType>Form</SubType>
     </Compile>
