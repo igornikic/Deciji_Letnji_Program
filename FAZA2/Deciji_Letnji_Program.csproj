@@ -149,6 +149,12 @@
     <Compile Include="Forme\AngazovanoLicePregled.Designer.cs">
       <DependentUpon>AngazovanoLicePregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\DecaNaAktivnosti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\DecaNaAktivnosti.Designer.cs">
+      <DependentUpon>DecaNaAktivnosti.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\DeteDodajIzmeni.cs">
       <SubType>Form</SubType>
     </Compile>

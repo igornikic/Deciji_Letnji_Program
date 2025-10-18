@@ -260,6 +260,33 @@ namespace Deciji_Letnji_Program
             }
         }
 
+        public static async Task<List<DetePregled>> GetDecaNaAktivnostiAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var deca = await session.Query<Prijava>()
+                        .Where(p => p.Aktivnost.IdAktivnosti == aktivnostId && p.Status == "odobreno")
+                        .Select(p => new DetePregled(
+                            p.Dete.ID,
+                            p.Dete.Ime,
+                            p.Dete.Prezime,
+                            p.Dete.DatumRodjenja,
+                            p.Dete.Pol
+                        ))
+                        .ToListAsync();
+
+                    return deca;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom dohvatanja dece za aktivnost: " + ex.Message, ex);
+            }
+        }
+
+
         #endregion
 
         #region Starateljstvo
