@@ -1,0 +1,91 @@
+﻿namespace Deciji_Letnji_Program.Forme
+{
+    partial class LokacijaPregled
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            this.dataGridViewLokacije = new System.Windows.Forms.DataGridView();
+            this.btnDodaj = new System.Windows.Forms.Button();
+            this.btnIzmeni = new System.Windows.Forms.Button();
+            this.btnObrisi = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // dataGridViewLokacije
+            // 
+            this.dataGridViewLokacije.AllowUserToAddRows = false;
+            this.dataGridViewLokacije.AllowUserToDeleteRows = false;
+            this.dataGridViewLokacije.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewLokacije.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLokacije.Location = new System.Drawing.Point(12, 12);
+            this.dataGridViewLokacije.MultiSelect = false;
+            this.dataGridViewLokacije.Name = "dataGridViewLokacije";
+            this.dataGridViewLokacije.ReadOnly = true;
+            this.dataGridViewLokacije.RowHeadersVisible = false;
+            this.dataGridViewLokacije.RowTemplate.Height = 24;
+            this.dataGridViewLokacije.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewLokacije.Size = new System.Drawing.Size(620, 330);
+            this.dataGridViewLokacije.TabIndex = 0;
+            // 
+            // btnDodaj
+            // 
+            this.btnDodaj.Location = new System.Drawing.Point(12, 355);
+            this.btnDodaj.Name = "btnDodaj";
+            this.btnDodaj.Size = new System.Drawing.Size(100, 35);
+            this.btnDodaj.TabIndex = 1;
+            this.btnDodaj.Text = "Dodaj";
+            this.btnDodaj.UseVisualStyleBackColor = true;
+            // 
+            // btnIzmeni
+            // 
+            this.btnIzmeni.Location = new System.Drawing.Point(130, 355);
+            this.btnIzmeni.Name = "btnIzmeni";
+            this.btnIzmeni.Size = new System.Drawing.Size(100, 35);
+            this.btnIzmeni.TabIndex = 2;
+            this.btnIzmeni.Text = "Izmeni";
+            this.btnIzmeni.UseVisualStyleBackColor = true;
+            // 
+            // btnObrisi
+            // 
+            this.btnObrisi.Location = new System.Drawing.Point(250, 355);
+            this.btnObrisi.Name = "btnObrisi";
+            this.btnObrisi.Size = new System.Drawing.Size(100, 35);
+            this.btnObrisi.TabIndex = 3;
+            this.btnObrisi.Text = "Obriši";
+            this.btnObrisi.UseVisualStyleBackColor = true;
+            // 
+            // LokacijaPregled
+            // 
+            this.ClientSize = new System.Drawing.Size(644, 402);
+            this.Controls.Add(this.btnObrisi);
+            this.Controls.Add(this.btnIzmeni);
+            this.Controls.Add(this.btnDodaj);
+            this.Controls.Add(this.dataGridViewLokacije);
+            this.Name = "LokacijaPregled";
+            this.Text = "Pregled lokacija";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.DataGridView dataGridViewLokacije;
+        private System.Windows.Forms.Button btnDodaj;
+        private System.Windows.Forms.Button btnIzmeni;
+        private System.Windows.Forms.Button btnObrisi;
+    }
+}

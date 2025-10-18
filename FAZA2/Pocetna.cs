@@ -42,5 +42,11 @@ namespace Deciji_Letnji_Program
             AngazovanoLicePregled form = new AngazovanoLicePregled();
             form.ShowDialog();
         }
+
+        private void lokacija_Click(object sender, EventArgs e)
+        {
+            LokacijaPregled form = new LokacijaPregled();
+            form.ShowDialog();
+        }
     }
 }
