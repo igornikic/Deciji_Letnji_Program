@@ -9,7 +9,7 @@ using NHibernate.Util;
 
 namespace Deciji_Letnji_Program.Mapiranja
 {
-    internal class AngazovanoLiceMap : ClassMap<AngazovanoLice>
+    public class AngazovanoLiceMap : ClassMap<AngazovanoLice>
     {
         public AngazovanoLiceMap()
         {
@@ -35,13 +35,16 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .ParentKeyColumn("JMBG")
                 .ChildKeyColumn("ID_aktivnosti")
                 .Cascade.None()
-                .Inverse();   
+                .Inverse();
 
 
-            References(x => x.Evaluacija, "JMBG_lice");
+            HasOne(x => x.Evaluacija)
+                .PropertyRef(x => x.AngazovanoLice)
+                .Cascade.All();
+
 
             HasMany(x => x.Povrede)
-                .KeyColumn(" Odgovorno_osoblje_JMBG")
+                .KeyColumn("Odgovorno_osoblje_JMBG")
                 .Inverse()
                 .Cascade.All();
 

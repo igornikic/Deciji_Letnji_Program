@@ -39,7 +39,7 @@ namespace Deciji_Letnji_Program
         }
         private void angazovanoLice_Click(object sender, EventArgs e)
         {
-            AngazovanoLiceDodajIzmeni form = new AngazovanoLiceDodajIzmeni();
+            AngazovanoLicePregled form = new AngazovanoLicePregled();
             form.ShowDialog();
         }
     }

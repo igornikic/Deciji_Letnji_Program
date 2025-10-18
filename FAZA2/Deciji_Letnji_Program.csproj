@@ -223,6 +223,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forme\AngazovanoLiceDodajIzmeni.resx">
+      <DependentUpon>AngazovanoLiceDodajIzmeni.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormTest.resx">
       <DependentUpon>FormTest.cs</DependentUpon>
     </EmbeddedResource>
