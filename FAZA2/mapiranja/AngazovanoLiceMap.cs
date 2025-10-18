@@ -31,11 +31,12 @@ namespace Deciji_Letnji_Program.Mapiranja
 
 
             HasManyToMany(x => x.Aktivnosti)
-               .Table("UCESCE")
-               .ParentKeyColumn("ID_aktivnosti")
-               .ChildKeyColumn("JMBG")
-               .Cascade.All()
-               .Inverse(); //nije vlasnik veze
+                .Table("UCESCE")
+                .ParentKeyColumn("JMBG")
+                .ChildKeyColumn("ID_aktivnosti")
+                .Cascade.None()
+                .Inverse();   
+
 
             References(x => x.Evaluacija, "JMBG_lice");
 

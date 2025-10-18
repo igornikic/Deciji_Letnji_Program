@@ -49,10 +49,11 @@ namespace Deciji_Letnji_Program.Mapiranja
             .Cascade.All();
 
             HasManyToMany(x => x.AngazovanaLica)
-                .Table("Ucesce")
-                .ParentKeyColumn("Id_aktivnosti")
+                .Table("UCESCE")
+                .ParentKeyColumn("ID_aktivnosti")
                 .ChildKeyColumn("JMBG")
-                .Cascade.All();//Vlasnik veze
+                .Cascade.SaveUpdate();   
+
 
             HasMany(x => x.Ucestvuju)
                 .KeyColumn("ID_aktivnosti")
