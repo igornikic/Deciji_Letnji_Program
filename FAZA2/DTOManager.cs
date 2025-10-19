@@ -290,6 +290,28 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Starateljstvo
+        public static async Task<List<RoditeljPregled>> GetRoditeljeZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Uzimamo sve roditelje koji su povezani sa detetom
+                    var roditelji = await session.Query<Roditelj>()
+                        .Where(r => r.Deca.Any(d => d.ID == deteId))
+                        .Select(r => new RoditeljPregled(r.ID, r.Ime, r.Prezime))
+                        .ToListAsync();
+
+                    return roditelji;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja roditelja: " + ex.Message, ex);
+            }
+        }
+
+
         public static async Task DodajStarateljstvoAsync(int deteId, int roditeljId)
         {
             try
@@ -2137,6 +2159,32 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Ucestvuje
+        public static async Task<List<UcestvujePregled>> GetUcescaZaAktivnostAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Dohvatiti listu učešća za određenu aktivnost
+                    var ucesca = await session.Query<Ucestvuje>()
+                        .Where(u => u.Aktivnost.IdAktivnosti == aktivnostId)
+                        .Select(u => new UcestvujePregled(
+                            u.ID,
+                            u.Prisustvo,
+                            u.OcenaAktivnosti,
+                            u.Komentari,
+                            u.Pratilac
+                        ))
+                        .ToListAsync();
+
+                    return ucesca;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja učešća za aktivnost: " + ex.Message, ex);
+            }
+        }
 
         public static async Task<List<UcestvujePregled>> GetAllUcescaAsync()
         {
@@ -2147,8 +2195,10 @@ namespace Deciji_Letnji_Program
                     var ucesca = await session.Query<Ucestvuje>()
                         .Select(u => new UcestvujePregled(
                             u.ID,
-                            u.OcenaAktivnosti.ToString(),
-                            u.Komentari))
+                            u.Prisustvo,
+                            u.OcenaAktivnosti,
+                            u.Komentari,
+                            u.Pratilac))
                         .ToListAsync();
 
                     return ucesca;
@@ -2214,11 +2264,11 @@ namespace Deciji_Letnji_Program
                 using (ISession session = DataLayer.GetSession())
                 {
                     var dete = await session.GetAsync<Dete>(ucesce.Dete.Id);
-                    var roditelj = await session.GetAsync<Roditelj>(ucesce.Roditelj.Id);
+                    var roditelj = ucesce.Roditelj != null ? await session.GetAsync<Roditelj>(ucesce.Roditelj.Id) : null;
                     var aktivnost = await session.GetAsync<Aktivnost>(ucesce.Aktivnost.Id);
 
-                    if (dete == null || roditelj == null || aktivnost == null)
-                        throw new Exception("Dete, roditelj ili aktivnost nisu pronađeni.");
+                    if (dete == null || aktivnost == null)
+                        throw new Exception("Dete ili aktivnost nisu pronađeni.");
 
                     var novoUcesce = new Ucestvuje
                     {
@@ -2253,7 +2303,7 @@ namespace Deciji_Letnji_Program
                         throw new Exception("Učešće nije pronađeno.");
 
                     postojeci.Prisustvo = ucesce.Prisustvo;
-                    postojeci.OcenaAktivnosti = ucesce.OcenaAktivnosti;
+                    postojeci.OcenaAktivnosti = (int)ucesce.OcenaAktivnosti;
                     postojeci.Komentari = ucesce.Komentari;
                     postojeci.Pratilac = ucesce.Pratilac;
 

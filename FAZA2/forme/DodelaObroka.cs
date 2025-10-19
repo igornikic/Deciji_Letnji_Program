@@ -56,10 +56,10 @@ namespace Deciji_Letnji_Program.Forme
                         var obrokDetalji = await DTOManager.GetObrokAsync(obrok.Id);
                         var opcije = obrokDetalji.PosebneOpcije?.ToLower() ?? "";
 
-                        if (potrebe.Contains("gluten") && !opcije.Contains("bez glutena"))
+                        if (potrebe.Contains("bez glutena") && !opcije.Contains("bez glutena"))
                             continue;
 
-                        if (potrebe.Contains("laktoza") && !opcije.Contains("bez mlečnih proizvoda"))
+                        if (potrebe.Contains("bez mlečnih proizvoda") && !opcije.Contains("bez mlečnih proizvoda"))
                             continue;
 
                         if (potrebe.Contains("vegetarijanski") && !opcije.Contains("vegetarijanski"))

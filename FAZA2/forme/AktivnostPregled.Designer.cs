@@ -25,6 +25,7 @@
             this.btnSpisakDece = new System.Windows.Forms.Button();
             this.btnZaposleni = new System.Windows.Forms.Button();
             this.btnPrikaziObroke = new System.Windows.Forms.Button();
+            this.btnPrikaziPrisustvo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAktivnosti)).BeginInit();
             this.flowLayoutPanelButtons.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +55,7 @@
             this.flowLayoutPanelButtons.Controls.Add(this.btnSpisakDece);
             this.flowLayoutPanelButtons.Controls.Add(this.btnZaposleni);
             this.flowLayoutPanelButtons.Controls.Add(this.btnPrikaziObroke);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnPrikaziPrisustvo);
             this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanelButtons.Location = new System.Drawing.Point(0, 355);
             this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
@@ -120,6 +122,17 @@
             this.btnPrikaziObroke.Text = "Prikazi Obroke";
             this.btnPrikaziObroke.UseVisualStyleBackColor = true;
             this.btnPrikaziObroke.Click += new System.EventHandler(this.btnPrikaziObroke_Click);
+            //
+            // btnPrikaziPrisustvo
+            //
+            this.btnPrikaziPrisustvo.Location = new System.Drawing.Point(709, 13);
+            this.btnPrikaziPrisustvo.Name = "btnPrikaziPrisustvo";
+            this.btnPrikaziPrisustvo.Size = new System.Drawing.Size(120, 35);
+            this.btnPrikaziPrisustvo.TabIndex = 7;
+            this.btnPrikaziPrisustvo.Text = "Prikazi Prisustvo";
+            this.btnPrikaziPrisustvo.UseVisualStyleBackColor = true;
+            this.btnPrikaziPrisustvo.Click += new System.EventHandler(this.btnPrikaziPrisustvo_Click);
+
             // 
             // AktivnostPregled
             // 
@@ -144,5 +157,6 @@
         private System.Windows.Forms.Button btnZaposleni;
         private System.Windows.Forms.Button btnSpisakDece;
         private System.Windows.Forms.Button btnPrikaziObroke;
+        private System.Windows.Forms.Button btnPrikaziPrisustvo;
     }
 }

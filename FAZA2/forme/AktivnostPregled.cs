@@ -143,7 +143,6 @@ namespace Deciji_Letnji_Program.Forme
             formaDeca.ShowDialog();
         }
 
-        // Novo dugme za prikazivanje obroka
         private async void btnPrikaziObroke_Click(object sender, EventArgs e)
         {
             if (dataGridViewAktivnosti.CurrentRow == null)
@@ -175,5 +174,21 @@ namespace Deciji_Letnji_Program.Forme
                 MessageBox.Show("Došlo je do greške pri učitavanju obroka: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnPrikaziPrisustvo_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAktivnosti.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati aktivnost.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
+
+            // Otvori formu sa evidencijom prisustva
+            var formaPrisustvo = new EvidencijaPrisustva(id);  // Pretpostavljamo da postoji forma PrisustvoPregled
+            formaPrisustvo.ShowDialog();
+        }
+
     }
 }

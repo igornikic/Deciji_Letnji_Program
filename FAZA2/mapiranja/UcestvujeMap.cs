@@ -17,7 +17,7 @@ namespace Deciji_Letnji_Program.Mapiranja
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Prisustvo, "Prisustvo");
-            Map(x => x.OcenaAktivnosti, "Ocena_aktivnosti");
+            Map(x => x.OcenaAktivnosti, "Ocena_aktivnosti").Nullable();
             Map(x => x.Komentari, "Komentari");
             Map(x => x.Pratilac, "Pratilac");
 
