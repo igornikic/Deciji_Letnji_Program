@@ -131,6 +131,18 @@
     <Compile Include="Forme\LokacijaPregled.Designer.cs">
       <DependentUpon>LokacijaPregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\ObrokDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\ObrokDodajIzmeni.Designer.cs">
+      <DependentUpon>ObrokDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\ObrokPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\ObrokPregled.Designer.cs">
+      <DependentUpon>ObrokPregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTest.cs">
       <SubType>Form</SubType>
     </Compile>
