@@ -1,6 +1,6 @@
 ﻿namespace Deciji_Letnji_Program.Forme
 {
-    partial class AngazovanoLicePregled
+    partial class LokacijaPregled
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -17,28 +17,28 @@
 
         private void InitializeComponent()
         {
-            this.dataGridViewLica = new System.Windows.Forms.DataGridView();
+            this.dataGridViewLokacije = new System.Windows.Forms.DataGridView();
             this.btnDodaj = new System.Windows.Forms.Button();
             this.btnIzmeni = new System.Windows.Forms.Button();
             this.btnObrisi = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLica)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridViewLica
+            // dataGridViewLokacije
             // 
-            this.dataGridViewLica.AllowUserToAddRows = false;
-            this.dataGridViewLica.AllowUserToDeleteRows = false;
-            this.dataGridViewLica.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewLica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewLica.Location = new System.Drawing.Point(12, 12);
-            this.dataGridViewLica.MultiSelect = false;
-            this.dataGridViewLica.Name = "dataGridViewLica";
-            this.dataGridViewLica.ReadOnly = true;
-            this.dataGridViewLica.RowHeadersVisible = false;
-            this.dataGridViewLica.RowTemplate.Height = 24;
-            this.dataGridViewLica.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewLica.Size = new System.Drawing.Size(620, 330);
-            this.dataGridViewLica.TabIndex = 0;
+            this.dataGridViewLokacije.AllowUserToAddRows = false;
+            this.dataGridViewLokacije.AllowUserToDeleteRows = false;
+            this.dataGridViewLokacije.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewLokacije.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLokacije.Location = new System.Drawing.Point(12, 12);
+            this.dataGridViewLokacije.MultiSelect = false;
+            this.dataGridViewLokacije.Name = "dataGridViewLokacije";
+            this.dataGridViewLokacije.ReadOnly = true;
+            this.dataGridViewLokacije.RowHeadersVisible = false;
+            this.dataGridViewLokacije.RowTemplate.Height = 24;
+            this.dataGridViewLokacije.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewLokacije.Size = new System.Drawing.Size(620, 330);
+            this.dataGridViewLokacije.TabIndex = 0;
             // 
             // btnDodaj
             // 
@@ -67,22 +67,23 @@
             this.btnObrisi.Text = "Obriši";
             this.btnObrisi.UseVisualStyleBackColor = true;
             // 
-            // AngazovanoLicePregled
+            // LokacijaPregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
             this.Controls.Add(this.btnObrisi);
             this.Controls.Add(this.btnIzmeni);
             this.Controls.Add(this.btnDodaj);
-            this.Controls.Add(this.dataGridViewLica);
-            this.Name = "AngazovanoLicePregled";
-            this.Text = "Pregled angažovanih lica";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLica)).EndInit();
+            this.Controls.Add(this.dataGridViewLokacije);
+            this.Name = "LokacijaPregled";
+            this.Text = "Pregled lokacija";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridViewLica;
+        private System.Windows.Forms.DataGridView dataGridViewLokacije;
         private System.Windows.Forms.Button btnDodaj;
         private System.Windows.Forms.Button btnIzmeni;
         private System.Windows.Forms.Button btnObrisi;

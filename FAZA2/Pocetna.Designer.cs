@@ -37,9 +37,9 @@
             // 
             // dete
             // 
-            this.dete.Location = new System.Drawing.Point(361, 12);
+            this.dete.Location = new System.Drawing.Point(310, 12);
             this.dete.Name = "dete";
-            this.dete.Size = new System.Drawing.Size(120, 30);
+            this.dete.Size = new System.Drawing.Size(180, 30);  // visina smanjena sa 40 na 30
             this.dete.TabIndex = 0;
             this.dete.Text = "Dete";
             this.dete.UseVisualStyleBackColor = true;
@@ -47,9 +47,9 @@
             // 
             // roditelj
             // 
-            this.roditelj.Location = new System.Drawing.Point(361, 63);
+            this.roditelj.Location = new System.Drawing.Point(310, 52); // pomereno 10px gore da ne bude preveliki razmak
             this.roditelj.Name = "roditelj";
-            this.roditelj.Size = new System.Drawing.Size(120, 30);
+            this.roditelj.Size = new System.Drawing.Size(180, 30);
             this.roditelj.TabIndex = 1;
             this.roditelj.Text = "Roditelj";
             this.roditelj.UseVisualStyleBackColor = true;
@@ -57,9 +57,9 @@
             // 
             // prijava
             // 
-            this.prijava.Location = new System.Drawing.Point(361, 114);
+            this.prijava.Location = new System.Drawing.Point(310, 92);
             this.prijava.Name = "prijava";
-            this.prijava.Size = new System.Drawing.Size(120, 30);
+            this.prijava.Size = new System.Drawing.Size(180, 30);
             this.prijava.TabIndex = 2;
             this.prijava.Text = "Prijava";
             this.prijava.UseVisualStyleBackColor = true;
@@ -67,9 +67,9 @@
             // 
             // aktivnost
             // 
-            this.aktivnost.Location = new System.Drawing.Point(361, 165);
+            this.aktivnost.Location = new System.Drawing.Point(310, 132);
             this.aktivnost.Name = "aktivnost";
-            this.aktivnost.Size = new System.Drawing.Size(120, 30);
+            this.aktivnost.Size = new System.Drawing.Size(180, 30);
             this.aktivnost.TabIndex = 3;
             this.aktivnost.Text = "Aktivnost";
             this.aktivnost.UseVisualStyleBackColor = true;
@@ -77,19 +77,31 @@
             // 
             // angazovanoLice
             // 
-            this.angazovanoLice.Location = new System.Drawing.Point(361, 216);
+            this.angazovanoLice.Location = new System.Drawing.Point(310, 172);
             this.angazovanoLice.Name = "angazovanoLice";
-            this.angazovanoLice.Size = new System.Drawing.Size(120, 30);
+            this.angazovanoLice.Size = new System.Drawing.Size(180, 30);
             this.angazovanoLice.TabIndex = 4;
             this.angazovanoLice.Text = "Angažovano lice";
             this.angazovanoLice.UseVisualStyleBackColor = true;
             this.angazovanoLice.Click += new System.EventHandler(this.angazovanoLice_Click);
             // 
+            // lokacija
+            // 
+            this.lokacija = new System.Windows.Forms.Button();
+            this.lokacija.Location = new System.Drawing.Point(310, 212);
+            this.lokacija.Name = "lokacija";
+            this.lokacija.Size = new System.Drawing.Size(180, 30);
+            this.lokacija.TabIndex = 5;
+            this.lokacija.Text = "Lokacija";
+            this.lokacija.UseVisualStyleBackColor = true;
+            this.lokacija.Click += new System.EventHandler(this.lokacija_Click);
+            // 
             // Pocetna
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 400); // malo smanjen da bude proporcionalno
+            this.Controls.Add(this.lokacija);
             this.Controls.Add(this.angazovanoLice);
             this.Controls.Add(this.aktivnost);
             this.Controls.Add(this.prijava);
@@ -100,6 +112,8 @@
             this.ResumeLayout(false);
         }
 
+
+
         #endregion
 
         private System.Windows.Forms.Button dete;
@@ -107,5 +121,7 @@
         private System.Windows.Forms.Button prijava;
         private System.Windows.Forms.Button aktivnost;
         private System.Windows.Forms.Button angazovanoLice;
+        private System.Windows.Forms.Button lokacija;
+
     }
 }

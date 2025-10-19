@@ -37,6 +37,7 @@
             this.dataGridViewDeca.Name = "dataGridViewDeca";
             this.dataGridViewDeca.ReadOnly = true;
             this.dataGridViewDeca.RowHeadersVisible = false;
+            this.dataGridViewDeca.RowHeadersWidth = 51;
             this.dataGridViewDeca.RowTemplate.Height = 24;
             this.dataGridViewDeca.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewDeca.Size = new System.Drawing.Size(620, 330);
@@ -59,6 +60,7 @@
             this.btnIzmeni.TabIndex = 2;
             this.btnIzmeni.Text = "Izmeni";
             this.btnIzmeni.UseVisualStyleBackColor = true;
+            this.btnIzmeni.Click += new System.EventHandler(this.btnIzmeni_Click_1);
             // 
             // btnObrisi
             // 
@@ -74,6 +76,7 @@
             this.btnKontakti.Location = new System.Drawing.Point(370, 355);
             this.btnKontakti.Name = "btnKontakti";
             this.btnKontakti.Size = new System.Drawing.Size(100, 35);
+            this.btnKontakti.TabIndex = 4;
             this.btnKontakti.Text = "Kontakti";
             this.btnKontakti.UseVisualStyleBackColor = true;
             // 
@@ -86,7 +89,7 @@
             this.btnAktivnosti.Text = "Aktivnosti";
             this.btnAktivnosti.UseVisualStyleBackColor = true;
             // 
-            // FormDetePregled
+            // DetePregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
             this.Controls.Add(this.btnObrisi);
@@ -95,10 +98,11 @@
             this.Controls.Add(this.dataGridViewDeca);
             this.Controls.Add(this.btnKontakti);
             this.Controls.Add(this.btnAktivnosti);
-            this.Name = "FormDetePregled";
+            this.Name = "DetePregled";
             this.Text = "Pregled dece";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

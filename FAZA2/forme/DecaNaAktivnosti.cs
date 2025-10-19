@@ -48,8 +48,8 @@ namespace Deciji_Letnji_Program.Forme
         private void DugmeDodelaObroka_Click(object sender, EventArgs e)
         {
             int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
-            var formaDeca = new DodelaObroka(id);
-            formaDeca.ShowDialog();
+            //var formaDeca = new DodelaObroka(id);
+            //formaDeca.ShowDialog();
         }
     }
 }
