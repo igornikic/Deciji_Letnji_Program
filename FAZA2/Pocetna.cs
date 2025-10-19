@@ -52,6 +52,10 @@ namespace Deciji_Letnji_Program
             ObrokPregled form = new ObrokPregled();
             form.ShowDialog();
         }
-
+        private void evaluacija_Click(object sender, EventArgs e)
+        {
+            EvaluacijaPregled form = new EvaluacijaPregled();
+            form.ShowDialog();
+        }
     }
 }

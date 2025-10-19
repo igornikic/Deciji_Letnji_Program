@@ -35,6 +35,7 @@
             this.angazovanoLice = new System.Windows.Forms.Button();
             this.lokacija = new System.Windows.Forms.Button();
             this.obrok = new System.Windows.Forms.Button();
+            this.evaluacija = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dete
@@ -106,12 +107,23 @@
             this.obrok.Text = "Obrok";
             this.obrok.UseVisualStyleBackColor = true;
             this.obrok.Click += new System.EventHandler(this.obrok_Click);
+            //
+            //evaluacija
+            //
+            this.evaluacija.Location = new System.Drawing.Point(310, 292);
+            this.evaluacija.Name = "evaluacija";
+            this.evaluacija.Size = new System.Drawing.Size(180, 30);
+            this.evaluacija.TabIndex = 6;
+            this.evaluacija.Text = "Evaluacija";
+            this.evaluacija.UseVisualStyleBackColor = true;
+            this.evaluacija.Click += new System.EventHandler(this.evaluacija_Click);
             // 
             // Pocetna
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 400); 
+            this.ClientSize = new System.Drawing.Size(800, 400);
+            this.Controls.Add(this.evaluacija);
             this.Controls.Add(this.obrok);
             this.Controls.Add(this.lokacija);
             this.Controls.Add(this.angazovanoLice);
@@ -135,6 +147,7 @@
         private System.Windows.Forms.Button angazovanoLice;
         private System.Windows.Forms.Button lokacija;
         private System.Windows.Forms.Button obrok;
+        private System.Windows.Forms.Button evaluacija;
 
     }
 }

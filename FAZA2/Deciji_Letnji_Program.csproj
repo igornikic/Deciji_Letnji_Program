@@ -125,6 +125,18 @@
     <Compile Include="Forme\DodelaObroka.Designer.cs">
       <DependentUpon>DodelaObroka.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\EvaluacijaDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\EvaluacijaDodajIzmeni.Designer.cs">
+      <DependentUpon>EvaluacijaDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\EvaluacijaPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\EvaluacijaPregled.Designer.cs">
+      <DependentUpon>EvaluacijaPregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\LokacijaDodajIzmeni.cs">
       <SubType>Form</SubType>
     </Compile>
