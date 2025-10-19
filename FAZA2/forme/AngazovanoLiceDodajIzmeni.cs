@@ -45,7 +45,7 @@ namespace Deciji_Letnji_Program.Forme
                     cbVolonter.Checked = lice.Volonter == 'Y';
                     cbTrener.Checked = lice.Trener == 'Y';
                     cbAnimator.Checked = lice.Animator == 'Y';
-                    cbZdravstveni.Checked = lice.ZdravstveniRadnik == 'Y';
+                    cbZdravstveniRadnik.Checked = lice.ZdravstveniRadnik == 'Y';
                 }
                 catch (Exception ex)
                 {
@@ -81,7 +81,7 @@ namespace Deciji_Letnji_Program.Forme
                 Volonter = cbVolonter.Checked ? 'Y' : 'N',
                 Trener = cbTrener.Checked ? 'Y' : 'N',
                 Animator = cbAnimator.Checked ? 'Y' : 'N',
-                ZdravstveniRadnik = cbZdravstveni.Checked ? 'Y' : 'N'
+                ZdravstveniRadnik = cbZdravstveniRadnik.Checked ? 'Y' : 'N'
             };
 
             try

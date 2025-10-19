@@ -1595,6 +1595,7 @@ namespace Deciji_Letnji_Program
             }
         }
 
+
         #endregion
 
         #region Lokacija
@@ -2162,6 +2163,130 @@ namespace Deciji_Letnji_Program
                 throw new Exception("Došlo je do greške prilikom brisanja učešća: " + ex.Message, ex);
             }
         }
+
+        #endregion
+
+        #region Ucesce
+
+        #region AngazovanoLice - Aktivnost Veze
+
+        // Dodaje angažovano lice na aktivnost
+        public static async Task AddAngazovanoLiceToAktivnostAsync(string jmbg, int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lice = await session.GetAsync<AngazovanoLice>(jmbg);
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+
+                    if (lice == null)
+                        throw new Exception("Angažovano lice ne postoji.");
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost ne postoji.");
+
+                    if (!aktivnost.AngazovanaLica.Contains(lice))
+                    {
+                        aktivnost.AngazovanaLica.Add(lice);
+                        lice.Aktivnosti.Add(aktivnost);
+                    }
+
+                    await session.UpdateAsync(aktivnost);
+                    await session.UpdateAsync(lice);
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom dodavanja angažovanog lica na aktivnost: " + ex.Message, ex);
+            }
+        }
+
+        // Prikazuje sva angažovana lica na određenoj aktivnosti
+        public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaNaAktivnostiAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost ne postoji.");
+
+                    var lista = aktivnost.AngazovanaLica
+                                .Select(al => new AngazovanoLicePregled(al.JMBG, al.Ime, al.Prezime))
+                                .ToList();
+
+                    return lista;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja angažovanih lica za aktivnost: " + ex.Message, ex);
+            }
+        }
+
+        // Prikazuje angažovana lica koja **nisu** na toj aktivnosti
+        public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaNeNaAktivnostiAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var sviLica = await session.Query<AngazovanoLice>().ToListAsync();
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost ne postoji.");
+
+                    var neAngazovana = sviLica
+                        .Where(l => !aktivnost.AngazovanaLica.Contains(l))
+                        .Select(al => new AngazovanoLicePregled(al.JMBG, al.Ime, al.Prezime))
+                        .ToList();
+
+                    return neAngazovana;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja angažovanih lica koja nisu na aktivnosti: " + ex.Message, ex);
+            }
+        }
+
+        // Uklanja angažovano lice sa aktivnosti
+        public static async Task RemoveAngazovanoLiceFromAktivnostAsync(string jmbg, int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lice = await session.GetAsync<AngazovanoLice>(jmbg);
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+
+                    if (lice == null)
+                        throw new Exception("Angažovano lice ne postoji.");
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost ne postoji.");
+
+                    if (aktivnost.AngazovanaLica.Contains(lice))
+                    {
+                        aktivnost.AngazovanaLica.Remove(lice);
+                        lice.Aktivnosti.Remove(aktivnost);
+                    }
+
+                    await session.UpdateAsync(aktivnost);
+                    await session.UpdateAsync(lice);
+                    await session.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom uklanjanja angažovanog lica sa aktivnosti: " + ex.Message, ex);
+            }
+        }
+
+        #endregion
+
 
         #endregion
 

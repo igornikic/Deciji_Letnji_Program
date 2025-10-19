@@ -38,7 +38,7 @@
             this.cbVolonter = new System.Windows.Forms.CheckBox();
             this.cbTrener = new System.Windows.Forms.CheckBox();
             this.cbAnimator = new System.Windows.Forms.CheckBox();
-            this.cbZdravstveni = new System.Windows.Forms.CheckBox();
+            this.cbZdravstveniRadnik = new System.Windows.Forms.CheckBox();
             this.btnSacuvaj = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -87,12 +87,14 @@
             this.rbMusko.Location = new System.Drawing.Point(160, 155);
             this.rbMusko.Size = new System.Drawing.Size(70, 24);
             this.rbMusko.Text = "Muško";
+            this.rbMusko.AutoSize = true;
             // 
             // rbZensko
             // 
             this.rbZensko.Location = new System.Drawing.Point(240, 155);
             this.rbZensko.Size = new System.Drawing.Size(80, 24);
             this.rbZensko.Text = "Žensko";
+            this.rbZensko.AutoSize = true;
             // 
             // lblAdresa
             // 
@@ -148,26 +150,26 @@
             // cbVolonter
             // 
             this.cbVolonter.Location = new System.Drawing.Point(160, 400);
-            this.cbVolonter.Size = new System.Drawing.Size(120, 24);
             this.cbVolonter.Text = "Volonter";
+            this.cbVolonter.AutoSize = true;
             // 
             // cbTrener
             // 
             this.cbTrener.Location = new System.Drawing.Point(300, 400);
-            this.cbTrener.Size = new System.Drawing.Size(120, 24);
             this.cbTrener.Text = "Trener";
+            this.cbTrener.AutoSize = true;
             // 
             // cbAnimator
             // 
             this.cbAnimator.Location = new System.Drawing.Point(160, 430);
-            this.cbAnimator.Size = new System.Drawing.Size(120, 24);
             this.cbAnimator.Text = "Animator";
+            this.cbAnimator.AutoSize = true;
             // 
-            // cbZdravstveni
+            // cbZdravstveniRadnik
             // 
-            this.cbZdravstveni.Location = new System.Drawing.Point(300, 430);
-            this.cbZdravstveni.Size = new System.Drawing.Size(150, 24);
-            this.cbZdravstveni.Text = "Zdravstveni radnik";
+            this.cbZdravstveniRadnik.Location = new System.Drawing.Point(300, 430);
+            this.cbZdravstveniRadnik.Text = "Zdravstveni radnik";
+            this.cbZdravstveniRadnik.AutoSize = true;
             // 
             // btnSacuvaj
             // 
@@ -201,14 +203,13 @@
             this.Controls.Add(this.cbVolonter);
             this.Controls.Add(this.cbTrener);
             this.Controls.Add(this.cbAnimator);
-            this.Controls.Add(this.cbZdravstveni);
+            this.Controls.Add(this.cbZdravstveniRadnik);
             this.Controls.Add(this.btnSacuvaj);
             this.Name = "AngazovanoLiceDodajIzmeni";
             this.Text = "Angažovano lice";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-
 
         #endregion
 
@@ -233,7 +234,7 @@
         private System.Windows.Forms.CheckBox cbVolonter;
         private System.Windows.Forms.CheckBox cbTrener;
         private System.Windows.Forms.CheckBox cbAnimator;
-        private System.Windows.Forms.CheckBox cbZdravstveni;
+        private System.Windows.Forms.CheckBox cbZdravstveniRadnik;
         private System.Windows.Forms.Button btnSacuvaj;
     }
 }
