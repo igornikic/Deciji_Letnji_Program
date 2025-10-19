@@ -8,6 +8,7 @@ namespace Deciji_Letnji_Program.Forme
 {
     public partial class ObrokPregled : Form
     {
+        private readonly string nazivLokacijeFilter;
         public ObrokPregled()
         {
             InitializeComponent();
@@ -16,6 +17,17 @@ namespace Deciji_Letnji_Program.Forme
             btnDodaj.Click += BtnDodaj_Click;
             btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
+        }
+
+        public ObrokPregled(string nazivLokacije)
+        {
+            InitializeComponent();
+            this.nazivLokacijeFilter = nazivLokacije;
+            this.Load += ObrokPregled_Load;
+
+            btnDodaj.Visible = false;
+            btnIzmeni.Visible = false;
+            btnObrisi.Visible = false;
         }
 
         private async void ObrokPregled_Load(object sender, EventArgs e)
@@ -27,10 +39,19 @@ namespace Deciji_Letnji_Program.Forme
         {
             try
             {
-                var lista = await DTOManager.GetAllObrociAsync();
+                List<DTOs.ObrokPregled> lista;
+
+                if (!string.IsNullOrEmpty(nazivLokacijeFilter))
+                {
+                    lista = await DTOManager.GetObrociZaLokacijuAsync(nazivLokacijeFilter);
+                }
+                else
+                {
+                    lista = await DTOManager.GetAllObrociAsync();
+                }
+
                 dataGridViewObroci.DataSource = lista;
 
-                // Podesi nazive kolona prema svojstvima DTO klase
                 dataGridViewObroci.Columns["ID"].HeaderText = "ID";
                 dataGridViewObroci.Columns["Tip"].HeaderText = "Tip obroka";
                 dataGridViewObroci.Columns["Jelovnik"].HeaderText = "Jelovnik";
@@ -44,7 +65,7 @@ namespace Deciji_Letnji_Program.Forme
 
         private void BtnDodaj_Click(object sender, EventArgs e)
         {
-            var forma = new ObrokDodajIzmeni(); // pretpostavimo da postoji forma za dodavanje/izmenu
+            var forma = new ObrokDodajIzmeni();
             forma.ShowDialog();
             _ = UcitajObrokeAsync();
         }

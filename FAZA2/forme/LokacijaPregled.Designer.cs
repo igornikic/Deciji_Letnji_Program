@@ -22,6 +22,7 @@
             this.btnIzmeni = new System.Windows.Forms.Button();
             this.btnObrisi = new System.Windows.Forms.Button();
             this.btnAktivnosti = new System.Windows.Forms.Button();
+            this.btnObroci = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,6 +78,15 @@
             this.btnAktivnosti.Text = "Aktivnosti";
             this.btnAktivnosti.UseVisualStyleBackColor = true;
             // 
+            // btnObroci
+            // 
+            this.btnObroci.Location = new System.Drawing.Point(490, 355);
+            this.btnObroci.Name = "btnObroci";
+            this.btnObroci.Size = new System.Drawing.Size(100, 35);
+            this.btnObroci.TabIndex = 4;
+            this.btnObroci.Text = "Obroci";
+            this.btnObroci.UseVisualStyleBackColor = true;
+            // 
             // LokacijaPregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
@@ -85,6 +95,7 @@
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.dataGridViewLokacije);
             this.Controls.Add(this.btnAktivnosti);
+            this.Controls.Add(this.btnObroci);
             this.Name = "LokacijaPregled";
             this.Text = "Pregled lokacija";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLokacije)).EndInit();
@@ -99,5 +110,6 @@
         private System.Windows.Forms.Button btnIzmeni;
         private System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Button btnAktivnosti;
+        private System.Windows.Forms.Button btnObroci;
     }
 }

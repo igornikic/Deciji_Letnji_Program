@@ -18,6 +18,8 @@ namespace Deciji_Letnji_Program.Forme
             btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
             btnAktivnosti.Click += BtnAktivnosti_Click;
+            btnObroci.Click += BtnObroci_Click;
+
         }
 
         private async void LokacijaPregled_Load(object sender, EventArgs e)
@@ -102,5 +104,19 @@ namespace Deciji_Letnji_Program.Forme
             var aktivnostPregledForm = new AktivnostPregled(nazivLokacije: selectedLocation);
             aktivnostPregledForm.ShowDialog();
         }
+        private void BtnObroci_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewLokacije.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati lokaciju.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nazivLokacije = dataGridViewLokacije.CurrentRow.Cells["Naziv"].Value.ToString();
+
+            var forma = new ObrokPregled(nazivLokacije); // konstruktor koji prikazuje obroke za tu lokaciju
+            forma.ShowDialog();
+        }
+
     }
 }

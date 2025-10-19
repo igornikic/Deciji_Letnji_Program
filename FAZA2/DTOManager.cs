@@ -1619,6 +1619,32 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Lokacija
+        public static async Task<List<ObrokPregled>> GetObrociZaLokacijuAsync(string nazivLokacije)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var obroci = await session.Query<Obrok>()
+                        .Where(o => o.Lokacija.Naziv == nazivLokacije)
+                        .Select(o => new ObrokPregled
+                        {
+                            Id = o.ID,
+                            Tip = o.Tip,
+                            Jelovnik = o.Jelovnik,
+                            Uzrast = o.Uzrast
+                        })
+                        .ToListAsync();
+
+                    return obroci;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja obroka za lokaciju: " + ex.Message, ex);
+            }
+        }
+
         public static async Task<List<AktivnostPregled>> GetAktivnostiNaLokacijiAsync(string nazivLokacije)
         {
             try
