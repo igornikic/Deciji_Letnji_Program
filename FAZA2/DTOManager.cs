@@ -1209,6 +1209,36 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Obrok
+        public static async Task<List<ObrokPregled>> GetObrociZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Učitaj dete sa obrocima (lazy loading možda ne radi automatski pa se koristi explicitno)
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        throw new Exception("Dete nije pronađeno.");
+
+                    // Ako koristiš lazy loading, moraš da eksplicitno učitaš obroke
+                    await NHibernateUtil.InitializeAsync(dete.Obroci);
+
+                    var obroci = dete.Obroci.Select(o => new ObrokPregled
+                    {
+                        Id = o.ID,
+                        Tip = o.Tip,
+                        Jelovnik = o.Jelovnik,
+                        Uzrast = o.Uzrast
+                    }).ToList();
+
+                    return obroci;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja obroka deteta: " + ex.Message);
+            }
+        }
 
         public static async Task<List<ObrokPregled>> GetAllObrociAsync()
         {
@@ -1220,7 +1250,9 @@ namespace Deciji_Letnji_Program
                         .Select(o => new ObrokPregled(
                             o.ID,
                             o.Tip,
-                            o.Uzrast))
+                            o.Jelovnik,
+                            o.Uzrast
+                            ))
                         .ToListAsync();
 
                     return obroci;
@@ -1356,35 +1388,29 @@ namespace Deciji_Letnji_Program
                 throw new Exception("Došlo je do greške prilikom brisanja obroka: " + ex.Message, ex);
             }
         }
-
-
         public static async Task DodeliObrokDetetuAsync(int deteId, int obrokId)
         {
             try
             {
                 using (ISession session = DataLayer.GetSession())
                 {
-                    // Učitavamo dete sa svim podacima
                     var dete = await session.GetAsync<Dete>(deteId);
                     if (dete == null)
                         throw new Exception("Dete nije pronađeno.");
 
-                    // Učitavamo obrok koji pokušavamo dodeliti
                     var obrok = await session.GetAsync<Obrok>(obrokId);
                     if (obrok == null)
                         throw new Exception("Obrok nije pronađen.");
 
-                    // Izračunavanje uzrasta deteta
+                    // Provera uzrasta
                     var trenutniDatum = DateTime.Now;
                     var starost = trenutniDatum.Year - dete.DatumRodjenja.Year;
-
                     if (trenutniDatum.Month < dete.DatumRodjenja.Month ||
                         (trenutniDatum.Month == dete.DatumRodjenja.Month && trenutniDatum.Day < dete.DatumRodjenja.Day))
                     {
                         starost--;
                     }
 
-                    // Provera uzrasta - obrok mora biti dodeljen prema uzrastu
                     if (obrok.Uzrast != "Svi")
                     {
                         var uzrastDelovi = obrok.Uzrast.Split('-');
@@ -1392,41 +1418,35 @@ namespace Deciji_Letnji_Program
                         {
                             var minUzrast = int.Parse(uzrastDelovi[0]);
                             var maxUzrast = int.Parse(uzrastDelovi[1]);
-
                             if (starost < minUzrast || starost > maxUzrast)
-                            {
                                 throw new Exception($"Obrok nije predviđen za uzrast deteta. Detetu je {starost} godina.");
-                            }
                         }
                         else
-                        {
                             throw new Exception("Format uzrasta nije ispravan.");
-                        }
                     }
 
-                    // Provera posebnih potreba - ako dete ima posebnu potrebu, dodeljujemo specijalne obroke
                     if (!string.IsNullOrEmpty(dete.PosebnePotrebe))
                     {
                         var posebnePotrebe = dete.PosebnePotrebe.ToLower();
-                        if (posebnePotrebe.Contains("laktoza") && !obrok.PosebneOpcije.Contains("bez mlečnih proizvoda"))
-                        {
+                        var opcije = obrok.PosebneOpcije?.ToLower() ?? "";
+
+                        if (posebnePotrebe.Contains("laktoza") && !opcije.Contains("bez mlečnih proizvoda"))
                             throw new Exception("Dete ima alergiju na laktozu, pa ne može dobiti obrok sa mlečnim proizvodima.");
-                        }
-
-                        if (posebnePotrebe.Contains("gluten") && !obrok.PosebneOpcije.Contains("bez glutena"))
-                        {
+                        if (posebnePotrebe.Contains("gluten") && !opcije.Contains("bez glutena"))
                             throw new Exception("Dete ima alergiju na gluten, pa ne može dobiti obrok sa glutenom.");
-                        }
-
-                        if (posebnePotrebe.Contains("vegetarijanski") && !obrok.PosebneOpcije.Contains("vegetarijanski"))
-                        {
+                        if (posebnePotrebe.Contains("vegetarijanski") && !opcije.Contains("vegetarijanski"))
                             throw new Exception("Dete ima vegetarijansku ishranu, pa ne može dobiti obrok sa mesom.");
-                        }
                     }
 
-                    // Dodajemo obrok detetu
-                    dete.Obroci.Add(obrok);
-                    await session.SaveOrUpdateAsync(dete);
+                    // Proveri da li je već dodeljeno
+                    if (obrok.Deca.Any(d => d.ID == deteId))
+                        throw new Exception("Ovaj obrok je već dodeljen ovom detetu.");
+
+                    if (!obrok.Deca.Contains(dete))
+                    {
+                        obrok.Deca.Add(dete);
+                    }
+
                     await session.FlushAsync();
 
                     Console.WriteLine($"Obrok sa ID: {obrokId} je uspešno dodeljen detetu {dete.Ime} {dete.Prezime}.");
@@ -1434,7 +1454,7 @@ namespace Deciji_Letnji_Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Greška prilikom dodele obroka: {ex.Message}");
+                throw new Exception("Došlo je do greške dodele obroka: " + ex.Message, ex);
             }
         }
 
@@ -1599,6 +1619,31 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Lokacija
+        public static async Task<List<AktivnostPregled>> GetAktivnostiNaLokacijiAsync(string nazivLokacije)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var aktivnosti = await session.Query<Aktivnost>()
+                        .Where(a => a.Lokacija.Naziv == nazivLokacije)
+                        .Select(a => new AktivnostPregled
+                        {
+                            Id = a.IdAktivnosti,
+                            Tip = a.Tip,
+                            Naziv = a.Naziv,
+                            Datum = a.Datum
+                        })
+                        .ToListAsync();
+
+                    return aktivnosti;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja aktivnosti na lokaciji: " + ex.Message, ex);
+            }
+        }
 
         public static async Task<List<LokacijaPregled>> GetAllLokacijeAsync()
         {

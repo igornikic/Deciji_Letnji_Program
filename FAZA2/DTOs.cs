@@ -223,14 +223,16 @@ namespace Deciji_Letnji_Program
         {
             public int Id { get; set; }
             public string Tip { get; set; }
+            public string Jelovnik { get; set; }
             public string Uzrast { get; set; }
 
             public ObrokPregled() { }
 
-            public ObrokPregled(int id, string tip, string uzrast)
+            public ObrokPregled(int id, string tip, string jelovnik,  string uzrast)
             {
                 Id = id;
                 Tip = tip;
+                Jelovnik = jelovnik;
                 Uzrast = uzrast;
             }
         }

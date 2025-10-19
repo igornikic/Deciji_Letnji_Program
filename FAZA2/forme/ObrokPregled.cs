@@ -33,6 +33,7 @@ namespace Deciji_Letnji_Program.Forme
                 // Podesi nazive kolona prema svojstvima DTO klase
                 dataGridViewObroci.Columns["ID"].HeaderText = "ID";
                 dataGridViewObroci.Columns["Tip"].HeaderText = "Tip obroka";
+                dataGridViewObroci.Columns["Jelovnik"].HeaderText = "Jelovnik";
                 dataGridViewObroci.Columns["Uzrast"].HeaderText = "Uzrast";
             }
             catch (Exception ex)
