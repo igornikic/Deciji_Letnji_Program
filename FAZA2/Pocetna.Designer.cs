@@ -33,6 +33,8 @@
             this.prijava = new System.Windows.Forms.Button();
             this.aktivnost = new System.Windows.Forms.Button();
             this.angazovanoLice = new System.Windows.Forms.Button();
+            this.lokacija = new System.Windows.Forms.Button();
+            this.obrok = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dete
@@ -87,7 +89,6 @@
             // 
             // lokacija
             // 
-            this.lokacija = new System.Windows.Forms.Button();
             this.lokacija.Location = new System.Drawing.Point(310, 212);
             this.lokacija.Name = "lokacija";
             this.lokacija.Size = new System.Drawing.Size(180, 30);
@@ -96,11 +97,22 @@
             this.lokacija.UseVisualStyleBackColor = true;
             this.lokacija.Click += new System.EventHandler(this.lokacija_Click);
             // 
+            // obrok
+            // 
+            this.obrok.Location = new System.Drawing.Point(310, 252);
+            this.obrok.Name = "obrok";
+            this.obrok.Size = new System.Drawing.Size(180, 30);
+            this.obrok.TabIndex = 6;
+            this.obrok.Text = "Obrok";
+            this.obrok.UseVisualStyleBackColor = true;
+            this.obrok.Click += new System.EventHandler(this.obrok_Click);
+            // 
             // Pocetna
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 400); // malo smanjen da bude proporcionalno
+            this.ClientSize = new System.Drawing.Size(800, 400); 
+            this.Controls.Add(this.obrok);
             this.Controls.Add(this.lokacija);
             this.Controls.Add(this.angazovanoLice);
             this.Controls.Add(this.aktivnost);
@@ -122,6 +134,7 @@
         private System.Windows.Forms.Button aktivnost;
         private System.Windows.Forms.Button angazovanoLice;
         private System.Windows.Forms.Button lokacija;
+        private System.Windows.Forms.Button obrok;
 
     }
 }
