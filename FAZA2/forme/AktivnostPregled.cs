@@ -8,12 +8,22 @@ namespace Deciji_Letnji_Program.Forme
 {
     public partial class AktivnostPregled : Form
     {
-        private readonly int? deteId;  // null = sve aktivnosti, != null = aktivnosti za dete
+        private readonly int? deteId;
+        private readonly string nazivLokacije;
 
         public AktivnostPregled(int? deteId = null)
         {
             InitializeComponent();
             this.deteId = deteId;
+            this.nazivLokacije = null;
+            this.Load += AktivnostPregled_Load;
+        }
+
+        public AktivnostPregled(string nazivLokacije)
+        {
+            InitializeComponent();
+            this.nazivLokacije = nazivLokacije;
+            this.deteId = null;
             this.Load += AktivnostPregled_Load;
         }
 
@@ -26,10 +36,12 @@ namespace Deciji_Letnji_Program.Forme
         {
             try
             {
-                List<Deciji_Letnji_Program.DTOs.AktivnostPregled> lista;
+                List<DTOs.AktivnostPregled> lista;
 
                 if (deteId.HasValue)
                     lista = await DTOManager.GetAktivnostiZaDeteAsync(deteId.Value);
+                else if (!string.IsNullOrEmpty(nazivLokacije))
+                    lista = await DTOManager.GetAktivnostiNaLokacijiAsync(nazivLokacije);
                 else
                     lista = await DTOManager.GetAllAktivnostiAsync();
 
@@ -39,9 +51,9 @@ namespace Deciji_Letnji_Program.Forme
                 dataGridViewAktivnosti.Columns["Naziv"].HeaderText = "Naziv";
                 dataGridViewAktivnosti.Columns["Datum"].HeaderText = "Datum";
 
-                if (deteId.HasValue)
+                // Ako prikazujemo aktivnosti za dete ili lokaciju — sakrij sve dugmice osim zatvori
+                if (deteId.HasValue || !string.IsNullOrEmpty(nazivLokacije))
                 {
-                    // Ako prikazujemo aktivnosti za dete — sakrij sve dugmice osim zatvori
                     btnDodaj.Visible = false;
                     btnIzmeni.Visible = false;
                     btnObrisi.Visible = false;
@@ -99,6 +111,7 @@ namespace Deciji_Letnji_Program.Forme
                 }
             }
         }
+
         private void btnZaposleni_Click(object sender, EventArgs e)
         {
             if (dataGridViewAktivnosti.CurrentRow == null)
@@ -110,8 +123,8 @@ namespace Deciji_Letnji_Program.Forme
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
 
             // TODO: Otvori formu sa zaposlenima za aktivnost
-            //var formaZaposleni = new ZaposleniZaAktivnost(id);
-            //formaZaposleni.ShowDialog();
+            // var formaZaposleni = new ZaposleniZaAktivnost(id);
+            // formaZaposleni.ShowDialog();
         }
 
         private void btnSpisakDece_Click(object sender, EventArgs e)

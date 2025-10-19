@@ -1,5 +1,6 @@
-﻿using Deciji_Letnji_Program.Entiteti;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Deciji_Letnji_Program.DTOs;
 
@@ -7,66 +8,121 @@ namespace Deciji_Letnji_Program.Forme
 {
     public partial class DodelaObroka : Form
     {
-        private int DeteteID;
+        private readonly int deteId;
+        private DeteBasic selektovanoDete;
 
-        public DodelaObroka(int deteteID)
+        public DodelaObroka(int deteId)
         {
-            DeteteID = deteteID;
             InitializeComponent();
+            this.deteId = deteId;
             this.Load += DodelaObroka_Load;
-            btnSacuvaj.Click += BtnSacuvaj_Click;
         }
 
-        private void DodelaObroka_Load(object sender, EventArgs e)
+        private async void DodelaObroka_Load(object sender, EventArgs e)
         {
-            cmbTip.Items.AddRange(new string[] { "Doručak", "Ručak", "Večera" });
-            cmbTip.SelectedIndex = 0;
+            await UcitajDeteAsync();
+            await UcitajObrokeAsync();
+            await UcitajObrokeDetetaAsync(deteId);
 
-            cmbSpecialneOpcije.Items.AddRange(new string[]
-            {
-        "Vegetarijanski", "Bez glutena", "Bez mlečnih proizvoda"
-            });
-            cmbSpecialneOpcije.SelectedIndex = -1;
+            if (selektovanoDete != null)
+                this.Text = $"Dodela obroka za: {selektovanoDete.Ime} {selektovanoDete.Prezime}";
+        }
 
-            cmbJelovnik.Items.AddRange(new string[]
+        private async Task UcitajDeteAsync()
+        {
+            try
             {
-        "Jelovnik 1", "Jelovnik 2", "Jelovnik 3"
-            });
-            cmbJelovnik.SelectedIndex = -1;
+                selektovanoDete = await DTOManager.GetDeteAsync(deteId);
+            }
+            catch
+            {
+                selektovanoDete = null;
+            }
+        }
 
-            // Event handleri za međusobnu kontrolu
-            cmbSpecialneOpcije.SelectedIndexChanged += (s, ev) =>
+        private async Task UcitajObrokeAsync()
+        {
+            try
             {
-                if (cmbSpecialneOpcije.SelectedIndex != -1)
+                var sviObroci = await DTOManager.GetAllObrociAsync();
+                var filtriraniObroci = new List<Deciji_Letnji_Program.DTOs.ObrokPregled>();
+
+                if (selektovanoDete != null && !string.IsNullOrEmpty(selektovanoDete.PosebnePotrebe))
                 {
-                    cmbJelovnik.SelectedIndex = -1;
-                    cmbJelovnik.Enabled = false;
+                    var potrebe = selektovanoDete.PosebnePotrebe.ToLower();
+
+                    foreach (var obrok in sviObroci)
+                    {
+                        var obrokDetalji = await DTOManager.GetObrokAsync(obrok.Id);
+                        var opcije = obrokDetalji.PosebneOpcije?.ToLower() ?? "";
+
+                        if (potrebe.Contains("gluten") && !opcije.Contains("bez glutena"))
+                            continue;
+
+                        if (potrebe.Contains("laktoza") && !opcije.Contains("bez mlečnih proizvoda"))
+                            continue;
+
+                        if (potrebe.Contains("vegetarijanski") && !opcije.Contains("vegetarijanski"))
+                            continue;
+
+                        filtriraniObroci.Add(obrok);
+                    }
                 }
                 else
                 {
-                    cmbJelovnik.Enabled = true;
+                    filtriraniObroci = sviObroci;
                 }
-            };
 
-            cmbJelovnik.SelectedIndexChanged += (s, ev) =>
+                comboBoxObrok.DataSource = filtriraniObroci;
+                comboBoxObrok.DisplayMember = "Jelovnik";
+                comboBoxObrok.ValueMember = "Id";
+            }
+            catch (Exception ex)
             {
-                if (cmbJelovnik.SelectedIndex != -1)
-                {
-                    cmbSpecialneOpcije.SelectedIndex = -1;
-                    cmbSpecialneOpcije.Enabled = false;
-                }
-                else
-                {
-                    cmbSpecialneOpcije.Enabled = true;
-                }
-            };
+                MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-
-        private async void BtnSacuvaj_Click(object sender, EventArgs e)
+        private async Task UcitajObrokeDetetaAsync(int deteId)
         {
-            
+            try
+            {
+                var obrociDeteta = await DTOManager.GetObrociZaDeteAsync(deteId);
+                dataGridViewObroci.DataSource = obrociDeteta;
+
+                dataGridViewObroci.Columns["Id"].HeaderText = "ID";
+                dataGridViewObroci.Columns["Tip"].HeaderText = "Tip";
+                dataGridViewObroci.Columns["Jelovnik"].HeaderText = "Jelovnik";
+                dataGridViewObroci.Columns["Uzrast"].HeaderText = "Uzrast";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        private async void btnDodeliObrok_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (comboBoxObrok.SelectedItem == null)
+                {
+                    MessageBox.Show("Morate izabrati obrok.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var obrokId = (int)comboBoxObrok.SelectedValue;
+
+                await DTOManager.DodeliObrokDetetuAsync(deteId, obrokId);
+                MessageBox.Show("Obrok je uspešno dodeljen detetu.", "Uspeh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                dataGridViewObroci.DataSource = null;
+                await UcitajObrokeDetetaAsync(deteId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

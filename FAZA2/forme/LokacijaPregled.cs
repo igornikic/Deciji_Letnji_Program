@@ -8,6 +8,7 @@ namespace Deciji_Letnji_Program.Forme
 {
     public partial class LokacijaPregled : Form
     {
+        private string selectedLocation;
         public LokacijaPregled()
         {
             InitializeComponent();
@@ -16,6 +17,7 @@ namespace Deciji_Letnji_Program.Forme
             btnDodaj.Click += BtnDodaj_Click;
             btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
+            btnAktivnosti.Click += BtnAktivnosti_Click;
         }
 
         private async void LokacijaPregled_Load(object sender, EventArgs e)
@@ -83,6 +85,22 @@ namespace Deciji_Letnji_Program.Forme
                     MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void BtnAktivnosti_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewLokacije.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati lokaciju za prikaz aktivnosti.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Get the selected location's name
+            selectedLocation = dataGridViewLokacije.CurrentRow.Cells["Naziv"].Value.ToString();
+
+            // Open the AktivnostPregled form filtered by location
+            var aktivnostPregledForm = new AktivnostPregled(nazivLokacije: selectedLocation);
+            aktivnostPregledForm.ShowDialog();
         }
     }
 }
