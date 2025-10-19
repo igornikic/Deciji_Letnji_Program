@@ -9,6 +9,8 @@ namespace Deciji_Letnji_Program.Forme
     public partial class ObrokPregled : Form
     {
         private readonly string nazivLokacijeFilter;
+        private readonly int? aktivnostIdFilter; // ID aktivnosti za filtriranje obroka
+
         public ObrokPregled()
         {
             InitializeComponent();
@@ -30,6 +32,17 @@ namespace Deciji_Letnji_Program.Forme
             btnObrisi.Visible = false;
         }
 
+        public ObrokPregled(int aktivnostId)
+        {
+            InitializeComponent();
+            this.aktivnostIdFilter = aktivnostId;
+            this.Load += ObrokPregled_Load;
+
+            btnDodaj.Visible = false;
+            btnIzmeni.Visible = false;
+            btnObrisi.Visible = false;
+        }
+
         private async void ObrokPregled_Load(object sender, EventArgs e)
         {
             await UcitajObrokeAsync();
@@ -41,7 +54,11 @@ namespace Deciji_Letnji_Program.Forme
             {
                 List<DTOs.ObrokPregled> lista;
 
-                if (!string.IsNullOrEmpty(nazivLokacijeFilter))
+                if (aktivnostIdFilter.HasValue)
+                {
+                    lista = await DTOManager.GetObrociZaAktivnostAsync(aktivnostIdFilter.Value);
+                }
+                else if (!string.IsNullOrEmpty(nazivLokacijeFilter))
                 {
                     lista = await DTOManager.GetObrociZaLokacijuAsync(nazivLokacijeFilter);
                 }

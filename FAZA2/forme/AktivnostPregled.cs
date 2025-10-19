@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deciji_Letnji_Program.Entiteti;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -59,6 +60,7 @@ namespace Deciji_Letnji_Program.Forme
                     btnObrisi.Visible = false;
                     btnSpisakDece.Visible = false;
                     btnZaposleni.Visible = false;
+                    btnPrikaziObroke.Visible = false; // Sakrij dugme za obroke
                 }
             }
             catch (Exception ex)
@@ -139,6 +141,39 @@ namespace Deciji_Letnji_Program.Forme
 
             var formaDeca = new DecaNaAktivnosti(id);
             formaDeca.ShowDialog();
+        }
+
+        // Novo dugme za prikazivanje obroka
+        private async void btnPrikaziObroke_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAktivnosti.CurrentRow == null)
+            {
+                MessageBox.Show("Morate izabrati aktivnost.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
+
+            try
+            {
+                // Pozivamo metodu iz DTOManagera koja vraća obroke za selektovanu aktivnost
+                var obroci = await DTOManager.GetObrociZaAktivnostAsync(id);
+
+                if (obroci != null && obroci.Count > 0)
+                {
+                    // Ovdje možete otvoriti novu formu za prikaz obroka
+                    var formaObroci = new ObrokPregled(id);
+                    formaObroci.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Nema obroka za ovu aktivnost.", "Obaveštenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Došlo je do greške pri učitavanju obroka: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

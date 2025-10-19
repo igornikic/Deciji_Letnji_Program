@@ -1209,6 +1209,36 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Obrok
+        public static async Task<List<ObrokPregled>> GetObrociZaAktivnostAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Učitaj aktivnost sa obrocima (lazy loading može biti aktiviran)
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost nije pronađena.");
+
+                    // Ako koristiš lazy loading, eksplicitno učitaj obroke
+                    await NHibernateUtil.InitializeAsync(aktivnost.Obrok);
+
+                    var obroci = aktivnost.Obrok.Select(o => new ObrokPregled
+                    {
+                        Id = o.ID,
+                        Tip = o.Tip,
+                        Jelovnik = o.Jelovnik,
+                        Uzrast = o.Uzrast
+                    }).ToList();
+
+                    return obroci;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja obroka za aktivnost: " + ex.Message);
+            }
+        }
         public static async Task<List<ObrokPregled>> GetObrociZaDeteAsync(int deteId)
         {
             try

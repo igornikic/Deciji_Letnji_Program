@@ -277,6 +277,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forme\AktivnostPregled.resx">
+      <DependentUpon>AktivnostPregled.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forme\AngazovanoLiceDodajIzmeni.resx">
       <DependentUpon>AngazovanoLiceDodajIzmeni.cs</DependentUpon>
     </EmbeddedResource>
