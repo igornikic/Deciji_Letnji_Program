@@ -8,31 +8,33 @@ using System.Threading.Tasks;
 
 namespace Deciji_Letnji_Program.Mapiranja
 {
-    internal class RoditeljMap : ClassMap<Roditelj>
+    public class RoditeljMap : ClassMap<Roditelj>
     {
         public RoditeljMap()
         {
             Table("RODITELJ");
 
-            
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Ime, "Ime");
             Map(x => x.Prezime, "Prezime");
 
             HasManyToMany(x => x.Deca)
-                .Table("STARTELJSTVO")
+                .Table("STARATELJSTVO")
                 .ParentKeyColumn("ID_roditelj")
                 .ChildKeyColumn("ID_dete")
                 .Cascade.All(); //Roditelj je vlasnik veze
 
-            HasMany(x => x.Komentari)
-             .Table("KOMENTARI")
-             .KeyColumn("ID_roditelja")
-             .Element("Komentar")
-             .Cascade.All()
-             .LazyLoad();
-        }
+            HasMany(x => x.Prijave)
+                .KeyColumn("ID_roditelja")
+                .Inverse()
+                .Cascade.All();
 
+            HasMany(x => x.Ucestvuje)
+                .KeyColumn("ID_roditelj")
+                .Inverse()
+                .Cascade.All();
+        }
     }
 }

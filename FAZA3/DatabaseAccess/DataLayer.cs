@@ -39,8 +39,8 @@ namespace Deciji_Letnji_Program
             {
                 var cfg = OracleManagedDataClientConfiguration.Oracle10
                 .ConnectionString(c =>
-                    c.Is("Data Source==ORCL;User Id=##testuser;Password=12345678;"));
-
+                    // c.Is("Data Source==ORCL;User Id=##testuser;Password=12345678;"));
+                    c.Is("Data Source=gislab-oracle.elfak.ni.ac.rs:1521/SBP_PDB;User Id=S19297;Password=S19297;"));
                 return Fluently.Configure()
                     .Database(cfg.ShowSql())
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DeteMap>())

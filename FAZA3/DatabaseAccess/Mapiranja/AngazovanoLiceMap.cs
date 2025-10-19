@@ -9,7 +9,7 @@ using NHibernate.Util;
 
 namespace Deciji_Letnji_Program.Mapiranja
 {
-    internal class AngazovanoLiceMap : ClassMap<AngazovanoLice>
+    public class AngazovanoLiceMap : ClassMap<AngazovanoLice>
     {
         public AngazovanoLiceMap()
         {
@@ -24,22 +24,30 @@ namespace Deciji_Letnji_Program.Mapiranja
             Map(x => x.BrojTelefona, "Broj_telefona");
             Map(x => x.Email, "Email");
             Map(x => x.StrucnaSprema, "Strucna_sprema");
-            Map(x => x.OblastRada, "Oblast_rad");
+            Map(x => x.Volonter, "Volonter");
+            Map(x => x.Trener, "Trener");
+            Map(x => x.Animator, "Animator");
+            Map(x => x.ZdravstveniRadnik, "Zdravstveni_radnik");
+
 
             HasManyToMany(x => x.Aktivnosti)
-               .Table("UCESCE")
-               .ParentKeyColumn("ID_aktivnosti")
-               .ChildKeyColumn("JMBG")
-               .Cascade.All()
-               .Inverse(); //nije vlasnik veze
+                .Table("UCESCE")
+                .ParentKeyColumn("JMBG")
+                .ChildKeyColumn("ID_aktivnosti")
+                .Cascade.None()
+                .Inverse();
 
-            References(x => x.Evaluacija, "JMBG_lice");
+
+            HasOne(x => x.Evaluacija)
+                .PropertyRef(x => x.AngazovanoLice)
+                .Cascade.All();
+
 
             HasMany(x => x.Povrede)
-                .KeyColumn(" Odgovorno_osoblje_JMBG")
+                .KeyColumn("Odgovorno_osoblje_JMBG")
                 .Inverse()
                 .Cascade.All();
-                
+
         }
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Deciji_Letnji_Program.Entiteti
 {
     public class Povreda
     {
-        public virtual int Id { get; protected set; }
+        public virtual int ID { get; protected set; }
         public virtual DateTime Datum { get; set; }
         public virtual string PreduzeteMere { get; set; }
         public virtual string Opis { get; set; }
@@ -18,7 +15,7 @@ namespace Deciji_Letnji_Program.Entiteti
 
         public Povreda()
         {
-           
+
         }
     }
 }

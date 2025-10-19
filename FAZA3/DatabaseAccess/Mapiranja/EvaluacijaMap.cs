@@ -15,14 +15,21 @@ namespace Deciji_Letnji_Program.Mapiranja
         {
             Table("EVALUACIJA");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Ocena, "Ocena");
             Map(x => x.Datum, "Datum");
             Map(x => x.Opis, "Opis");
 
-            References(x => x.Aktivnost).Column("ID_aktivnosti").LazyLoad();
-            References(x => x.AngazovanoLice).Column("JMBG_lice").LazyLoad();
+            References(x => x.AngazovanoLice)
+                .Column("JMBG_lice")
+                .Unique();
+
+
+            References(x => x.Aktivnost)
+                .Column("ID_aktivnosti")
+                .Unique() // 1:1 — samo jedna evaluacija po aktivnosti
+                .Cascade.None();
 
         }
     }

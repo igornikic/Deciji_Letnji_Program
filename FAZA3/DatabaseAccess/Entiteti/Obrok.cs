@@ -5,7 +5,7 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class Obrok
     {
-        public virtual int Id { get; protected set; }
+        public virtual int ID { get; protected set; }
         public virtual string Tip { get; set; }
         public virtual string Uzrast { get; set; }
         public virtual string Jelovnik { get; set; }
