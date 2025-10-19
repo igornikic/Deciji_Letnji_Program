@@ -10,11 +10,11 @@ namespace Deciji_Letnji_Program.Mapiranja
 {
     internal class ObrokMap : ClassMap<Obrok>
     {
-        public ObrokMap() 
+        public ObrokMap()
         {
             Table("OBROK");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Tip, "Tip");
             Map(x => x.Uzrast, "Uzrast");

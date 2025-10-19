@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 
 namespace Deciji_Letnji_Program.Mapiranja
 {
-    internal class PrijavaMap : ClassMap<Prijava>
+    public class PrijavaMap : ClassMap<Prijava>
     {
-        public PrijavaMap() 
+        public PrijavaMap()
         {
             Table("PRIJAVA");
-
             Id(x => x.IdPrijave, "ID_prijave").GeneratedBy.TriggerIdentity();
-
             Map(x => x.DatumPrijave, "Datum_prijave");
             Map(x => x.Status, "Status");
-
-            References(x => x.Aktivnost).Column("ID_aktivnosti").LazyLoad();
-            References(x => x.Roditelj).Column("ID_roditelja").LazyLoad();
-            References(x => x.Dete).Column("ID_dete").LazyLoad();
+            References(x => x.Dete)
+                .Column("ID_deteta")
+                .Not.Nullable();
+            References(x => x.Roditelj)
+                .Column("ID_roditelja")
+                .Not.Nullable();
+            References(x => x.Aktivnost)
+                .Column("ID_aktivnosti")
+                .Not.Nullable();
         }
     }
+
 }

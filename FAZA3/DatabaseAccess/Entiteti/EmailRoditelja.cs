@@ -8,9 +8,9 @@ namespace Deciji_Letnji_Program.Entiteti
 {
     public class EmailRoditelja
     {
-        public string Email { get; set; }
+        public virtual int ID { get; set; }
+        public virtual string Email { get; set; }
 
-        public int RoditeljId { get; set; }
-        public Roditelj Roditelj { get; set; }
+        public virtual Dete Dete { get; set; }
     }
 }

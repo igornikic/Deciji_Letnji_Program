@@ -14,13 +14,13 @@ namespace Deciji_Letnji_Program.Mapiranje
         {
             Table("DETE");
 
-            Id(x => x.Id, "ID").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
             Map(x => x.Ime, "Ime");
             Map(x => x.Prezime, "Prezime");
-            Map(x => x.DatumRodjenja , "Datum_rodjenja");
-            Map(x => x.Pol , "Pol");
-            Map(x => x.Adresa , "Adresa");
+            Map(x => x.DatumRodjenja, "Datum_rodjenja");
+            Map(x => x.Pol, "Pol");
+            Map(x => x.Adresa, "Adresa");
             Map(x => x.TelefonDeteta, "Telefon_deteta");
             Map(x => x.EmailDeteta, "Email_deteta");
             Map(x => x.PosebnePotrebe, "Posebne_potrebe");
@@ -31,61 +31,44 @@ namespace Deciji_Letnji_Program.Mapiranje
                 .Table("STARATELJSTVO")
                 .ParentKeyColumn("ID_dete")//!!!!
                 .ChildKeyColumn("ID_roditelj")
-                .Cascade.All()
+                //.Cascade.All()
+                .Cascade.AllDeleteOrphan()
                 .Inverse();//Dete nije vlasnik veze
-                
-
-            HasMany(x => x.Povrede)
-                .KeyColumn("Id_dete")
-                .Inverse()
-                .Cascade.All();
-
-            
-            HasMany(x => x.Pratioci)
-                .KeyColumn("ID_Dete")
-                .Inverse()
-                .Cascade.All();
-                
-
-            HasMany(x => x.Prijave)
-                .KeyColumn("ID_deteta")
-                .Inverse()
-                .Cascade.All();
-
-            HasManyToMany(x => x.EvidencijePrisustva)
-                .Table("EVIDENCIJA_PRISUSTVA")
-                .ParentKeyColumn("ID_dete")
-                .ChildKeyColumn("ID_aktivnosti")
-                .Cascade.All()
-                .Inverse();//Dete nije vlasnik veze
-
-            HasMany(x => x.Telefoni)
-                .Table("TELEFON_RODITELJA")
-                .KeyColumn("ID_dete")
-                .Element("Telefon")
-                .Cascade.All()
-                .LazyLoad();//Visvrednosni atribut
-
-            HasMany(x => x.EmailAdrese)
-                .Table("EMAIL_RODITELJA")
-                .KeyColumn("ID_dete")
-                .Element("Email")
-                .Cascade.All()
-                .LazyLoad();//Visevrednosni element
 
             HasManyToMany(x => x.Obroci)
                 .Table("JE_DAT")
                 .ParentKeyColumn("ID_dete")//!!!!
                 .ChildKeyColumn("ID_obrok")
                 .Cascade.All()
-                .Inverse();//Dete nije vlasnik veze
+                .Inverse();//Dete nije vlasnik veze 
 
-            HasMany(x => x.Komentari)
-                .Table("KOMENTARI")
+
+            HasMany(x => x.Ucestvuje)
+                .KeyColumn("ID_dete")
+                .Inverse()
+                .Cascade.All();
+
+            HasMany(x => x.TelefoniRoditelja)
                 .KeyColumn("ID_deteta")
-                .Element("Komentar")
-                .Cascade.All()
-                .LazyLoad();
+                .Inverse()
+                .Cascade.All();
+
+            HasMany(x => x.EmailoviRoditelja)
+                .KeyColumn("ID_deteta")
+                .Inverse()
+                .Cascade.All();
+
+
+            HasMany(x => x.Povrede)
+                .KeyColumn("Id_dete")
+                .Inverse()
+                .Cascade.All();
+
+            HasMany(x => x.Prijave)
+                .KeyColumn("Id_deteta")
+                .Inverse()
+                .Cascade.AllDeleteOrphan();
+
 
         }
     }
