@@ -45,6 +45,8 @@ namespace Deciji_Letnji_Program.Forme
                     btnDodaj.Visible = false;
                     btnIzmeni.Visible = false;
                     btnObrisi.Visible = false;
+                    btnSpisakDece.Visible = false;
+                    btnZaposleni.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -65,8 +67,8 @@ namespace Deciji_Letnji_Program.Forme
             if (dataGridViewAktivnosti.CurrentRow == null) return;
 
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
-            //var forma = new AktivnostDodajIzmeni(id);
-            //forma.ShowDialog();
+            var forma = new AktivnostDodajIzmeni(id);
+            forma.ShowDialog();
             _ = UcitajAktivnostiAsync();
         }
 
@@ -122,9 +124,8 @@ namespace Deciji_Letnji_Program.Forme
 
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
 
-            // TODO: Otvori formu sa spiskom dece za aktivnost
-            //var formaDeca = new DecaZaAktivnost(id);
-            //formaDeca.ShowDialog();
+            var formaDeca = new DecaNaAktivnosti(id);
+            formaDeca.ShowDialog();
         }
     }
 }

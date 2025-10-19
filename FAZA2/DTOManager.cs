@@ -260,6 +260,33 @@ namespace Deciji_Letnji_Program
             }
         }
 
+        public static async Task<List<DetePregled>> GetDecaNaAktivnostiAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var deca = await session.Query<Prijava>()
+                        .Where(p => p.Aktivnost.IdAktivnosti == aktivnostId && p.Status == "odobreno")
+                        .Select(p => new DetePregled(
+                            p.Dete.ID,
+                            p.Dete.Ime,
+                            p.Dete.Prezime,
+                            p.Dete.DatumRodjenja,
+                            p.Dete.Pol
+                        ))
+                        .ToListAsync();
+
+                    return deca;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom dohvatanja dece za aktivnost: " + ex.Message, ex);
+            }
+        }
+
+
         #endregion
 
         #region Starateljstvo
@@ -1327,6 +1354,87 @@ namespace Deciji_Letnji_Program
             catch (Exception ex)
             {
                 throw new Exception("Došlo je do greške prilikom brisanja obroka: " + ex.Message, ex);
+            }
+        }
+
+
+        public static async Task DodeliObrokDetetuAsync(int deteId, int obrokId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    // Učitavamo dete sa svim podacima
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        throw new Exception("Dete nije pronađeno.");
+
+                    // Učitavamo obrok koji pokušavamo dodeliti
+                    var obrok = await session.GetAsync<Obrok>(obrokId);
+                    if (obrok == null)
+                        throw new Exception("Obrok nije pronađen.");
+
+                    // Izračunavanje uzrasta deteta
+                    var trenutniDatum = DateTime.Now;
+                    var starost = trenutniDatum.Year - dete.DatumRodjenja.Year;
+
+                    if (trenutniDatum.Month < dete.DatumRodjenja.Month ||
+                        (trenutniDatum.Month == dete.DatumRodjenja.Month && trenutniDatum.Day < dete.DatumRodjenja.Day))
+                    {
+                        starost--;
+                    }
+
+                    // Provera uzrasta - obrok mora biti dodeljen prema uzrastu
+                    if (obrok.Uzrast != "Svi")
+                    {
+                        var uzrastDelovi = obrok.Uzrast.Split('-');
+                        if (uzrastDelovi.Length == 2)
+                        {
+                            var minUzrast = int.Parse(uzrastDelovi[0]);
+                            var maxUzrast = int.Parse(uzrastDelovi[1]);
+
+                            if (starost < minUzrast || starost > maxUzrast)
+                            {
+                                throw new Exception($"Obrok nije predviđen za uzrast deteta. Detetu je {starost} godina.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Format uzrasta nije ispravan.");
+                        }
+                    }
+
+                    // Provera posebnih potreba - ako dete ima posebnu potrebu, dodeljujemo specijalne obroke
+                    if (!string.IsNullOrEmpty(dete.PosebnePotrebe))
+                    {
+                        var posebnePotrebe = dete.PosebnePotrebe.ToLower();
+                        if (posebnePotrebe.Contains("laktoza") && !obrok.PosebneOpcije.Contains("bez mlečnih proizvoda"))
+                        {
+                            throw new Exception("Dete ima alergiju na laktozu, pa ne može dobiti obrok sa mlečnim proizvodima.");
+                        }
+
+                        if (posebnePotrebe.Contains("gluten") && !obrok.PosebneOpcije.Contains("bez glutena"))
+                        {
+                            throw new Exception("Dete ima alergiju na gluten, pa ne može dobiti obrok sa glutenom.");
+                        }
+
+                        if (posebnePotrebe.Contains("vegetarijanski") && !obrok.PosebneOpcije.Contains("vegetarijanski"))
+                        {
+                            throw new Exception("Dete ima vegetarijansku ishranu, pa ne može dobiti obrok sa mesom.");
+                        }
+                    }
+
+                    // Dodajemo obrok detetu
+                    dete.Obroci.Add(obrok);
+                    await session.SaveOrUpdateAsync(dete);
+                    await session.FlushAsync();
+
+                    Console.WriteLine($"Obrok sa ID: {obrokId} je uspešno dodeljen detetu {dete.Ime} {dete.Prezime}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Greška prilikom dodele obroka: {ex.Message}");
             }
         }
 
