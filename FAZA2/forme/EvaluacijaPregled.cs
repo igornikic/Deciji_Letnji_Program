@@ -14,7 +14,6 @@ namespace Deciji_Letnji_Program.Forme
             this.Load += EvaluacijaPregled_Load;
 
             btnDodaj.Click += BtnDodaj_Click;
-            btnIzmeni.Click += BtnIzmeni_Click;
             btnObrisi.Click += BtnObrisi_Click;
         }
 

@@ -1088,36 +1088,37 @@ namespace Deciji_Letnji_Program
             {
                 using (ISession session = DataLayer.GetSession())
                 {
-                    var evaluacija = await session.GetAsync<Evaluacija>(id);
-                    if (evaluacija == null)
-                        return null;
+                    // Vraća listu jer NHibernate može imati duplikate
+                    var evaluacije = await session.Query<Evaluacija>()
+                        .Where(e => e.ID == id)
+                        .ToListAsync();
 
-                    EvaluacijaBasic eb = new EvaluacijaBasic
+                    // Uzmi samo prvi jedinstveni entitet po ID
+                    var postojeca = evaluacije
+                        .GroupBy(e => e.ID)
+                        .Select(g => g.First())
+                        .FirstOrDefault();
+
+                    if (postojeca == null) return null;
+
+                    return new EvaluacijaBasic
                     {
-                        Id = evaluacija.ID,
-                        Ocena = evaluacija.Ocena,
-                        Datum = evaluacija.Datum,
-                        Opis = evaluacija.Opis,
-                        // Opcionalno: možete učitati i osnovne podatke o aktivnosti i angažovanom licu ako treba
-                        //Aktivnost = evaluacija.Aktivnost != null
-                        //    ? new AktivnostBasic
-                        //    {
-                        //        Id = evaluacija.Aktivnost.IdAktivnosti,
-                        //        Naziv = evaluacija.Aktivnost.Naziv
-                        //    }
-                        //    : null,
-
-                        //AngazovanoLice = evaluacija.AngazovanoLice != null
-                        //    ? new AngazovanoLiceBasic
-                        //    {
-                        //        JMBG = evaluacija.AngazovanoLice.JMBG,
-                        //        Ime = evaluacija.AngazovanoLice.Ime,
-                        //        Prezime = evaluacija.AngazovanoLice.Prezime
-                        //    }
-                        //    : null
+                        Id = postojeca.ID,
+                        Ocena = postojeca.Ocena,
+                        Datum = postojeca.Datum,
+                        Opis = postojeca.Opis,
+                        Aktivnost = new AktivnostBasic
+                        {
+                            Id = postojeca.Aktivnost.IdAktivnosti,
+                            Naziv = postojeca.Aktivnost.Naziv
+                        },
+                        AngazovanoLice = new AngazovanoLiceBasic
+                        {
+                            JMBG = postojeca.AngazovanoLice.JMBG,
+                            Ime = postojeca.AngazovanoLice.Ime,
+                            Prezime = postojeca.AngazovanoLice.Prezime
+                        }
                     };
-
-                    return eb;
                 }
             }
             catch (Exception ex)
@@ -1126,63 +1127,73 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        public static async Task AddEvaluacijaAsync(EvaluacijaBasic evaluacija)
+        public static async Task AddEvaluacijaAsync(EvaluacijaBasic eval)
         {
             try
             {
                 using (ISession session = DataLayer.GetSession())
+                using (ITransaction tx = session.BeginTransaction())
                 {
-                    Evaluacija novaEvaluacija = new Evaluacija
+                    // Proveri da li evaluacija već postoji
+                    var postojeca = await session.Query<Evaluacija>()
+                        .FirstOrDefaultAsync(e => e.Aktivnost.IdAktivnosti == eval.Aktivnost.Id &&
+                                                  e.AngazovanoLice.JMBG == eval.AngazovanoLice.JMBG);
+                    if (postojeca != null)
+                        throw new Exception("Za izabrano lice i aktivnost već postoji evaluacija.");
+
+                    var aktivnost = await session.GetAsync<Aktivnost>(eval.Aktivnost.Id);
+                    var lice = await session.GetAsync<AngazovanoLice>(eval.AngazovanoLice.JMBG);
+
+                    Evaluacija novaEval = new Evaluacija
                     {
-                        Ocena = evaluacija.Ocena,
-                        Datum = evaluacija.Datum,
-                        Opis = evaluacija.Opis
+                        Ocena = eval.Ocena,
+                        Datum = eval.Datum,
+                        Opis = eval.Opis,
+                        Aktivnost = aktivnost,
+                        AngazovanoLice = lice
                     };
 
-                    // Veze prema drugim entitetima (ako postoje)
-                    if (evaluacija.Aktivnost != null)
-                        novaEvaluacija.Aktivnost = await session.LoadAsync<Aktivnost>(evaluacija.Aktivnost.Id);
-
-                    if (evaluacija.AngazovanoLice != null)
-                        novaEvaluacija.AngazovanoLice = await session.LoadAsync<AngazovanoLice>(evaluacija.AngazovanoLice.JMBG);
-
-                    await session.SaveAsync(novaEvaluacija);
-                    await session.FlushAsync();
+                    await session.SaveAsync(novaEval);
+                    await tx.CommitAsync();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Došlo je do greške prilikom dodavanja evaluacije: " + ex.Message, ex);
+                throw new Exception("Greška prilikom dodavanja evaluacije: " + ex.Message, ex);
             }
         }
 
-        public static async Task UpdateEvaluacijaAsync(EvaluacijaBasic evaluacija)
+
+        public static async Task UpdateEvaluacijaAsync(EvaluacijaBasic eval)
         {
             try
             {
                 using (ISession session = DataLayer.GetSession())
+                using (ITransaction tx = session.BeginTransaction())
                 {
-                    var postojecaEvaluacija = await session.GetAsync<Evaluacija>(evaluacija.Id);
-                    if (postojecaEvaluacija == null)
+                    // Učitaj postojeću evaluaciju
+                    var postojeca = await session.GetAsync<Evaluacija>(eval.Id);
+                    if (postojeca == null)
                         throw new Exception("Evaluacija ne postoji u bazi.");
 
-                    postojecaEvaluacija.Ocena = evaluacija.Ocena;
-                    postojecaEvaluacija.Datum = evaluacija.Datum;
-                    postojecaEvaluacija.Opis = evaluacija.Opis;
+                    // Ažuriraj polja
+                    postojeca.Ocena = eval.Ocena;
+                    postojeca.Datum = eval.Datum;
+                    postojeca.Opis = eval.Opis;
 
-                    if (evaluacija.Aktivnost != null)
-                        postojecaEvaluacija.Aktivnost = await session.LoadAsync<Aktivnost>(evaluacija.Aktivnost.Id);
+                    // Učitaj FK entitete ako je potrebno
+                    if (eval.Aktivnost != null)
+                        postojeca.Aktivnost = await session.GetAsync<Aktivnost>(eval.Aktivnost.Id);
+                    if (eval.AngazovanoLice != null)
+                        postojeca.AngazovanoLice = await session.GetAsync<AngazovanoLice>(eval.AngazovanoLice.JMBG);
 
-                    if (evaluacija.AngazovanoLice != null)
-                        postojecaEvaluacija.AngazovanoLice = await session.LoadAsync<AngazovanoLice>(evaluacija.AngazovanoLice.JMBG);
-
-                    await session.UpdateAsync(postojecaEvaluacija);
-                    await session.FlushAsync();
+                    await session.UpdateAsync(postojeca);
+                    await tx.CommitAsync();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Došlo je do greške prilikom ažuriranja evaluacije: " + ex.Message, ex);
+                throw new Exception("Greška prilikom ažuriranja evaluacije: " + ex.Message, ex);
             }
         }
 
@@ -1191,20 +1202,40 @@ namespace Deciji_Letnji_Program
             try
             {
                 using (ISession session = DataLayer.GetSession())
+                using (ITransaction tx = session.BeginTransaction())
                 {
-                    var evaluacija = await session.GetAsync<Evaluacija>(id);
-                    if (evaluacija == null)
+                    var eval = await session.GetAsync<Evaluacija>(id);
+                    if (eval == null)
                         throw new Exception("Evaluacija sa zadatim ID-jem ne postoji.");
 
-                    await session.DeleteAsync(evaluacija);
-                    await session.FlushAsync();
+                    await session.DeleteAsync(eval);
+                    await tx.CommitAsync();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Došlo je do greške prilikom brisanja evaluacije: " + ex.Message, ex);
+                throw new Exception("Greška prilikom brisanja evaluacije: " + ex.Message, ex);
             }
         }
+
+        public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaZaAktivnostAsync(int aktivnostId)
+        {
+            using (ISession session = DataLayer.GetSession())
+            {
+                var lica = await session.Query<AngazovanoLice>()
+                    .Where(a => a.Aktivnosti.Any(act => act.IdAktivnosti == aktivnostId))
+                    .Select(a => new AngazovanoLicePregled
+                    {
+                        JMBG = a.JMBG,
+                        Ime = a.Ime,
+                        Prezime = a.Prezime
+                    })
+                    .ToListAsync();
+
+                return lica;
+            }
+        }
+
 
         #endregion
 
