@@ -30,38 +30,48 @@ namespace Deciji_Letnji_Program.Forme
                 {
                     var obrok = await DTOManager.GetObrokAsync(ObrokID.Value);
 
-                    // Radio dugmad za tip
-                    switch (obrok.Tip)
-                    {
-                        case "Doručak": rbDorucak.Checked = true; break;
-                        case "Ručak": rbRucak.Checked = true; break;
-                        case "Večera": rbVecera.Checked = true; break;
-                    }
+                    // 🔹 Postavi radio dugme za tip obroka
+                    string tip = obrok.Tip?.Trim().ToLower();
+                    if (tip == "doručak" || tip == "dorucak")
+                        rbDorucak.Checked = true;
+                    else if (tip == "ručak" || tip == "rucak")
+                        rbRucak.Checked = true;
+                    else if (tip == "večera" || tip == "vecera")
+                        rbVecera.Checked = true;
 
-                    // Uzrast
+                    // 🔹 Postavi uzrast (npr. "7-10")
                     if (!string.IsNullOrEmpty(obrok.Uzrast))
                     {
                         var parts = obrok.Uzrast.Split('-');
-                        if (parts.Length == 2)
+                        if (parts.Length == 2 &&
+                            decimal.TryParse(parts[0], out decimal od) &&
+                            decimal.TryParse(parts[1], out decimal doVrednost))
                         {
-                            numUzrastOd.Value = decimal.Parse(parts[0]);
-                            numUzrastDo.Value = decimal.Parse(parts[1]);
+                            numUzrastOd.Value = od;
+                            numUzrastDo.Value = doVrednost;
                         }
                     }
 
-                    // Jelovnik
-                    txtJelovnik.Text = obrok.Jelovnik;
+                    // 🔹 Postavi jelovnik
+                    txtJelovnik.Text = obrok.Jelovnik ?? "";
 
-                    // Posebne opcije
+                    // 🔹 Postavi checkbox-eve za posebne opcije
+                    cbBezglutenski.Checked = false;
+                    cbVegetarijanski.Checked = false;
+                    cbBezLaktoze.Checked = false;
+                    cbPosno.Checked = false;
+
                     if (!string.IsNullOrEmpty(obrok.PosebneOpcije))
                     {
-                        var opcije = obrok.PosebneOpcije.Split(',')
-                            .Select(o => o.Trim().ToLower()).ToList();
+                        var opcije = obrok.PosebneOpcije
+                            .Split(',')
+                            .Select(o => o.Trim().ToLower())
+                            .ToList();
 
-                        cbBezglutenski.Checked = opcije.Contains("bezglutenski");
-                        cbVegetarijanski.Checked = opcije.Contains("vegetarijanski");
-                        cbBezLaktoze.Checked = opcije.Contains("bez laktoze");
-                        cbPosno.Checked = opcije.Contains("posno");
+                        if (opcije.Any(o => o.Contains("bezglut"))) cbBezglutenski.Checked = true;
+                        if (opcije.Any(o => o.Contains("vegetar"))) cbVegetarijanski.Checked = true;
+                        if (opcije.Any(o => o.Contains("laktoz"))) cbBezLaktoze.Checked = true;
+                        if (opcije.Any(o => o.Contains("posno"))) cbPosno.Checked = true;
                     }
                 }
                 catch (Exception ex)
@@ -69,6 +79,7 @@ namespace Deciji_Letnji_Program.Forme
                     MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
         }
 
         private void NumUzrastOd_ValueChanged(object sender, EventArgs e)
