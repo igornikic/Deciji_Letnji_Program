@@ -124,7 +124,6 @@ namespace Deciji_Letnji_Program.Forme
 
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
 
-            // TODO: Otvori formu sa spiskom dece za aktivnost
             var formaDeca = new DecaNaAktivnosti(id);
             formaDeca.ShowDialog();
         }

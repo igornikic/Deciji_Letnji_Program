@@ -119,6 +119,12 @@
     <Compile Include="Entiteti\Roditelj.cs" />
     <Compile Include="Entiteti\TelefonRoditelja.cs" />
     <Compile Include="Entiteti\Ucestvuje.cs" />
+    <Compile Include="Forme\DodelaObroka.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\DodelaObroka.Designer.cs">
+      <DependentUpon>DodelaObroka.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTest.cs">
       <SubType>Form</SubType>
     </Compile>

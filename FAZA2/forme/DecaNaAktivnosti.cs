@@ -40,5 +40,16 @@ namespace Deciji_Letnji_Program.Forme
                 MessageBox.Show("Greška: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void DugmeDetalji_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void DugmeDodelaObroka_Click(object sender, EventArgs e)
+        {
+            int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
+            var formaDeca = new DodelaObroka(id);
+            formaDeca.ShowDialog();
+        }
     }
 }
