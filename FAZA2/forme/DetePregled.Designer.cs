@@ -23,6 +23,7 @@
             this.btnObrisi = new System.Windows.Forms.Button();
             this.btnKontakti = new System.Windows.Forms.Button();
             this.btnAktivnosti = new System.Windows.Forms.Button();
+            this.btnKomentar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,6 +90,15 @@
             this.btnAktivnosti.Text = "Aktivnosti";
             this.btnAktivnosti.UseVisualStyleBackColor = true;
             // 
+            // btnKomentar
+            // 
+            this.btnKomentar.Location = new System.Drawing.Point(610, 355);
+            this.btnKomentar.Name = "btnKomentar";
+            this.btnKomentar.Size = new System.Drawing.Size(120, 35);
+            this.btnKomentar.TabIndex = 6;
+            this.btnKomentar.Text = "Ostavi komentar";
+            this.btnKomentar.UseVisualStyleBackColor = true;
+            // 
             // DetePregled
             // 
             this.ClientSize = new System.Drawing.Size(644, 402);
@@ -98,6 +108,7 @@
             this.Controls.Add(this.dataGridViewDeca);
             this.Controls.Add(this.btnKontakti);
             this.Controls.Add(this.btnAktivnosti);
+            this.Controls.Add(this.btnKomentar);
             this.Name = "DetePregled";
             this.Text = "Pregled dece";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).EndInit();
@@ -113,5 +124,6 @@
         private System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Button btnKontakti;
         private System.Windows.Forms.Button btnAktivnosti;
+        private System.Windows.Forms.Button btnKomentar;
     }
 }

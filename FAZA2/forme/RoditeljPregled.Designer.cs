@@ -22,6 +22,7 @@
             this.btnIzmeni = new System.Windows.Forms.Button();
             this.btnObrisi = new System.Windows.Forms.Button();
             this.btnDodajStarateljstvo = new System.Windows.Forms.Button();
+            this.btnOstaviKomentar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoditelji)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,18 +78,29 @@
             this.btnDodajStarateljstvo.Text = "Dodaj starateljstvo";
             this.btnDodajStarateljstvo.UseVisualStyleBackColor = true;
             // 
-            // FormRoditeljPregled
+            // btnOstaviKomentar
             // 
-            this.ClientSize = new System.Drawing.Size(644, 402);
+            this.btnOstaviKomentar.Location = new System.Drawing.Point(12, 400);
+            this.btnOstaviKomentar.Name = "btnOstaviKomentar";
+            this.btnOstaviKomentar.Size = new System.Drawing.Size(250, 35);
+            this.btnOstaviKomentar.TabIndex = 5;
+            this.btnOstaviKomentar.Text = "Ostavi komentar i ocenu";
+            this.btnOstaviKomentar.UseVisualStyleBackColor = true;
+            // 
+            // RoditeljPregled
+            // 
+            this.ClientSize = new System.Drawing.Size(644, 450);
+            this.Controls.Add(this.btnOstaviKomentar);
+            this.Controls.Add(this.btnDodajStarateljstvo);
             this.Controls.Add(this.btnObrisi);
             this.Controls.Add(this.btnIzmeni);
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.dataGridViewRoditelji);
-            this.Controls.Add(this.btnDodajStarateljstvo);
             this.Name = "RoditeljPregled";
             this.Text = "Pregled roditelja";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoditelji)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -98,5 +110,6 @@
         private System.Windows.Forms.Button btnIzmeni;
         private System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Button btnDodajStarateljstvo;
+        private System.Windows.Forms.Button btnOstaviKomentar;
     }
 }

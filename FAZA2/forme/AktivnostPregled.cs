@@ -125,8 +125,8 @@ namespace Deciji_Letnji_Program.Forme
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
 
             // TODO: Otvori formu sa zaposlenima za aktivnost
-            // var formaZaposleni = new ZaposleniZaAktivnost(id);
-            // formaZaposleni.ShowDialog();
+             var formaZaposleni = new ZaposleniZaAktivnost(id);
+             formaZaposleni.ShowDialog();
         }
 
         private void btnSpisakDece_Click(object sender, EventArgs e)

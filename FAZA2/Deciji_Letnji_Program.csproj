@@ -119,6 +119,12 @@
     <Compile Include="Entiteti\Roditelj.cs" />
     <Compile Include="Entiteti\TelefonRoditelja.cs" />
     <Compile Include="Entiteti\Ucestvuje.cs" />
+    <Compile Include="Forme\DodajKomentarOcenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\DodajKomentarOcenu.Designer.cs">
+      <DependentUpon>DodajKomentarOcenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\DodelaObroka.cs">
       <SubType>Form</SubType>
     </Compile>
