@@ -209,9 +209,9 @@ namespace Deciji_Letnji_Program
             public char Trener { get; set; }
             public char Animator { get; set; }
             public char ZdravstveniRadnik { get; set; }
-            public IList<AktivnostPregled> Aktivnosti { get; set; }
-            public EvaluacijaPregled Evaluacija { get; set; }
-            public IList<PovredaPregled> Povrede { get; set; }
+            public IList<AktivnostPregled>? Aktivnosti { get; set; }
+            public EvaluacijaPregled? Evaluacija { get; set; }
+            public IList<PovredaPregled>? Povrede { get; set; }
             public AngazovanoLicePregled() { }
             public AngazovanoLicePregled(AngazovanoLicePregled? a)
             {
