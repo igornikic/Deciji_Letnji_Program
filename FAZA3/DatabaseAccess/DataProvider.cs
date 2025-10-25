@@ -2655,287 +2655,314 @@ namespace Deciji_Letnji_Program
 
         #endregion
 
-          #region Ucestvuje
+        #region Ucestvuje
 
-        //    public static async Task<List<UcestvujePregled>> GetAllUcescaAsync()
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var ucesca = await session.Query<Ucestvuje>()
-        //                    .Select(u => new UcestvujePregled(
-        //                        u.ID,
-        //                        u.OcenaAktivnosti.ToString(),
-        //                        u.Komentari))
-        //                    .ToListAsync();
+        public static async Task<Result<List<UcestvujePregled>, ErrorMessage>> GetAllUcescaAsync()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var ucesca = await session.Query<Ucestvuje>()
+                        .Select(u => new UcestvujePregled
+                        {
+                            ID = u.ID,
+                            Prisustvo = u.Prisustvo.ToString(),
+                            OcenaAktivnosti = u.OcenaAktivnosti,
+                            Komentari = u.Komentari,
+                            Pratilac = u.Pratilac,
+                            Dete = u.Dete != null ? new DetePregled
+                            {
+                                ID = u.Dete.ID,
+                                Ime = u.Dete.Ime,
+                                Prezime = u.Dete.Prezime
+                            } : null,
+                            Roditelj = u.Roditelj != null ? new RoditeljPregled
+                            {
+                                Id = u.Roditelj.ID,
+                                Ime = u.Roditelj.Ime,
+                                Prezime = u.Roditelj.Prezime
+                            } : null,
+                            Aktivnost = u.Aktivnost != null ? new AktivnostPregled
+                            {
+                                Id = u.Aktivnost.IdAktivnosti,
+                                Naziv = u.Aktivnost.Naziv
+                            } : null
+                        })
+                        .ToListAsync();
 
-        //                return ucesca;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja učešća: " + ex.Message, ex);
-        //        }
-        //    }
+                    return ucesca;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja učešća: " + ex.Message, 500);
+            }
+        }
 
-        //    public static async Task<UcestvujeBasic> GetUcesceAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var ucesce = await session.GetAsync<Ucestvuje>(id);
+        public static async Task<Result<UcestvujePregled, ErrorMessage>> GetUcesceAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var ucesce = await session.GetAsync<Ucestvuje>(id);
 
-        //                if (ucesce == null)
-        //                    return null;
+                    if (ucesce == null)
+                        return GetError("Učešće sa zadatim ID-jem ne postoji.", 404);
 
-        //                var dto = new UcestvujeBasic
-        //                {
-        //                    ID = ucesce.ID,
-        //                    Prisustvo = ucesce.Prisustvo,
-        //                    OcenaAktivnosti = ucesce.OcenaAktivnosti,
-        //                    Komentari = ucesce.Komentari,
-        //                    Pratilac = ucesce.Pratilac,
-        //                    Dete = new DeteBasic
-        //                    {
-        //                        Id = ucesce.Dete.ID,
-        //                        Ime = ucesce.Dete.Ime,
-        //                        Prezime = ucesce.Dete.Prezime
-        //                    },
-        //                    Roditelj = new RoditeljBasic
-        //                    {
-        //                        Id = ucesce.Roditelj.ID,
-        //                        Ime = ucesce.Roditelj.Ime,
-        //                        Prezime = ucesce.Roditelj.Prezime
-        //                    },
-        //                    Aktivnost = new AktivnostBasic
-        //                    {
-        //                        Id = ucesce.Aktivnost.IdAktivnosti,
-        //                        Naziv = ucesce.Aktivnost.Naziv,
-        //                        Tip = ucesce.Aktivnost.Tip
-        //                    }
-        //                };
+                    var dto = new UcestvujePregled
+                    {
+                        ID = ucesce.ID,
+                        Prisustvo = ucesce.Prisustvo.ToString(),
+                        OcenaAktivnosti = ucesce.OcenaAktivnosti,
+                        Komentari = ucesce.Komentari,
+                        Pratilac = ucesce.Pratilac,
+                        Dete = ucesce.Dete != null ? new DetePregled
+                        {
+                            ID = ucesce.Dete.ID,
+                            Ime = ucesce.Dete.Ime,
+                            Prezime = ucesce.Dete.Prezime
+                        } : null,
+                        Roditelj = ucesce.Roditelj != null ? new RoditeljPregled
+                        {
+                            Id = ucesce.Roditelj.ID,
+                            Ime = ucesce.Roditelj.Ime,
+                            Prezime = ucesce.Roditelj.Prezime
+                        } : null,
+                        Aktivnost = ucesce.Aktivnost != null ? new AktivnostPregled
+                        {
+                            Id = ucesce.Aktivnost.IdAktivnosti,
+                            Naziv = ucesce.Aktivnost.Naziv,
+                            Tip = ucesce.Aktivnost.Tip
+                        } : null
+                    };
 
-        //                return dto;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja učešća: " + ex.Message, ex);
-        //        }
-        //    }
+                    return dto;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja učešća: " + ex.Message, 500);
+            }
+        }
 
-        //    public static async Task AddUcesceAsync(UcestvujeBasic ucesce)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var dete = await session.GetAsync<Dete>(ucesce.Dete.Id);
-        //                var roditelj = await session.GetAsync<Roditelj>(ucesce.Roditelj.Id);
-        //                var aktivnost = await session.GetAsync<Aktivnost>(ucesce.Aktivnost.Id);
+        public static async Task<Result<bool, ErrorMessage>> AddUcesceAsync(UcestvujePregled ucesceDto)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var dete = await session.GetAsync<Dete>(ucesceDto.Dete.ID);
+                    var roditelj = await session.GetAsync<Roditelj>(ucesceDto.Roditelj.Id);
+                    var aktivnost = await session.GetAsync<Aktivnost>(ucesceDto.Aktivnost.Id);
 
-        //                if (dete == null || roditelj == null || aktivnost == null)
-        //                    throw new Exception("Dete, roditelj ili aktivnost nisu pronađeni.");
+                    if (dete == null || roditelj == null || aktivnost == null)
+                        return GetError("Dete, roditelj ili aktivnost nisu pronađeni.", 404);
 
-        //                var novoUcesce = new Ucestvuje
-        //                {
-        //                    Prisustvo = ucesce.Prisustvo,
-        //                    OcenaAktivnosti = ucesce.OcenaAktivnosti,
-        //                    Komentari = ucesce.Komentari,
-        //                    Pratilac = ucesce.Pratilac,
-        //                    Dete = dete,
-        //                    Roditelj = roditelj,
-        //                    Aktivnost = aktivnost
-        //                };
+                    var novoUcesce = new Ucestvuje
+                    {
+                        Prisustvo = ucesceDto.Prisustvo,
+                        OcenaAktivnosti = ucesceDto.OcenaAktivnosti,
+                        Komentari = ucesceDto.Komentari,
+                        Pratilac = ucesceDto.Pratilac,
+                        Dete = dete,
+                        Roditelj = roditelj,
+                        Aktivnost = aktivnost
+                    };
 
-        //                await session.SaveAsync(novoUcesce);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom dodavanja učešća: " + ex.Message, ex);
-        //        }
-        //    }
+                    await session.SaveAsync(novoUcesce);
+                    await session.FlushAsync();
 
-        //    public static async Task UpdateUcesceAsync(UcestvujeBasic ucesce)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var postojeci = await session.GetAsync<Ucestvuje>(ucesce.ID);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom dodavanja učešća: " + ex.Message, 500);
+            }
+        }
 
-        //                if (postojeci == null)
-        //                    throw new Exception("Učešće nije pronađeno.");
+        public static async Task<Result<bool, ErrorMessage>> UpdateUcesceAsync(UcestvujePregled ucesceDto)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var postojeci = await session.GetAsync<Ucestvuje>(ucesceDto.ID);
 
-        //                postojeci.Prisustvo = ucesce.Prisustvo;
-        //                postojeci.OcenaAktivnosti = ucesce.OcenaAktivnosti;
-        //                postojeci.Komentari = ucesce.Komentari;
-        //                postojeci.Pratilac = ucesce.Pratilac;
+                    if (postojeci == null)
+                        return GetError("Učešće nije pronađeno.", 404);
 
-        //                // Po želji ažurirati i reference
-        //                if (ucesce.Dete != null)
-        //                    postojeci.Dete = await session.GetAsync<Dete>(ucesce.Dete.Id);
-        //                if (ucesce.Roditelj != null)
-        //                    postojeci.Roditelj = await session.GetAsync<Roditelj>(ucesce.Roditelj.Id);
-        //                if (ucesce.Aktivnost != null)
-        //                    postojeci.Aktivnost = await session.GetAsync<Aktivnost>(ucesce.Aktivnost.Id);
+                    postojeci.Prisustvo = ucesceDto.Prisustvo;
+                    postojeci.OcenaAktivnosti = ucesceDto.OcenaAktivnosti;
+                    postojeci.Komentari = ucesceDto.Komentari;
+                    postojeci.Pratilac = ucesceDto.Pratilac;
 
-        //                await session.UpdateAsync(postojeci);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom ažuriranja učešća: " + ex.Message, ex);
-        //        }
-        //    }
+                    // Ažuriranje referenci samo ako su prosleđene
+                    if (ucesceDto.Dete != null)
+                    {
+                        var dete = await session.GetAsync<Dete>(ucesceDto.Dete.ID);
+                        if (dete != null) postojeci.Dete = dete;
+                    }
 
-        //    public static async Task DeleteUcesceAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var ucesce = await session.GetAsync<Ucestvuje>(id);
+                    if (ucesceDto.Roditelj != null)
+                    {
+                        var roditelj = await session.GetAsync<Roditelj>(ucesceDto.Roditelj.Id);
+                        if (roditelj != null) postojeci.Roditelj = roditelj;
+                    }
 
-        //                if (ucesce == null)
-        //                    throw new Exception("Učešće sa zadatim ID-jem ne postoji.");
+                    if (ucesceDto.Aktivnost != null)
+                    {
+                        var aktivnost = await session.GetAsync<Aktivnost>(ucesceDto.Aktivnost.Id);
+                        if (aktivnost != null) postojeci.Aktivnost = aktivnost;
+                    }
 
-        //                await session.DeleteAsync(ucesce);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom brisanja učešća: " + ex.Message, ex);
-        //        }
-        //    }
+                    await session.UpdateAsync(postojeci);
+                    await session.FlushAsync();
 
-            #endregion
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom ažuriranja učešća: " + ex.Message, 500);
+            }
+        }
 
-           // #region Ucesce
+        public static async Task<Result<bool, ErrorMessage>> DeleteUcesceAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var ucesce = await session.GetAsync<Ucestvuje>(id);
 
-        //    #region AngazovanoLice - Aktivnost Veze
+                    if (ucesce == null)
+                        return GetError("Učešće sa zadatim ID-jem ne postoji.", 404);
 
-        //    // Dodaje angažovano lice na aktivnost
-        //    public static async Task AddAngazovanoLiceToAktivnostAsync(string jmbg, int aktivnostId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var lice = await session.GetAsync<AngazovanoLice>(jmbg);
-        //                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    await session.DeleteAsync(ucesce);
+                    await session.FlushAsync();
 
-        //                if (lice == null)
-        //                    throw new Exception("Angažovano lice ne postoji.");
-        //                if (aktivnost == null)
-        //                    throw new Exception("Aktivnost ne postoji.");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom brisanja učešća: " + ex.Message, 500);
+            }
+        }
 
-        //                if (!aktivnost.AngazovanaLica.Contains(lice))
-        //                {
-        //                    aktivnost.AngazovanaLica.Add(lice);
-        //                    lice.Aktivnosti.Add(aktivnost);
-        //                }
+        #endregion
 
-        //                await session.UpdateAsync(aktivnost);
-        //                await session.UpdateAsync(lice);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Greška prilikom dodavanja angažovanog lica na aktivnost: " + ex.Message, ex);
-        //        }
-        //    }
+        #region Ucesce
 
-        //    // Prikazuje sva angažovana lica na određenoj aktivnosti
-        //    public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaNaAktivnostiAsync(int aktivnostId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
-        //                if (aktivnost == null)
-        //                    throw new Exception("Aktivnost ne postoji.");
+        #region AngazovanoLice - Aktivnost Veze
 
-        //                var lista = aktivnost.AngazovanaLica
-        //                            .Select(al => new AngazovanoLicePregled(al.JMBG, al.Ime, al.Prezime))
-        //                            .ToList();
+        // Dodaje angažovano lice na aktivnost
+        public static async Task<Result<bool, ErrorMessage>> AddAngazovanoLiceNaAktivnostAsync(string jmbg, int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                using (ITransaction tx = session.BeginTransaction())
+                {
+                    // Učitaj aktivnost i lice
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    if (aktivnost == null)
+                        return GetError($"Aktivnost sa ID-em {aktivnostId} ne postoji.", 404);
 
-        //                return lista;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Greška prilikom učitavanja angažovanih lica za aktivnost: " + ex.Message, ex);
-        //        }
-        //    }
+                    var lice = await session.GetAsync<AngazovanoLice>(jmbg);
+                    if (lice == null)
+                        return GetError($"Angažovano lice sa JMBG-om {jmbg} ne postoji.", 404);
 
-        //    // Prikazuje angažovana lica koja **nisu** na toj aktivnosti
-        //    public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaNeNaAktivnostiAsync(int aktivnostId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var sviLica = await session.Query<AngazovanoLice>().ToListAsync();
-        //                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    // Proveri da li je već dodato
+                    bool vecPostoji = aktivnost.AngazovanaLica.Any(l => l.JMBG == jmbg);
+                    if (vecPostoji)
+                        return GetError("Ovo lice je već angažovano na ovoj aktivnosti.", 400);
 
-        //                if (aktivnost == null)
-        //                    throw new Exception("Aktivnost ne postoji.");
+                    // Dodaj vezu u oba smera
+                    aktivnost.AngazovanaLica.Add(lice);
+                    lice.Aktivnosti.Add(aktivnost);
 
-        //                var neAngazovana = sviLica
-        //                    .Where(l => !aktivnost.AngazovanaLica.Contains(l))
-        //                    .Select(al => new AngazovanoLicePregled(al.JMBG, al.Ime, al.Prezime))
-        //                    .ToList();
+                    await session.UpdateAsync(aktivnost);
+                    await tx.CommitAsync();
 
-        //                return neAngazovana;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Greška prilikom učitavanja angažovanih lica koja nisu na aktivnosti: " + ex.Message, ex);
-        //        }
-        //    }
+                    return true; // uspešno dodato
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom dodavanja angažovanog lica na aktivnost: " + ex.Message, 500);
+            }
+        }
+
+        // Prikazuje sva angažovana lica na određenoj aktivnosti
+        public static async Task<List<AngazovanoLicePregled>> GetAngazovanaLicaNaAktivnostiAsync(int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    if (aktivnost == null)
+                        throw new Exception("Aktivnost ne postoji.");
+
+                    var lista = aktivnost.AngazovanaLica
+                                .Select(al => new AngazovanoLicePregled
+                                {
+                                    JMBG = al.JMBG,
+                                    Ime = al.Ime,
+                                    Prezime = al.Prezime
+                                })
+                                .ToList();
+
+                    return lista;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška prilikom učitavanja angažovanih lica za aktivnost: " + ex.Message, ex);
+            }
+        }
+
+        // Prikazuje angažovana lica koja **nisu** na toj aktivnosti
 
         //    // Uklanja angažovano lice sa aktivnosti
-        //    public static async Task RemoveAngazovanoLiceFromAktivnostAsync(string jmbg, int aktivnostId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var lice = await session.GetAsync<AngazovanoLice>(jmbg);
-        //                var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+        public static async Task<Result<bool, ErrorMessage>> RemoveAngazovanoLiceFromAktivnostAsync(string jmbg, int aktivnostId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lice = await session.GetAsync<AngazovanoLice>(jmbg);
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
 
-        //                if (lice == null)
-        //                    throw new Exception("Angažovano lice ne postoji.");
-        //                if (aktivnost == null)
-        //                    throw new Exception("Aktivnost ne postoji.");
+                    if (lice == null || aktivnost == null)
+                    {
+                        return GetError("Angažovano lice ili aktivnost ne postoji.", 404);
+                    }
 
-        //                if (aktivnost.AngazovanaLica.Contains(lice))
-        //                {
-        //                    aktivnost.AngazovanaLica.Remove(lice);
-        //                    lice.Aktivnosti.Remove(aktivnost);
-        //                }
+                    if (aktivnost.AngazovanaLica.Contains(lice))
+                    {
+                        aktivnost.AngazovanaLica.Remove(lice);
+                        lice.Aktivnosti.Remove(aktivnost);
+                    }
 
-        //                await session.UpdateAsync(aktivnost);
-        //                await session.UpdateAsync(lice);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Greška prilikom uklanjanja angažovanog lica sa aktivnosti: " + ex.Message, ex);
-        //        }
-        //    }
-        //    #endregion
-        //#endregion
+                    await session.UpdateAsync(aktivnost);
+                    await session.UpdateAsync(lice);
+                    await session.FlushAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Greška prilikom uklanjanja angažovanog lica sa aktivnosti: " + ex.Message, 500);
+            }
+        }
+
+        #endregion
+        #endregion
     }
 }

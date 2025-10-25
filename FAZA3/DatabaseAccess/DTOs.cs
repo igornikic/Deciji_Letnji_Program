@@ -319,12 +319,12 @@ namespace Deciji_Letnji_Program
         {
             public int ID { get; set; }
             public string Prisustvo { get; set; }
-            public string OcenaAktivnosti { get; set; }
+            public int OcenaAktivnosti { get; set; }
             public string Komentari { get; set; }
             public string Pratilac { get; set; }
-            public DetePregled Dete { get; set; }
-            public RoditeljPregled Roditelj { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
+            public DetePregled? Dete { get; set; }
+            public RoditeljPregled? Roditelj { get; set; }
+            public AktivnostPregled? Aktivnost { get; set; }
             public UcestvujePregled() { }
             public UcestvujePregled(UcestvujePregled? u)
             {
