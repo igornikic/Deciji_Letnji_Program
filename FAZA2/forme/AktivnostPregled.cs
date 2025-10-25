@@ -60,7 +60,8 @@ namespace Deciji_Letnji_Program.Forme
                     btnObrisi.Visible = false;
                     btnSpisakDece.Visible = false;
                     btnZaposleni.Visible = false;
-                    btnPrikaziObroke.Visible = false; // Sakrij dugme za obroke
+                    btnPrikaziObroke.Visible = false;
+                    btnPrikaziPrisustvo.Visible = false;
                 }
             }
             catch (Exception ex)

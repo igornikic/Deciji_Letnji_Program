@@ -9,6 +9,7 @@
         private System.Windows.Forms.Button btnUkloni;
         private System.Windows.Forms.Label lblZaposleni;
         private System.Windows.Forms.Label lblSlobodnaLica;
+        private System.Windows.Forms.Button btnPrijaviPovredu;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,6 +30,7 @@
             this.btnUkloni = new System.Windows.Forms.Button();
             this.lblZaposleni = new System.Windows.Forms.Label();
             this.lblSlobodnaLica = new System.Windows.Forms.Label();
+            this.btnPrijaviPovredu = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewZaposleni)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,8 +44,9 @@
             this.dataGridViewZaposleni.MultiSelect = false;
             this.dataGridViewZaposleni.Name = "dataGridViewZaposleni";
             this.dataGridViewZaposleni.ReadOnly = true;
+            this.dataGridViewZaposleni.RowHeadersWidth = 51;
             this.dataGridViewZaposleni.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewZaposleni.Size = new System.Drawing.Size(440, 200);
+            this.dataGridViewZaposleni.Size = new System.Drawing.Size(681, 200);
             this.dataGridViewZaposleni.TabIndex = 0;
             // 
             // comboBoxLica
@@ -57,7 +60,7 @@
             // 
             // btnDodaj
             // 
-            this.btnDodaj.Location = new System.Drawing.Point(240, 285);
+            this.btnDodaj.Location = new System.Drawing.Point(240, 284);
             this.btnDodaj.Name = "btnDodaj";
             this.btnDodaj.Size = new System.Drawing.Size(100, 35);
             this.btnDodaj.TabIndex = 2;
@@ -78,7 +81,7 @@
             this.lblZaposleni.AutoSize = true;
             this.lblZaposleni.Location = new System.Drawing.Point(17, 20);
             this.lblZaposleni.Name = "lblZaposleni";
-            this.lblZaposleni.Size = new System.Drawing.Size(160, 16);
+            this.lblZaposleni.Size = new System.Drawing.Size(187, 16);
             this.lblZaposleni.TabIndex = 4;
             this.lblZaposleni.Text = "Angažovana lica na aktivnosti:";
             // 
@@ -87,21 +90,32 @@
             this.lblSlobodnaLica.AutoSize = true;
             this.lblSlobodnaLica.Location = new System.Drawing.Point(17, 265);
             this.lblSlobodnaLica.Name = "lblSlobodnaLica";
-            this.lblSlobodnaLica.Size = new System.Drawing.Size(157, 16);
+            this.lblSlobodnaLica.Size = new System.Drawing.Size(171, 16);
             this.lblSlobodnaLica.TabIndex = 5;
             this.lblSlobodnaLica.Text = "Slobodna angažovana lica:";
+            // 
+            // btnPrijaviPovredu
+            // 
+            this.btnPrijaviPovredu.Location = new System.Drawing.Point(481, 285);
+            this.btnPrijaviPovredu.Name = "btnPrijaviPovredu";
+            this.btnPrijaviPovredu.Size = new System.Drawing.Size(220, 35);
+            this.btnPrijaviPovredu.TabIndex = 6;
+            this.btnPrijaviPovredu.Text = "Prijavi povredu";
+            this.btnPrijaviPovredu.UseVisualStyleBackColor = true;
+            this.btnPrijaviPovredu.Click += new System.EventHandler(this.BtnPrijaviPovredu_Click);
             // 
             // ZaposleniZaAktivnost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 340);
+            this.ClientSize = new System.Drawing.Size(739, 392);
             this.Controls.Add(this.lblSlobodnaLica);
             this.Controls.Add(this.lblZaposleni);
             this.Controls.Add(this.btnUkloni);
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.comboBoxLica);
             this.Controls.Add(this.dataGridViewZaposleni);
+            this.Controls.Add(this.btnPrijaviPovredu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ZaposleniZaAktivnost";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -109,6 +123,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewZaposleni)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

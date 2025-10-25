@@ -24,6 +24,7 @@
             this.btnKontakti = new System.Windows.Forms.Button();
             this.btnAktivnosti = new System.Windows.Forms.Button();
             this.btnKomentar = new System.Windows.Forms.Button();
+            this.btnPovrede = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,7 +42,7 @@
             this.dataGridViewDeca.RowHeadersWidth = 51;
             this.dataGridViewDeca.RowTemplate.Height = 24;
             this.dataGridViewDeca.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDeca.Size = new System.Drawing.Size(620, 330);
+            this.dataGridViewDeca.Size = new System.Drawing.Size(828, 330);
             this.dataGridViewDeca.TabIndex = 0;
             // 
             // btnDodaj
@@ -99,9 +100,18 @@
             this.btnKomentar.Text = "Ostavi komentar";
             this.btnKomentar.UseVisualStyleBackColor = true;
             // 
+            // btnPovrede
+            // 
+            this.btnPovrede.Location = new System.Drawing.Point(740, 355);
+            this.btnPovrede.Name = "btnPovrede";
+            this.btnPovrede.Size = new System.Drawing.Size(100, 35);
+            this.btnPovrede.TabIndex = 7;
+            this.btnPovrede.Text = "Povrede";
+            this.btnPovrede.UseVisualStyleBackColor = true;
+            // 
             // DetePregled
             // 
-            this.ClientSize = new System.Drawing.Size(644, 402);
+            this.ClientSize = new System.Drawing.Size(863, 402);
             this.Controls.Add(this.btnObrisi);
             this.Controls.Add(this.btnIzmeni);
             this.Controls.Add(this.btnDodaj);
@@ -109,6 +119,7 @@
             this.Controls.Add(this.btnKontakti);
             this.Controls.Add(this.btnAktivnosti);
             this.Controls.Add(this.btnKomentar);
+            this.Controls.Add(this.btnPovrede);
             this.Name = "DetePregled";
             this.Text = "Pregled dece";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDeca)).EndInit();
@@ -125,5 +136,6 @@
         private System.Windows.Forms.Button btnKontakti;
         private System.Windows.Forms.Button btnAktivnosti;
         private System.Windows.Forms.Button btnKomentar;
+        private System.Windows.Forms.Button btnPovrede;
     }
 }

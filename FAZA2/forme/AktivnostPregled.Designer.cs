@@ -44,7 +44,7 @@
             this.dataGridViewAktivnosti.RowHeadersWidth = 51;
             this.dataGridViewAktivnosti.RowTemplate.Height = 24;
             this.dataGridViewAktivnosti.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAktivnosti.Size = new System.Drawing.Size(691, 330);
+            this.dataGridViewAktivnosti.Size = new System.Drawing.Size(817, 330);
             this.dataGridViewAktivnosti.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -60,7 +60,7 @@
             this.flowLayoutPanelButtons.Location = new System.Drawing.Point(0, 355);
             this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
             this.flowLayoutPanelButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(724, 53);
+            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(842, 53);
             this.flowLayoutPanelButtons.TabIndex = 1;
             // 
             // btnDodaj
@@ -122,9 +122,9 @@
             this.btnPrikaziObroke.Text = "Prikazi Obroke";
             this.btnPrikaziObroke.UseVisualStyleBackColor = true;
             this.btnPrikaziObroke.Click += new System.EventHandler(this.btnPrikaziObroke_Click);
-            //
+            // 
             // btnPrikaziPrisustvo
-            //
+            // 
             this.btnPrikaziPrisustvo.Location = new System.Drawing.Point(709, 13);
             this.btnPrikaziPrisustvo.Name = "btnPrikaziPrisustvo";
             this.btnPrikaziPrisustvo.Size = new System.Drawing.Size(120, 35);
@@ -132,11 +132,10 @@
             this.btnPrikaziPrisustvo.Text = "Prikazi Prisustvo";
             this.btnPrikaziPrisustvo.UseVisualStyleBackColor = true;
             this.btnPrikaziPrisustvo.Click += new System.EventHandler(this.btnPrikaziPrisustvo_Click);
-
             // 
             // AktivnostPregled
             // 
-            this.ClientSize = new System.Drawing.Size(724, 408);
+            this.ClientSize = new System.Drawing.Size(842, 408);
             this.Controls.Add(this.flowLayoutPanelButtons);
             this.Controls.Add(this.dataGridViewAktivnosti);
             this.Name = "AktivnostPregled";

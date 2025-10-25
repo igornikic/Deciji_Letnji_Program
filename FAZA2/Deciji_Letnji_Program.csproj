@@ -173,6 +173,18 @@
     <Compile Include="Forme\ObrokPregled.Designer.cs">
       <DependentUpon>ObrokPregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forme\PovredaDodajIzmeni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\PovredaDodajIzmeni.Designer.cs">
+      <DependentUpon>PovredaDodajIzmeni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forme\PovredaPregled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forme\PovredaPregled.Designer.cs">
+      <DependentUpon>PovredaPregled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forme\ZaposleniZaAktivnost.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,6 +306,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forme\AngazovanoLiceDodajIzmeni.resx">
       <DependentUpon>AngazovanoLiceDodajIzmeni.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forme\ZaposleniZaAktivnost.resx">
+      <DependentUpon>ZaposleniZaAktivnost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTest.resx">
       <DependentUpon>FormTest.cs</DependentUpon>

@@ -103,5 +103,22 @@ namespace Deciji_Letnji_Program.Forme
                 MessageBox.Show("Greška prilikom uklanjanja lica: " + ex.Message);
             }
         }
+
+        private void BtnPrijaviPovredu_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewZaposleni.CurrentRow == null)
+            {
+                MessageBox.Show("Izaberite lice koje prijavljuje povredu.");
+                return;
+            }
+
+            var lice = dataGridViewZaposleni.CurrentRow.DataBoundItem as DTOs.AngazovanoLicePregled;
+            if (lice == null) return;
+
+            var povredaForm = new PovredaDodajIzmeni(AktivnostID, lice.JMBG);
+            povredaForm.ShowDialog();
+        }
+
+
     }
 }

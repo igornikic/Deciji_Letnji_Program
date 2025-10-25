@@ -762,11 +762,34 @@ namespace Deciji_Letnji_Program
         }
     }
 
-    #endregion
+        #endregion
 
-    #region Povreda
+        #region Povreda
+        public static async Task<List<PovredaPregled>> GetPovredeDetetaAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var povrede = await session.Query<Povreda>()
+                        .Where(p => p.Dete.ID == deteId)
+                        .Select(p => new PovredaPregled(
+                            p.ID,
+                            p.Datum,
+                            p.Opis
+                        ))
+                        .ToListAsync();
 
-    public static async Task<List<PovredaPregled>> GetAllPovredeAsync()
+                    return povrede;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Došlo je do greške prilikom učitavanja povreda za dete: " + ex.Message, ex);
+            }
+        }
+
+        public static async Task<List<PovredaPregled>> GetAllPovredeAsync()
         {
             try
             {
