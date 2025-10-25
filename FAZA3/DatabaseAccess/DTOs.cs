@@ -243,8 +243,8 @@ namespace Deciji_Letnji_Program
             public string Adresa { get; set; }
             public int Kapacitet { get; set; }
             public string DostupnaOprema { get; set; }
-            public IList<ObrokPregled> Obroci { get; set; }
-            public IList<AktivnostPregled> Aktivnosti { get; set; }
+            public IList<ObrokPregled>? Obroci { get; set; }
+            public IList<AktivnostPregled>? Aktivnosti { get; set; }
             public LokacijaPregled() { }
             public LokacijaPregled(LokacijaPregled? l)
             {

@@ -2155,438 +2155,507 @@ namespace Deciji_Letnji_Program
 
         #endregion
 
-        //    #region Lokacija
-        //    public static async Task<List<AktivnostPregled>> GetAktivnostiNaLokacijiAsync(string nazivLokacije)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var aktivnosti = await session.Query<Aktivnost>()
-        //                    .Where(a => a.Lokacija.Naziv == nazivLokacije)
-        //                    .Select(a => new AktivnostPregled
-        //                    {
-        //                        Id = a.IdAktivnosti,
-        //                        Tip = a.Tip,
-        //                        Naziv = a.Naziv,
-        //                        Datum = a.Datum
-        //                    })
-        //                    .ToListAsync();
+        #region Lokacija
+        public static async Task<Result<List<AktivnostPregled>, ErrorMessage>> GetAktivnostiNaLokacijiAsync(string nazivLokacije)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var aktivnosti = await session.Query<Aktivnost>()
+                        .Where(a => a.Lokacija.Naziv == nazivLokacije)
+                        .Select(a => new AktivnostPregled
+                        {
+                            Id = a.IdAktivnosti,
+                            Tip = a.Tip,
+                            Naziv = a.Naziv,
+                            Datum = a.Datum
+                        })
+                        .ToListAsync();
 
-        //                return aktivnosti;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja aktivnosti na lokaciji: " + ex.Message, ex);
-        //        }
-        //    }
+                    if (aktivnosti == null || aktivnosti.Count == 0)
+                        return GetError($"Na lokaciji '{nazivLokacije}' nisu pronađene aktivnosti.", 404);
 
-        //    public static async Task<List<LokacijaPregled>> GetAllLokacijeAsync()
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var lokacije = await session.Query<Lokacija>()
-        //                    .Select(l => new LokacijaPregled(
-        //                        l.Naziv,
-        //                        l.Tip))
-        //                    .ToListAsync();
+                    return aktivnosti;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja aktivnosti na lokaciji: " + ex.Message, 500);
+            }
+        }
 
-        //                return lokacije;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja lokacija: " + ex.Message, ex);
-        //        }
-        //    }
+        public static async Task<Result<List<LokacijaPregled>, ErrorMessage>> GetAllLokacijeAsync()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lokacije = await session.Query<Lokacija>()
+                        .Select(l => new LokacijaPregled
+                        {
+                            Naziv = l.Naziv,
+                            Tip = l.Tip,
+                            Adresa = l.Adresa,
+                            Kapacitet = l.Kapacitet,
+                            DostupnaOprema = l.DostupnaOprema
+                        })
+                        .ToListAsync();
 
-        //    public static async Task<LokacijaBasic> GetLokacijaAsync(string naziv)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var lokacija = await session.GetAsync<Lokacija>(naziv);
+                    return lokacije;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja lokacija: " + ex.Message, 500);
+            }
+        }
 
-        //                if (lokacija == null)
-        //                    return null;
+        public static async Task<Result<LokacijaPregled, ErrorMessage>> GetLokacijaAsync(string naziv)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lokacija = await session.GetAsync<Lokacija>(naziv);
 
-        //                LokacijaBasic lb = new LokacijaBasic
-        //                {
-        //                    Naziv = lokacija.Naziv,
-        //                    Tip = lokacija.Tip,
-        //                    Adresa = lokacija.Adresa,
-        //                    Kapacitet = lokacija.Kapacitet,
-        //                    DostupnaOprema = lokacija.DostupnaOprema
-        //                };
+                    if (lokacija == null)
+                        return GetError("Lokacija sa zadatim nazivom ne postoji.", 404);
 
-        //                return lb;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja lokacije: " + ex.Message, ex);
-        //        }
-        //    }
+                    var lb = new LokacijaPregled
+                    {
+                        Naziv = lokacija.Naziv,
+                        Tip = lokacija.Tip,
+                        Adresa = lokacija.Adresa,
+                        Kapacitet = lokacija.Kapacitet,
+                        DostupnaOprema = lokacija.DostupnaOprema
+                    };
 
-        //    public static async Task AddLokacijaAsync(LokacijaBasic lokacija)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                Lokacija novaLokacija = new Lokacija
-        //                {
-        //                    Naziv = lokacija.Naziv,
-        //                    Tip = lokacija.Tip,
-        //                    Adresa = lokacija.Adresa,
-        //                    Kapacitet = lokacija.Kapacitet,
-        //                    DostupnaOprema = lokacija.DostupnaOprema
-        //                };
+                    return lb;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja lokacije: " + ex.Message, 500);
+            }
+        }
 
-        //                await session.SaveAsync(novaLokacija);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom dodavanja lokacije: " + ex.Message, ex);
-        //        }
-        //    }
+        public static async Task<Result<bool, ErrorMessage>> AddLokacijaAsync(LokacijaPregled lokacija)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    Lokacija novaLokacija = new Lokacija
+                    {
+                        Naziv = lokacija.Naziv,
+                        Tip = lokacija.Tip,
+                        Adresa = lokacija.Adresa,
+                        Kapacitet = lokacija.Kapacitet,
+                        DostupnaOprema = lokacija.DostupnaOprema
+                    };
 
-        //    public static async Task UpdateLokacijaAsync(LokacijaBasic lokacija)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var postojeca = await session.GetAsync<Lokacija>(lokacija.Naziv);
+                    await session.SaveAsync(novaLokacija);
+                    await session.FlushAsync();
 
-        //                if (postojeca == null)
-        //                    throw new Exception("Lokacija ne postoji u bazi.");
+                    return true; // uspešno dodato
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom dodavanja lokacije: " + ex.Message, 500);
+            }
+        }
 
-        //                postojeca.Tip = lokacija.Tip;
-        //                postojeca.Adresa = lokacija.Adresa;
-        //                postojeca.Kapacitet = lokacija.Kapacitet;
-        //                postojeca.DostupnaOprema = lokacija.DostupnaOprema;
+        public static async Task<Result<bool, ErrorMessage>> UpdateLokacijaAsync(LokacijaPregled lokacija)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var postojeca = await session.GetAsync<Lokacija>(lokacija.Naziv);
 
-        //                await session.UpdateAsync(postojeca);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom ažuriranja lokacije: " + ex.Message, ex);
-        //        }
-        //    }
+                    if (postojeca == null)
+                        return GetError("Lokacija ne postoji u bazi.", 404);
 
-        //    public static async Task DeleteLokacijaAsync(string naziv)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var lokacija = await session.GetAsync<Lokacija>(naziv);
+                    postojeca.Tip = lokacija.Tip;
+                    postojeca.Adresa = lokacija.Adresa;
+                    postojeca.Kapacitet = lokacija.Kapacitet;
+                    postojeca.DostupnaOprema = lokacija.DostupnaOprema;
 
-        //                if (lokacija == null)
-        //                    throw new Exception("Lokacija sa zadatim nazivom ne postoji.");
+                    await session.UpdateAsync(postojeca);
+                    await session.FlushAsync();
 
-        //                await session.DeleteAsync(lokacija);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom brisanja lokacije: " + ex.Message, ex);
-        //        }
-        //    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom ažuriranja lokacije: " + ex.Message, 500);
+            }
+        }
+        public static async Task<Result<bool, ErrorMessage>> DeleteLokacijaAsync(string naziv)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var lokacija = await session.GetAsync<Lokacija>(naziv);
 
-        //    #endregion
+                    if (lokacija == null)
+                        return GetError("Lokacija sa zadatim nazivom ne postoji.", 404);
 
-        //    #region TelefonRoditelja
+                    await session.DeleteAsync(lokacija);
+                    await session.FlushAsync();
 
-        //    public static async Task<List<TelefonRoditeljaPregled>> GetAllTelefoniRoditeljaAsync()
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var telefoni = await session.Query<TelefonRoditelja>()
-        //                    .Select(t => new TelefonRoditeljaPregled(
-        //                        t.ID,
-        //                        t.Telefon))
-        //                    .ToListAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom brisanja lokacije: " + ex.Message, 500);
+            }
+        }
+        #endregion
 
-        //                return telefoni;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja telefona roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+        #region TelefonRoditelja
 
-        //    public static async Task<TelefonRoditeljaBasic> GetTelefonRoditeljaAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var telefon = await session.GetAsync<TelefonRoditelja>(id);
-        //                if (telefon == null)
-        //                    return null;
+        public static async Task<Result<List<TelefonRoditeljaPregled>, ErrorMessage>> GetAllTelefoniRoditeljaAsync()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefoni = await session.Query<TelefonRoditelja>()
+                        .Select(t => new TelefonRoditeljaPregled
+                        {
+                            Id = t.ID,
+                            Telefon = t.Telefon
+                            // Dete se ovde ne uključuje da bismo izbegli veze
+                        })
+                        .ToListAsync();
 
-        //                var dto = new TelefonRoditeljaBasic
-        //                {
-        //                    Id = telefon.ID,
-        //                    Telefon = telefon.Telefon
-        //                };
+                    return telefoni;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja telefona roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //                return dto;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja telefona roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+        public static async Task<(bool isError, TelefonRoditeljaPregled? ok, ErrorMessage? error)> GetTelefonRoditeljaAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefon = await session.GetAsync<TelefonRoditelja>(id);
 
-        //    public static async Task AddTelefonRoditeljaAsync(TelefonRoditeljaBasic telefonDto, int deteId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var dete = await session.GetAsync<Dete>(deteId);
-        //                if (dete == null)
-        //                    throw new Exception("Dete ne postoji.");
+                    if (telefon == null)
+                        return (true, null, new ErrorMessage($"Telefon sa ID-em {id} ne postoji.", 404));
 
-        //                TelefonRoditelja noviTelefon = new TelefonRoditelja
-        //                {
-        //                    Telefon = telefonDto.Telefon,
-        //                    Dete = dete
-        //                };
+                    var dto = new TelefonRoditeljaPregled
+                    {
+                        Id = telefon.ID,
+                        Telefon = telefon.Telefon,
+                        Dete = null // ne vraćamo objekat Deteta
+                    };
 
-        //                await session.SaveAsync(noviTelefon);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom dodavanja telefona roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    return (false, dto, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (true, null, new ErrorMessage("Došlo je do greške prilikom učitavanja telefona roditelja: " + ex.Message, 500));
+            }
+        }
 
-        //    public static async Task UpdateTelefonRoditeljaAsync(TelefonRoditeljaBasic telefonDto)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var telefon = await session.GetAsync<TelefonRoditelja>(telefonDto.Id);
-        //                if (telefon == null)
-        //                    throw new Exception("Telefon roditelja ne postoji.");
+        public static async Task<Result<bool, ErrorMessage>> AddTelefonRoditeljaAsync(TelefonRoditeljaPregled telefonDto, int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        return GetError($"Dete sa ID-em {deteId} ne postoji.", 404);
 
-        //                telefon.Telefon = telefonDto.Telefon;
+                    var noviTelefon = new TelefonRoditelja
+                    {
+                        Telefon = telefonDto.Telefon,
+                        Dete = dete
+                    };
 
-        //                await session.UpdateAsync(telefon);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom ažuriranja telefona roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    await session.SaveAsync(noviTelefon);
+                    await session.FlushAsync();
 
-        //    public static async Task DeleteTelefonRoditeljaAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var telefon = await session.GetAsync<TelefonRoditelja>(id);
-        //                if (telefon == null)
-        //                    throw new Exception("Telefon roditelja sa zadatim ID-jem ne postoji.");
+                    return true; // uspešno dodato
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom dodavanja telefona roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //                await session.DeleteAsync(telefon);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom brisanja telefona roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+        public static async Task<Result<bool, ErrorMessage>> UpdateTelefonRoditeljaAsync(TelefonRoditeljaPregled telefonDto)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefon = await session.GetAsync<TelefonRoditelja>(telefonDto.Id);
+                    if (telefon == null)
+                        return GetError($"Telefon roditelja sa ID-em {telefonDto.Id} ne postoji.", 404);
 
-        //    public static async Task<List<TelefonRoditeljaPregled>> GetTelefoniRoditeljaZaDeteAsync(int deteId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var telefoni = await session.Query<TelefonRoditelja>()
-        //                    .Where(t => t.Dete.ID == deteId)
-        //                    .Select(t => new TelefonRoditeljaPregled(
-        //                        t.ID,
-        //                        t.Telefon))
-        //                    .ToListAsync();
+                    telefon.Telefon = telefonDto.Telefon;
 
-        //                return telefoni;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja telefona roditelja za dete: " + ex.Message, ex);
-        //        }
-        //    }
+                    await session.UpdateAsync(telefon);
+                    await session.FlushAsync();
 
-        //    #endregion
+                    return true; // uspešno ažurirano
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom ažuriranja telefona roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //    #region EmailRoditelja
+        public static async Task<Result<bool, ErrorMessage>> DeleteTelefonRoditeljaAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefon = await session.GetAsync<TelefonRoditelja>(id);
 
-        //    public static async Task<List<EmailRoditeljaPregled>> GetAllEmailoviRoditeljaAsync()
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var emailovi = await session.Query<EmailRoditelja>()
-        //                    .Select(e => new EmailRoditeljaPregled(
-        //                        e.ID,
-        //                        e.Email))
-        //                    .ToListAsync();
+                    if (telefon == null)
+                        return GetError("Telefon roditelja sa zadatim ID-jem ne postoji.", 404);
 
-        //                return emailovi;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja emailova roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    await session.DeleteAsync(telefon);
+                    await session.FlushAsync();
 
-        //    public static async Task<EmailRoditeljaBasic> GetEmailRoditeljaAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var email = await session.GetAsync<EmailRoditelja>(id);
-        //                if (email == null)
-        //                    return null;
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom brisanja telefona roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //                var dto = new EmailRoditeljaBasic
-        //                {
-        //                    Id = email.ID,
-        //                    Email = email.Email
-        //                };
+        public static async Task<Result<List<TelefonRoditeljaPregled>, ErrorMessage>> GetTelefoniRoditeljaZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var telefoni = await session.Query<TelefonRoditelja>()
+                        .Where(t => t.Dete.ID == deteId)
+                        .Select(t => new TelefonRoditeljaPregled
+                        {
+                            Id = t.ID,
+                            Telefon = t.Telefon,
+                            Dete = new DetePregled
+                            {
+                                ID = t.Dete.ID,
+                                Ime = t.Dete.Ime,
+                                Prezime = t.Dete.Prezime
+                            }
+                        })
+                        .ToListAsync();
 
-        //                return dto;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja emaila roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    if (telefoni == null || telefoni.Count == 0)
+                        return GetError("Nisu pronađeni telefoni roditelja za zadato dete.", 404);
 
-        //    public static async Task AddEmailRoditeljaAsync(EmailRoditeljaBasic emailDto, int deteId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var dete = await session.GetAsync<Dete>(deteId);
-        //                if (dete == null)
-        //                    throw new Exception("Dete ne postoji.");
+                    return telefoni;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja telefona roditelja za dete: " + ex.Message, 500);
+            }
+        }
 
-        //                EmailRoditelja noviEmail = new EmailRoditelja
-        //                {
-        //                    Email = emailDto.Email,
-        //                    Dete = dete
-        //                };
+        #endregion
 
-        //                await session.SaveAsync(noviEmail);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom dodavanja emaila roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+        #region EmailRoditelja
 
-        //    public static async Task UpdateEmailRoditeljaAsync(EmailRoditeljaBasic emailDto)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var email = await session.GetAsync<EmailRoditelja>(emailDto.Id);
-        //                if (email == null)
-        //                    throw new Exception("Email roditelja ne postoji.");
+        public static async Task<Result<List<EmailRoditeljaPregled>, ErrorMessage>> GetAllEmailoviRoditeljaAsync()
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var emailovi = await session.Query<EmailRoditelja>()
+                        .Select(e => new EmailRoditeljaPregled
+                        {
+                            Id = e.ID,
+                            Email = e.Email,
+                            Dete = new DetePregled
+                            {
+                                ID = e.Dete.ID,
+                                Ime = e.Dete.Ime,
+                                Prezime = e.Dete.Prezime
+                            }
+                        })
+                        .ToListAsync();
 
-        //                email.Email = emailDto.Email;
+                    if (emailovi == null || emailovi.Count == 0)
+                        return GetError("Nema pronađenih emailova roditelja.", 404);
 
-        //                await session.UpdateAsync(email);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom ažuriranja emaila roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    return emailovi;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja emailova roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //    public static async Task DeleteEmailRoditeljaAsync(int id)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var email = await session.GetAsync<EmailRoditelja>(id);
-        //                if (email == null)
-        //                    throw new Exception("Email roditelja sa zadatim ID-jem ne postoji.");
+        public static async Task<Result<EmailRoditeljaPregled, ErrorMessage>> GetEmailRoditeljaAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var email = await session.GetAsync<EmailRoditelja>(id);
 
-        //                await session.DeleteAsync(email);
-        //                await session.FlushAsync();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom brisanja emaila roditelja: " + ex.Message, ex);
-        //        }
-        //    }
+                    if (email == null)
+                        return GetError("Email roditelja sa zadatim ID-jem ne postoji.", 404);
 
-        //    public static async Task<List<EmailRoditeljaPregled>> GetEmailoviRoditeljaZaDeteAsync(int deteId)
-        //    {
-        //        try
-        //        {
-        //            using (ISession session = DataLayer.GetSession())
-        //            {
-        //                var emailovi = await session.Query<EmailRoditelja>()
-        //                    .Where(e => e.Dete.ID == deteId)
-        //                    .Select(e => new EmailRoditeljaPregled(
-        //                        e.ID,
-        //                        e.Email))
-        //                    .ToListAsync();
+                    var dto = new EmailRoditeljaPregled
+                    {
+                        Id = email.ID,
+                        Email = email.Email,
+                        Dete = new DetePregled
+                        {
+                            ID = email.Dete.ID,
+                            Ime = email.Dete.Ime,
+                            Prezime = email.Dete.Prezime
+                        }
+                    };
 
-        //                return emailovi;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("Došlo je do greške prilikom učitavanja emailova roditelja za dete: " + ex.Message, ex);
-        //        }
-        //    }
+                    return dto;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja emaila roditelja: " + ex.Message, 500);
+            }
+        }
 
-        //    #endregion
+        public static async Task<Result<bool, ErrorMessage>> AddEmailRoditeljaAsync(EmailRoditeljaPregled emailDto, int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        return GetError("Dete sa zadatim ID-jem ne postoji.", 404);
 
-        //    #region Ucestvuje
+                    var noviEmail = new EmailRoditelja
+                    {
+                        Email = emailDto.Email,
+                        Dete = dete
+                    };
+
+                    await session.SaveAsync(noviEmail);
+                    await session.FlushAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom dodavanja emaila roditelja: " + ex.Message, 500);
+            }
+        }
+
+        public static async Task<Result<bool, ErrorMessage>> UpdateEmailRoditeljaAsync(EmailRoditeljaPregled emailDto)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var email = await session.GetAsync<EmailRoditelja>(emailDto.Id);
+
+                    if (email == null)
+                        return GetError("Email roditelja sa zadatim ID-jem ne postoji.", 404);
+
+                    email.Email = emailDto.Email;
+
+                    await session.UpdateAsync(email);
+                    await session.FlushAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom ažuriranja emaila roditelja: " + ex.Message, 500);
+            }
+        }
+
+        public static async Task<Result<bool, ErrorMessage>> DeleteEmailRoditeljaAsync(int id)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var email = await session.GetAsync<EmailRoditelja>(id);
+
+                    if (email == null)
+                        return GetError("Email roditelja sa zadatim ID-jem ne postoji.", 404);
+
+                    await session.DeleteAsync(email);
+                    await session.FlushAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom brisanja emaila roditelja: " + ex.Message, 500);
+            }
+        }
+
+        public static async Task<Result<List<EmailRoditeljaPregled>, ErrorMessage>> GetEmailoviRoditeljaZaDeteAsync(int deteId)
+        {
+            try
+            {
+                using (ISession session = DataLayer.GetSession())
+                {
+                    var emailovi = await session.Query<EmailRoditelja>()
+                        .Where(e => e.Dete.ID == deteId)
+                        .Select(e => new EmailRoditeljaPregled
+                        {
+                            Id = e.ID,
+                            Email = e.Email,
+                            Dete = new DetePregled
+                            {
+                                ID = e.Dete.ID,
+                                Ime = e.Dete.Ime,
+                                Prezime = e.Dete.Prezime
+                            }
+                        })
+                        .ToListAsync();
+
+                    return emailovi;
+                }
+            }
+            catch (Exception ex)
+            {
+                return GetError("Došlo je do greške prilikom učitavanja emailova roditelja za dete: " + ex.Message, 500);
+            }
+        }
+
+        #endregion
+
+          #region Ucestvuje
 
         //    public static async Task<List<UcestvujePregled>> GetAllUcescaAsync()
         //    {
@@ -2746,9 +2815,9 @@ namespace Deciji_Letnji_Program
         //        }
         //    }
 
-        //    #endregion
+            #endregion
 
-        //    #region Ucesce
+           // #region Ucesce
 
         //    #region AngazovanoLice - Aktivnost Veze
 
