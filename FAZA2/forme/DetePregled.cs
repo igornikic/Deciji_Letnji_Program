@@ -118,11 +118,6 @@ namespace Deciji_Letnji_Program.Forme
             forma.ShowDialog();
         }
 
-        private void btnIzmeni_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnKomentar_Click(object sender, EventArgs e)
         {
             if (dataGridViewDeca.CurrentRow == null)

@@ -24,13 +24,24 @@ namespace Deciji_Letnji_Program.Forme
 
         private async void ObrokDodajIzmeni_Load(object sender, EventArgs e)
         {
-            if (ObrokID.HasValue)
+            try
             {
-                try
+                var lokacije = await DTOManager.GetAllLokacijeAsync();
+                cmbLokacija.DataSource = lokacije;
+                cmbLokacija.DisplayMember = "Naziv";
+                cmbLokacija.ValueMember = "Naziv";
+                cmbLokacija.SelectedIndex = -1;
+
+                var aktivnosti = await DTOManager.GetAllAktivnostiAsync();
+                cmbAktivnost.DataSource = aktivnosti;
+                cmbAktivnost.DisplayMember = "Naziv";
+                cmbAktivnost.ValueMember = "Id";
+                cmbAktivnost.SelectedIndex = -1;
+
+                if (ObrokID.HasValue)
                 {
                     var obrok = await DTOManager.GetObrokAsync(ObrokID.Value);
 
-                    // 🔹 Postavi radio dugme za tip obroka
                     string tip = obrok.Tip?.Trim().ToLower();
                     if (tip == "doručak" || tip == "dorucak")
                         rbDorucak.Checked = true;
@@ -39,7 +50,6 @@ namespace Deciji_Letnji_Program.Forme
                     else if (tip == "večera" || tip == "vecera")
                         rbVecera.Checked = true;
 
-                    // 🔹 Postavi uzrast (npr. "7-10")
                     if (!string.IsNullOrEmpty(obrok.Uzrast))
                     {
                         var parts = obrok.Uzrast.Split('-');
@@ -52,10 +62,8 @@ namespace Deciji_Letnji_Program.Forme
                         }
                     }
 
-                    // 🔹 Postavi jelovnik
                     txtJelovnik.Text = obrok.Jelovnik ?? "";
 
-                    // 🔹 Postavi checkbox-eve za posebne opcije
                     cbBezglutenski.Checked = false;
                     cbVegetarijanski.Checked = false;
                     cbBezLaktoze.Checked = false;
@@ -73,13 +81,26 @@ namespace Deciji_Letnji_Program.Forme
                         if (opcije.Any(o => o.Contains("laktoz"))) cbBezLaktoze.Checked = true;
                         if (opcije.Any(o => o.Contains("posno"))) cbPosno.Checked = true;
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    if (obrok.Lokacija != null)
+                    {
+                        cmbLokacija.SelectedItem = ((System.Collections.IList)cmbLokacija.DataSource)
+                            .Cast<DTOs.LokacijaPregled>()
+                            .FirstOrDefault(l => l.Naziv == obrok.Lokacija.Naziv);
+                    }
+
+                    if (obrok.Aktivnost != null)
+                    {
+                        cmbAktivnost.SelectedItem = ((System.Collections.IList)cmbAktivnost.DataSource)
+                            .Cast<DTOs.AktivnostPregled>()
+                            .FirstOrDefault(a => a.Id == obrok.Aktivnost.IdAktivnosti);
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void NumUzrastOd_ValueChanged(object sender, EventArgs e)
@@ -118,7 +139,9 @@ namespace Deciji_Letnji_Program.Forme
                 return;
             }
 
-            // Sastavi string posebnih opcija
+            var selektovanaLokacija = cmbLokacija.SelectedItem as DTOs.LokacijaPregled;
+            var selektovanaAktivnost = cmbAktivnost.SelectedItem as DTOs.AktivnostPregled;
+
             var opcije = new StringBuilder();
             if (cbBezglutenski.Checked) opcije.Append("Bezglutenski, ");
             if (cbVegetarijanski.Checked) opcije.Append("Vegetarijanski, ");
@@ -132,7 +155,9 @@ namespace Deciji_Letnji_Program.Forme
                 Tip = tip,
                 Uzrast = $"{numUzrastOd.Value}-{numUzrastDo.Value}",
                 Jelovnik = txtJelovnik.Text,
-                PosebneOpcije = posebneOpcije
+                PosebneOpcije = posebneOpcije,
+                Lokacija = selektovanaLokacija != null ? new LokacijaBasic { Naziv = selektovanaLokacija.Naziv } : null,
+                Aktivnost = selektovanaAktivnost != null ? new AktivnostBasic { Id = selektovanaAktivnost.Id } : null
             };
 
             try

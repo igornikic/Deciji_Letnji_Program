@@ -46,6 +46,7 @@
             this.lblPosebne = new System.Windows.Forms.Label();
             this.txtPosebnePotrebe = new System.Windows.Forms.TextBox();
             this.btnSacuvaj = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblIme
@@ -103,12 +104,13 @@
             // 
             // rbMusko
             // 
+            this.rbMusko.Checked = true;
             this.rbMusko.Location = new System.Drawing.Point(150, 140);
             this.rbMusko.Name = "rbMusko";
             this.rbMusko.Size = new System.Drawing.Size(104, 24);
             this.rbMusko.TabIndex = 7;
+            this.rbMusko.TabStop = true;
             this.rbMusko.Text = "Musko";
-            this.rbMusko.Checked = true;
             // 
             // rbZensko
             // 
@@ -186,9 +188,21 @@
             this.btnSacuvaj.TabIndex = 17;
             this.btnSacuvaj.Text = "Sacuvaj";
             // 
-            // FormDeteDetalji
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(12, 387);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(395, 51);
+            this.textBox1.TabIndex = 18;
+            this.textBox1.Text = "Napomena: DETE NECE MOCI DA SE PRIJAVI NA AKTIVNOSTI AKO NEMA NEMA DOVOLJNO GODINA Z" +
+    "A TU AKTIVNOST!";
+            // 
+            // DeteDodajIzmeni
             // 
             this.ClientSize = new System.Drawing.Size(452, 450);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lblIme);
             this.Controls.Add(this.txtIme);
             this.Controls.Add(this.lblPrezime);
@@ -207,7 +221,7 @@
             this.Controls.Add(this.lblPosebne);
             this.Controls.Add(this.txtPosebnePotrebe);
             this.Controls.Add(this.btnSacuvaj);
-            this.Name = "FormDeteDetalji";
+            this.Name = "DeteDodajIzmeni";
             this.Text = "Detalji deteta";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -234,5 +248,6 @@
         private System.Windows.Forms.Label lblPosebne;
         private System.Windows.Forms.TextBox txtPosebnePotrebe;
         private System.Windows.Forms.Button btnSacuvaj;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

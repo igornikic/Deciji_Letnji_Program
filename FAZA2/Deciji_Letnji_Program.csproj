@@ -307,6 +307,18 @@
     <EmbeddedResource Include="Forme\AngazovanoLiceDodajIzmeni.resx">
       <DependentUpon>AngazovanoLiceDodajIzmeni.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forme\DecaNaAktivnosti.resx">
+      <DependentUpon>DecaNaAktivnosti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forme\EvidencijaPrisustva.resx">
+      <DependentUpon>EvidencijaPrisustva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forme\ObrokDodajIzmeni.resx">
+      <DependentUpon>ObrokDodajIzmeni.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forme\PrijavaDodajIzmeni.resx">
+      <DependentUpon>PrijavaDodajIzmeni.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forme\ZaposleniZaAktivnost.resx">
       <DependentUpon>ZaposleniZaAktivnost.cs</DependentUpon>
     </EmbeddedResource>

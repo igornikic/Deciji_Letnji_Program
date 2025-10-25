@@ -41,10 +41,6 @@ namespace Deciji_Letnji_Program.Forme
             }
         }
 
-        private void DugmeDetalji_Click(object sender, EventArgs e)
-        {
-        }
-
         private void DugmeDodelaObroka_Click(object sender, EventArgs e)
         {
             int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;

@@ -5,7 +5,7 @@ namespace Deciji_Letnji_Program
 {
     internal class DTOs
     {
-            #region Dete
+        #region Dete
 
         public class DetePregled
         {

@@ -25,13 +25,11 @@ namespace Deciji_Letnji_Program.Forme
             {
                 _loading = true;
 
-                // Napuni ComboBox statusa
                 cmbStatus.Items.Clear();
                 cmbStatus.Items.Add("na čekanju");
                 cmbStatus.Items.Add("odobreno");
                 cmbStatus.Items.Add("odbijeno");
 
-                // Učitaj aktivnosti i poveži ComboBox
                 var aktivnosti = await DTOManager.GetAllAktivnostiAsync();
                 cmbAktivnosti.DisplayMember = "Naziv";
                 cmbAktivnosti.ValueMember = "Id";
@@ -45,7 +43,6 @@ namespace Deciji_Letnji_Program.Forme
 
                 if (prijavaID.HasValue)
                 {
-                    // U režimu izmene
                     var prijava = await DTOManager.GetPrijavaAsync(prijavaID.Value);
 
                     dateTimePickerDatum.Value = prijava.DatumPrijave;
@@ -60,14 +57,16 @@ namespace Deciji_Letnji_Program.Forme
                     await UcitajDecuAsync(prijava.Roditelj.Id, prijava.Aktivnost.Id);
                     cmbDeca.SelectedValue = prijava.Dete.Id;
 
-                    cmbRoditelji.Enabled = true;
-                    cmbDeca.Enabled = true;
+                    cmbRoditelji.Enabled = false;
+                    cmbDeca.Enabled = false;
+                    dateTimePickerDatum.Enabled = false;
+                    cmbAktivnosti.Enabled = false;
                 }
                 else
                 {
                     // Nova prijava
                     cmbStatus.SelectedItem = "na čekanju";
-                    cmbStatus.Enabled = false; // ne može menjati status
+                    cmbStatus.Enabled = false; // ne moze menjati status
                     cmbAktivnosti.SelectedIndex = -1;
                     cmbRoditelji.DataSource = null;
                     cmbDeca.DataSource = null;
@@ -145,7 +144,7 @@ namespace Deciji_Letnji_Program.Forme
         {
             var roditelji = await DTOManager.GetRoditeljiZaAktivnostAsync(aktivnostId);
             cmbRoditelji.DisplayMember = "ImePrezime";
-            cmbRoditelji.ValueMember = "ID"; // ili "Id" ako je tako u DTO-u
+            cmbRoditelji.ValueMember = "ID";
             cmbRoditelji.DataSource = roditelji;
             cmbRoditelji.SelectedIndex = -1;
         }
@@ -154,7 +153,7 @@ namespace Deciji_Letnji_Program.Forme
         {
             var deca = await DTOManager.GetDecaZaRoditeljaIAktivnostAsync(roditeljId, aktivnostId);
             cmbDeca.DisplayMember = "PunoIme";
-            cmbDeca.ValueMember = "ID"; // ili "Id" ako je tako u DTO-u
+            cmbDeca.ValueMember = "ID";
             cmbDeca.DataSource = deca;
             cmbDeca.SelectedIndex = -1;
         }
@@ -191,7 +190,6 @@ namespace Deciji_Letnji_Program.Forme
                 }
                 else
                 {
-                    // status će backend ionako setovati na "na čekanju"
                     await DTOManager.AddPrijavaAsync(aktivnostId, roditeljId, deteId, datum, status);
                     MessageBox.Show("Prijava uspešno dodata.");
                 }

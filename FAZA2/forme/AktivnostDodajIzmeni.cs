@@ -56,6 +56,7 @@ namespace Deciji_Letnji_Program.Forme
 
                     txtSport.Text = aktivnost.Sport;
                     txtPosebnaOprema.Text = aktivnost.PosebnaOprema;
+                    txtPotrebnaOprema.Text = aktivnost.PotrebnaOprema;
                     txtPrevoz.Text = aktivnost.PrevoznoSredstvo;
                     txtVodic.Text = aktivnost.Vodic;
                     txtPlanPuta.Text = aktivnost.PlanPuta;
@@ -94,17 +95,20 @@ namespace Deciji_Letnji_Program.Forme
             // Reset vidljivosti specijalnih polja
             lblSport.Visible = txtSport.Visible = false;
             lblPosebnaOprema.Visible = txtPosebnaOprema.Visible = false;
+            lblPotrebnaOprema.Visible = txtPotrebnaOprema.Visible = false;
             lblPrevoz.Visible = txtPrevoz.Visible = false;
             lblVodic.Visible = txtVodic.Visible = false;
             lblPlanPuta.Visible = txtPlanPuta.Visible = false;
 
+
             if (tip == "Sportski trening")
             {
                 lblSport.Visible = txtSport.Visible = true;
+                lblPosebnaOprema.Visible = txtPosebnaOprema.Visible = true;
             }
             else if (tip == "Izlet")
             {
-                lblPosebnaOprema.Visible = txtPosebnaOprema.Visible = true;
+                lblPotrebnaOprema.Visible = txtPotrebnaOprema.Visible = true;
                 lblPrevoz.Visible = txtPrevoz.Visible = true;
                 lblVodic.Visible = txtVodic.Visible = true;
                 lblPlanPuta.Visible = txtPlanPuta.Visible = true;
@@ -146,6 +150,7 @@ namespace Deciji_Letnji_Program.Forme
                 MaxUcesnika = (int)numMaxUcesnika.Value,
                 Ogranicenja = txtOgranicenja.Text,
                 Sport = txtSport.Visible ? txtSport.Text : null,
+                PotrebnaOprema = txtPotrebnaOprema.Visible ? txtPotrebnaOprema.Text : null,
                 PosebnaOprema = txtPosebnaOprema.Visible ? txtPosebnaOprema.Text : null,
                 PrevoznoSredstvo = txtPrevoz.Visible ? txtPrevoz.Text : null,
                 Vodic = txtVodic.Visible ? txtVodic.Text : null,

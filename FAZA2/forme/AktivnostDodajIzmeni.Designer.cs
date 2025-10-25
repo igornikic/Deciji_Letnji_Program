@@ -35,6 +35,8 @@ namespace Deciji_Letnji_Program.Forme
             this.txtSport = new TextBox();
             this.lblPosebnaOprema = new Label();
             this.txtPosebnaOprema = new TextBox();
+            this.lblPotrebnaOprema = new Label();
+            this.txtPotrebnaOprema = new TextBox();
             this.lblPrevoz = new Label();
             this.txtPrevoz = new TextBox();
             this.lblVodic = new Label();
@@ -180,6 +182,17 @@ namespace Deciji_Letnji_Program.Forme
             this.txtPosebnaOprema.Location = new System.Drawing.Point(150, 297);
             this.txtPosebnaOprema.Width = 200;
 
+            // lblPotrebnaOprema
+            this.lblPotrebnaOprema = new Label();
+            this.lblPotrebnaOprema.Text = "Potrebna oprema:";
+            this.lblPotrebnaOprema.Location = new System.Drawing.Point(20, 300);
+            this.lblPotrebnaOprema.AutoSize = true;
+
+            // txtPotrebnaOprema
+            this.txtPotrebnaOprema = new TextBox();
+            this.txtPotrebnaOprema.Location = new System.Drawing.Point(150, 297);
+            this.txtPotrebnaOprema.Width = 200;
+
             // 
             // lblPrevoz
             // 
@@ -248,6 +261,8 @@ namespace Deciji_Letnji_Program.Forme
             this.Controls.Add(this.txtSport);
             this.Controls.Add(this.lblPosebnaOprema);
             this.Controls.Add(this.txtPosebnaOprema);
+            this.Controls.Add(this.lblPotrebnaOprema);
+            this.Controls.Add(this.txtPotrebnaOprema);
             this.Controls.Add(this.lblPrevoz);
             this.Controls.Add(this.txtPrevoz);
             this.Controls.Add(this.lblVodic);
@@ -285,6 +300,8 @@ namespace Deciji_Letnji_Program.Forme
         private TextBox txtSport;
         private Label lblPosebnaOprema;
         private TextBox txtPosebnaOprema;
+        private Label lblPotrebnaOprema;
+        private TextBox txtPotrebnaOprema;
         private Label lblPrevoz;
         private TextBox txtPrevoz;
         private Label lblVodic;
