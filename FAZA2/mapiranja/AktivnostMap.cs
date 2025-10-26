@@ -60,9 +60,9 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .Inverse()
                 .Cascade.All();
 
-            HasOne(x => x.Evaluacija)
-                            .PropertyRef("Aktivnost")
-                            .Cascade.All();
+            //HasOne(x => x.Evaluacija)
+            //                .PropertyRef("Aktivnost")
+            //                .Cascade.All();
 
 
 

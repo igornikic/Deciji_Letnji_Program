@@ -113,7 +113,6 @@ namespace Deciji_Letnji_Program.Forme
             {
                 var svaUcesca = await DTOManager.GetAllUcescaBasicAsync();
 
-                // pronađi učešća gde je ovaj roditelj pratilac
                 var ucescaRoditelja = svaUcesca
                     .Where(u => u.Roditelj != null && u.Roditelj.Id == roditeljId && u.Pratilac == "Da")
                     .ToList();
@@ -124,10 +123,9 @@ namespace Deciji_Letnji_Program.Forme
                     return;
                 }
 
-                // Pretpostavimo da _deteId uzimaš iz prvog ucesca (svi ucescaRoditelja imaju isto dete)
                 int deteId = ucescaRoditelja.First().Dete.Id;
 
-                var forma = new DodajKomentarOcenu(deteId, roditeljId); // samo deteId i roditeljId
+                var forma = new DodajKomentarOcenu(deteId, roditeljId);
                 forma.ShowDialog();
             }
             catch (Exception ex)

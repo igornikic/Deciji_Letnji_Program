@@ -26,7 +26,7 @@ namespace Deciji_Letnji_Program.Forme
             {
                 _loading = true;
 
-                // Učitaj sve aktivnosti
+                // Ucitaj sve aktivnosti
                 var aktivnosti = await DTOManager.GetAllAktivnostiAsync();
                 cmbAktivnosti.DisplayMember = "Naziv";
                 cmbAktivnosti.ValueMember = "Id";
@@ -37,7 +37,7 @@ namespace Deciji_Letnji_Program.Forme
 
                 if (evaluacijaID.HasValue)
                 {
-                    // Učitavanje postojeće evaluacije
+                    // Ucitavanje postojeće evaluacije
                     var eval = await DTOManager.GetEvaluacijaAsync(evaluacijaID.Value);
                     if (eval == null)
                     {
@@ -90,7 +90,7 @@ namespace Deciji_Letnji_Program.Forme
 
         private async Task UcitajAngazovanaLicaAsync(int aktivnostId)
         {
-            // Vraća sva lica angažovana na aktivnosti
+            // Vraca sva lica angažovana na aktivnosti
             var lica = await DTOManager.GetAngazovanaLicaZaAktivnostAsync(aktivnostId);
 
             cmbAngazovanaLica.DataSource = lica

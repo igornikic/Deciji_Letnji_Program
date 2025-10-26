@@ -1480,6 +1480,11 @@ namespace Deciji_Letnji_Program
 
                 using (ISession session = DataLayer.GetSession())
                 {
+                    bool postoji = await session.Query<AngazovanoLice>()
+                                        .AnyAsync(x => x.JMBG == lice.JMBG);
+                    if (postoji)
+                        throw new Exception("Osoba sa unetim JMBG-om već postoji");
+
                     var novoLice = new AngazovanoLice
                     {
                         JMBG = lice.JMBG,

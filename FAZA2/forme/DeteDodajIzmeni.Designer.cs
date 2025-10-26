@@ -196,8 +196,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(395, 51);
             this.textBox1.TabIndex = 18;
-            this.textBox1.Text = "Napomena: DETE NECE MOCI DA SE PRIJAVI NA AKTIVNOSTI AKO NEMA NEMA DOVOLJNO GODINA Z" +
-    "A TU AKTIVNOST!";
+            this.textBox1.Text = "Napomena: DETE NECE MOCI DA SE PRIJAVI NA AKTIVNOSTI AKO NEMA DOVOLJNO GODINA ZA TU AKTIVNOST!";
             // 
             // DeteDodajIzmeni
             // 

@@ -43,9 +43,32 @@ namespace Deciji_Letnji_Program.Forme
 
         private void DugmeDodelaObroka_Click(object sender, EventArgs e)
         {
-            int id = (int)dataGridViewDeca.CurrentRow.Cells["Id"].Value;
-            var formaDeca = new DodelaObroka(id);
-            formaDeca.ShowDialog();
+            if (dataGridViewDeca.Rows.Count == 0)
+            {
+                MessageBox.Show("Na ovoj aktivnosti nema dece kojima se može dodeliti obrok.",
+                    "Obaveštenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (dataGridViewDeca.CurrentRow == null)
+            {
+                MessageBox.Show("Molimo izaberite dete sa spiska pre dodele obroka.",
+                    "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                int id = Convert.ToInt32(dataGridViewDeca.CurrentRow.Cells["Id"].Value);
+                var formaDeca = new DodelaObroka(id);
+                formaDeca.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Došlo je do greške pri otvaranju forme za dodelu obroka: " + ex.Message,
+                    "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
     }
 }

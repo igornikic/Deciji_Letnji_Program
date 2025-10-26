@@ -57,16 +57,12 @@ INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (2, '1201990789012');
 INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (3, '1507990789013'); 
 INSERT INTO UCESCE (ID_aktivnosti, JMBG) VALUES (1, '0101990789014');
 INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
-VALUES (1, 1, 1, 'Da', 9, 'Sjajno iskustvo!', 'Da'); 
+VALUES (1, 1, 1, 'Da', NULL, NULL, 'Da'); 
 INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
-VALUES (2, 2, 2, 'Ne', 1, 'Nije prisustvovala', 'Ne'); 
+VALUES (2, 2, 2, 'Ne', NULL, NULL, 'Ne'); 
 INSERT INTO UCESTVUJE (ID_roditelj, ID_dete, ID_aktivnosti, Prisustvo, Ocena_aktivnosti, Komentari, Pratilac) 
 VALUES (3, 3, 3, 'Da', 10, 'Veoma korisno za dete', 'Da'); 
 INSERT INTO POVREDA (ID, ID_dete, ID_aktivnosti, Datum, Opis, Odgovorno_osoblje_JMBG, Preduzete_mere) 
 VALUES (1, 1, 2, TO_DATE('2025-07-15','YYYY-MM-DD'), 'Uganut zglob pri treningu', '0101990789014', 'Hlađenje i previjanje'); 
 INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
-VALUES (1, '2204990789015', 9, TO_DATE('2025-06-11', 'YYYY-MM-DD'), 'Odlična organizacija i saradnja'); 
-INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
-VALUES (2, '1201990789012', 8, TO_DATE('2025-07-16', 'YYYY-MM-DD'), 'Deca su bila motivisana'); 
-INSERT INTO EVALUACIJA (ID_aktivnosti, JMBG_lice, Ocena, Datum, Opis) 
-VALUES (3, '1507990789013', 10, TO_DATE('2025-05-11', 'YYYY-MM-DD'), 'Kreativna i korisna radionica');
+VALUES (1, '2204990789015', 9, TO_DATE('2025-06-11', 'YYYY-MM-DD'), 'Odlična organizacija i saradnja');

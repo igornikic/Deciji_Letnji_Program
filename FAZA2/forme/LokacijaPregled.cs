@@ -97,10 +97,8 @@ namespace Deciji_Letnji_Program.Forme
                 return;
             }
 
-            // Get the selected location's name
             selectedLocation = dataGridViewLokacije.CurrentRow.Cells["Naziv"].Value.ToString();
 
-            // Open the AktivnostPregled form filtered by location
             var aktivnostPregledForm = new AktivnostPregled(nazivLokacije: selectedLocation);
             aktivnostPregledForm.ShowDialog();
         }
@@ -114,7 +112,7 @@ namespace Deciji_Letnji_Program.Forme
 
             string nazivLokacije = dataGridViewLokacije.CurrentRow.Cells["Naziv"].Value.ToString();
 
-            var forma = new ObrokPregled(nazivLokacije); // konstruktor koji prikazuje obroke za tu lokaciju
+            var forma = new ObrokPregled(nazivLokacije);
             forma.ShowDialog();
         }
 

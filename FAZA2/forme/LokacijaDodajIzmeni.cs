@@ -51,9 +51,27 @@ namespace Deciji_Letnji_Program.Forme
 
         private async void BtnSacuvaj_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNaziv.Text) || (!radioOtvoreni.Checked && !radioZatvoreni.Checked))
+            if (string.IsNullOrWhiteSpace(txtNaziv.Text))
             {
-                MessageBox.Show("Naziv i tip su obavezna polja.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Naziv je obavezno polje.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!radioOtvoreni.Checked && !radioZatvoreni.Checked)
+            {
+                MessageBox.Show("Morate izabrati tip lokacije (otvoreni ili zatvoreni prostor).", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAdresa.Text))
+            {
+                MessageBox.Show("Adresa je obavezno polje.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (numKapacitet.Value <= 0)
+            {
+                MessageBox.Show("Kapacitet mora biti veći od nule.", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -27,7 +27,6 @@ namespace Deciji_Letnji_Program.Forme
                     var roditelj = await DTOManager.GetRoditeljAsync(RoditeljID.Value);
                     txtIme.Text = roditelj.Ime;
                     txtPrezime.Text = roditelj.Prezime;
-                    // Ako imate decu povezanu sa roditeljem, možete ih prikazati ili omogućiti odabir
                 }
                 catch (Exception ex)
                 {
@@ -38,11 +37,17 @@ namespace Deciji_Letnji_Program.Forme
 
         private async void BtnSacuvaj_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtIme.Text) || string.IsNullOrWhiteSpace(txtPrezime.Text))
+            {
+                MessageBox.Show("Morate uneti i ime i prezime roditelja.",
+                    "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var roditelj = new RoditeljBasic
             {
                 Ime = txtIme.Text,
                 Prezime = txtPrezime.Text,
-                // Povežite decu sa roditeljima ako su odabrana
             };
 
             try

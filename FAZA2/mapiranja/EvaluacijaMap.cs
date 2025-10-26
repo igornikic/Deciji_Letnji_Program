@@ -30,8 +30,10 @@ namespace Deciji_Letnji_Program.Mapiranja
             //    .Column("ID_aktivnosti")
             //    .Unique() // 1:1 — samo jedna evaluacija po aktivnosti
             //    .Cascade.None();
-            HasOne(x => x.Aktivnost).Constrained();
-            HasOne(x => x.AngazovanoLice).Cascade.All();
+            //HasOne(x => x.Aktivnost).Constrained();
+            //HasOne(x => x.AngazovanoLice).Cascade.All();
+            References(x => x.Aktivnost, "ID_aktivnosti").Unique();
+            References(x => x.AngazovanoLice, "JMBG_lice").Unique();
         }
     }
 }

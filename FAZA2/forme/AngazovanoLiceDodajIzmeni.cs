@@ -68,6 +68,13 @@ namespace Deciji_Letnji_Program.Forme
                 return;
             }
 
+            if (!cbVolonter.Checked && !cbTrener.Checked && !cbAnimator.Checked && !cbZdravstveniRadnik.Checked)
+            {
+                MessageBox.Show("Morate izabrati bar jednu ulogu (Volonter, Trener, Animator ili Zdravstveni radnik).",
+                    "Greška", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var lice = new AngazovanoLiceBasic
             {
                 JMBG = txtJMBG.Text,

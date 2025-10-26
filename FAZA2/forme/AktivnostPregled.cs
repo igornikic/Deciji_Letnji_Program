@@ -156,12 +156,10 @@ namespace Deciji_Letnji_Program.Forme
 
             try
             {
-                // Pozivamo metodu iz DTOManagera koja vraća obroke za selektovanu aktivnost
                 var obroci = await DTOManager.GetObrociZaAktivnostAsync(id);
 
                 if (obroci != null && obroci.Count > 0)
                 {
-                    // Ovdje možete otvoriti novu formu za prikaz obroka
                     var formaObroci = new ObrokPregled(id);
                     formaObroci.ShowDialog();
                 }
@@ -187,7 +185,7 @@ namespace Deciji_Letnji_Program.Forme
             int id = (int)dataGridViewAktivnosti.CurrentRow.Cells["Id"].Value;
 
             // Otvori formu sa evidencijom prisustva
-            var formaPrisustvo = new EvidencijaPrisustva(id);  // Pretpostavljamo da postoji forma PrisustvoPregled
+            var formaPrisustvo = new EvidencijaPrisustva(id);
             formaPrisustvo.ShowDialog();
         }
 

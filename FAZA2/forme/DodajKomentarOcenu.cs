@@ -26,7 +26,6 @@ namespace Deciji_Letnji_Program.Forme
 
         private void DodajKomentarOcenu_Load(object sender, EventArgs e)
         {
-            // Designer ne može da izvrši async, zato proveravamo DesignMode
             if (!DesignMode)
             {
                 _ = UcitajAktivnostiAsync();
@@ -92,7 +91,7 @@ namespace Deciji_Letnji_Program.Forme
 
                     if (!string.IsNullOrWhiteSpace(postojeca.Komentari) || postojeca.OcenaAktivnosti != null)
                     {
-                        MessageBox.Show("Komentar i ocena za ovog roditelja već postoje.", "Obaveštenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Komentar i ocena već postoje.", "Obaveštenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
@@ -111,7 +110,7 @@ namespace Deciji_Letnji_Program.Forme
                     }
                 }
 
-                // Ažuriraj komentar i ocenu
+                // Azuriraj komentar i ocenu
                 postojeca.OcenaAktivnosti = (int)nudOcena.Value;
                 postojeca.Komentari = txtKomentar.Text;
 

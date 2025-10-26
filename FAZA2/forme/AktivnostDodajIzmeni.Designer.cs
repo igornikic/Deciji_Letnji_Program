@@ -183,13 +183,11 @@ namespace Deciji_Letnji_Program.Forme
             this.txtPosebnaOprema.Width = 200;
 
             // lblPotrebnaOprema
-            this.lblPotrebnaOprema = new Label();
             this.lblPotrebnaOprema.Text = "Potrebna oprema:";
             this.lblPotrebnaOprema.Location = new System.Drawing.Point(20, 300);
             this.lblPotrebnaOprema.AutoSize = true;
 
             // txtPotrebnaOprema
-            this.txtPotrebnaOprema = new TextBox();
             this.txtPotrebnaOprema.Location = new System.Drawing.Point(150, 297);
             this.txtPotrebnaOprema.Width = 200;
 

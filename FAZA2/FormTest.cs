@@ -46,7 +46,7 @@ namespace Deciji_Letnji_Program
                         Adresa = "Bulevar Oslobođenja 15",
                         TelefonDeteta = "061123456",
                         EmailDeteta = "petar.petrovic@example.com",
-                        PosebnePotrebe = "Nema"
+                        PosebnePotrebe = null
                     };
 
                     s.Save(d);
