@@ -85,11 +85,22 @@ namespace Deciji_Letnji_Program
         {
             try
             {
-                // Validate non-nullable fields and phone/email format
-                if (string.IsNullOrEmpty(dete.Ime) || string.IsNullOrEmpty(dete.Prezime) || dete.DatumRodjenja == null || dete.Pol == '\0')
-                {
-                    return GetError("Ime, Prezime, Datum Rodjenja i Pol su obavezna polja.", 400);
-                }
+                if (string.IsNullOrWhiteSpace(dete.Ime) || string.IsNullOrWhiteSpace(dete.Prezime))
+                    return GetError("Ime i Prezime su obavezna polja.", 400);
+
+                if (dete.DatumRodjenja == default)
+                    return GetError("Datum rođenja je obavezno polje.", 400);
+
+                if (dete.Pol != 'M' && dete.Pol != 'Z')
+                    return GetError("Pol mora biti 'M' ili 'Z'.", 400);
+
+                if (!string.IsNullOrWhiteSpace(dete.TelefonDeteta) &&
+                    !Regex.IsMatch(dete.TelefonDeteta, @"^[+0-9 -]{6,20}$"))
+                    return GetError("Telefon deteta nije validan. Dozvoljeni su brojevi, plus, razmak i crtica, dužina 6-20.", 400);
+
+                if (!string.IsNullOrWhiteSpace(dete.EmailDeteta) &&
+                    !Regex.IsMatch(dete.EmailDeteta, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    return GetError("Email deteta nije validan. Primer: ime@domen.com", 400);
 
                 using (ISession session = DataLayer.GetSession())
                 {
@@ -114,30 +125,29 @@ namespace Deciji_Letnji_Program
                 return GetError("Doslo je do greske prilikom dodavanja deteta: " + ex.Message, 500);
             }
 
-            return true; // uspešno dodano
+            return true;
         }
 
         public static async Task<Result<bool, ErrorMessage>> UpdateDeteAsync(DetePregled dete)
         {
             try
             {
-                // Validacija non-nullable
-                if (string.IsNullOrEmpty(dete.Ime) || string.IsNullOrEmpty(dete.Prezime) || dete.DatumRodjenja == default || dete.Pol == '\0')
-                    return GetError("Ime, Prezime, Datum Rodjenja i Pol su obavezna polja.", 400);
+                if (string.IsNullOrWhiteSpace(dete.Ime) || string.IsNullOrWhiteSpace(dete.Prezime))
+                    return GetError("Ime i Prezime su obavezna polja.", 400);
 
-                // Telefon validacija – dozvoljeno prazno ili validan format
+                if (dete.DatumRodjenja == default)
+                    return GetError("Datum rođenja je obavezno polje.", 400);
+
+                if (dete.Pol != 'M' && dete.Pol != 'Z')
+                    return GetError("Pol mora biti 'M' ili 'Z'.", 400);
+
                 if (!string.IsNullOrWhiteSpace(dete.TelefonDeteta) &&
                     !Regex.IsMatch(dete.TelefonDeteta, @"^[+0-9 -]{6,20}$"))
-                {
-                    return GetError("Format telefona nije ispravan. Dozvoljeni su brojevi, plus, razmak i crtica.", 400);
-                }
+                    return GetError("Telefon deteta nije validan. Dozvoljeni su brojevi, plus, razmak i crtica, dužina 6-20.", 400);
 
-                // Email validacija – dozvoljeno prazno ili validan format
                 if (!string.IsNullOrWhiteSpace(dete.EmailDeteta) &&
-                    !Regex.IsMatch(dete.EmailDeteta, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
-                {
-                    return GetError("Format email adrese nije ispravan.", 400);
-                }
+                    !Regex.IsMatch(dete.EmailDeteta, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    return GetError("Email deteta nije validan. Primer: ime@domen.com", 400);
 
                 using (ISession session = DataLayer.GetSession())
                 {
@@ -158,7 +168,7 @@ namespace Deciji_Letnji_Program
                     await session.FlushAsync();
                 }
 
-                return true; // uspešno ažurirano
+                return true;
             }
             catch (Exception ex)
             {
@@ -186,7 +196,7 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom brisanja deteta: " + ex.Message, 500);
             }
 
-            return true; // uspešno obrisano
+            return true;
         }
 
         public static async Task<Result<List<TelefonRoditeljaPregled>, ErrorMessage>> GetTelefoniRoditeljaAsync(int roditeljId)
@@ -251,40 +261,6 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja emailova roditelja: " + ex.Message, 500);
             }
         }
-        //=============================================================================================================================
-        //OVO NE RADI LEPO ZBOG TOGA STO NEMAMO KONTRUKTOR U DTOs KOJI PRIMA ENTITETE LOKACIJA I EVALUACIJA IZ BAZE VEC SAMO KOPIRA DTO
-        //=============================================================================================================================
-
-        //public static async Task<List<AktivnostPregled>> GetAktivnostiZaDeteAsync(int deteId)
-        //{
-        //    try
-        //    {
-        //        using (ISession session = DataLayer.GetSession())
-        //        {
-        //            var dete = await session.GetAsync<Dete>(deteId);
-
-        //            if (dete == null)
-        //                throw new Exception("Dete sa zadatim ID-jem ne postoji.");
-
-        //            var aktivnosti = dete.Ucestvuje
-        //                .Select(u => u.Aktivnost)
-        //                .Select(a => new AktivnostPregled(
-        //                    a.IdAktivnosti,
-        //                    a.Tip,
-        //                    a.Naziv,
-        //                    a.Datum
-        //                ))
-        //                .ToList();
-
-        //            return aktivnosti;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Došlo je do greške prilikom učitavanja aktivnosti za dete: " + ex.Message, ex);
-        //    }
-        //}
-
         public static async Task<Result<List<DetePregled>, ErrorMessage>> GetDecaNaAktivnostiAsync(int aktivnostId)
         {
             try
@@ -350,53 +326,13 @@ namespace Deciji_Letnji_Program
                     await session.FlushAsync();
                 }
 
-                return true; // uspešno dodato
+                return true;
             }
             catch (Exception ex)
             {
                 return GetError("Greška prilikom povezivanja deteta sa roditeljem: " + ex.Message, 500);
             }
         }
-
-        public static async Task<Result<List<DetePregled>, ErrorMessage>> GetDecaZaDodavanjeStarateljstvaAsync(int roditeljId)
-        {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var roditelj = await session.GetAsync<Roditelj>(roditeljId);
-                    if (roditelj == null)
-                        return GetError($"Roditelj sa ID-em {roditeljId} ne postoji.", 404);
-
-                    var svaDeca = await session.Query<Dete>().ToListAsync();
-
-                    // Filtriramo decu koja već nisu pod starateljstvom tog roditelja
-                    var dostupnaDeca = svaDeca
-                        .Where(d => !roditelj.Deca.Contains(d))
-                        .Select(d => new DetePregled
-                        {
-                            ID = d.ID,
-                            Ime = d.Ime,
-                            Prezime = d.Prezime,
-                            DatumRodjenja = d.DatumRodjenja,
-                            Pol = d.Pol,
-                            Adresa = d.Adresa,
-                            TelefonDeteta = d.TelefonDeteta,
-                            EmailDeteta = d.EmailDeteta,
-                            PosebnePotrebe = d.PosebnePotrebe
-                        })
-                        .ToList();
-
-                    return dostupnaDeca;
-                }
-            }
-            catch (Exception ex)
-            {
-                return GetError("Greška prilikom učitavanja dostupne dece za starateljstvo: " + ex.Message, 500);
-            }
-        }
-
-
 
         #endregion
 
@@ -849,9 +785,6 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        /// <summary>
-        /// Broj prijava za konkretnu aktivnost — koristi se za proveru max učesnika.
-        /// </summary>
         public static async Task<Result<int, ErrorMessage>> GetBrojPrijavaZaAktivnostAsync(int aktivnostId)
         {
             try
@@ -878,9 +811,6 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Povreda
-        //=========================================================================================
-        //TREBA DA SE MENJA VEROVATNO, BAS LOSE DELUJE ------------- Zapravo Radi ali ne svidja mi se kako izgleda
-        //=========================================================================================
         public static async Task<Result<List<PovredaPregled>, ErrorMessage>> GetAllPovredeAsync()
         {
             try
@@ -951,9 +881,6 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja povreda: " + ex.Message, 500);
             }
         }
-        //===================================================================================
-        //ISTO OVDE
-        //===================================================================================
         public static async Task<Result<PovredaPregled, ErrorMessage>> GetPovredaAsync(int id)
         {
             try
@@ -1023,43 +950,42 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja povrede: " + ex.Message, 500);
             }
         }
-        //Mozda i ova =======================================================================
-        public static async Task<Result<bool, ErrorMessage>> AddPovredaAsync(PovredaPregled povreda)
+        public static async Task<Result<bool, ErrorMessage>> AddPovredaAsync(int aktivnostId, int deteId, string odgovornoLiceJMBG, PovredaPregled povreda)
         {
             try
             {
                 using (ISession session = DataLayer.GetSession())
                 using (ITransaction tx = session.BeginTransaction())
                 {
-                    // Provera i učitavanje povezanih entiteta
-                    var dete = povreda.Dete != null ? await session.GetAsync<Dete>(povreda.Dete.ID) : null;
-                    if (dete == null)
-                        return GetError("Dete sa zadatim ID-em ne postoji.", 404);
-
-                    var aktivnost = povreda.Aktivnost != null ? await session.GetAsync<Aktivnost>(povreda.Aktivnost.Id) : null;
+                    // Provere i dohvatanje entiteta
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
                     if (aktivnost == null)
                         return GetError("Aktivnost sa zadatim ID-em ne postoji.", 404);
 
-                    var lice = povreda.OdgovornoOsoblje != null ? await session.GetAsync<AngazovanoLice>(povreda.OdgovornoOsoblje.JMBG) : null;
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        return GetError("Dete sa zadatim ID-em ne postoji.", 404);
+
+                    var lice = await session.GetAsync<AngazovanoLice>(odgovornoLiceJMBG);
                     if (lice == null)
                         return GetError("Odgovorno lice sa zadatim JMBG ne postoji.", 404);
 
-                    // Kreiranje nove povrede
+                    // Kreiraj novu povredu
                     Povreda novaPovreda = new Povreda
                     {
                         Datum = povreda.Datum,
                         Opis = povreda.Opis,
                         PreduzeteMere = povreda.PreduzeteMere,
-                        Dete = dete,
                         Aktivnost = aktivnost,
+                        Dete = dete,
                         OdgovornoOsoblje = lice
                     };
 
                     await session.SaveAsync(novaPovreda);
                     await tx.CommitAsync();
-                }
 
-                return true; // uspešno dodato
+                    return true;
+                }
             }
             catch (Exception ex)
             {
@@ -1067,58 +993,52 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        public static async Task<Result<bool, ErrorMessage>> UpdatePovredaAsync(PovredaPregled povreda)
+
+        public static async Task<Result<bool, ErrorMessage>> UpdatePovredaAsync(int aktivnostId, int deteId, string odgovornoLiceJMBG, int povredaId, PovredaPregled povreda)
         {
             try
             {
                 using (ISession session = DataLayer.GetSession())
                 using (ITransaction tx = session.BeginTransaction())
                 {
-                    var postojeca = await session.GetAsync<Povreda>(povreda.Id);
+                    var postojeca = await session.GetAsync<Povreda>(povredaId);
                     if (postojeca == null)
                         return GetError("Povreda ne postoji u bazi.", 404);
 
-                    // Ažuriranje osnovnih polja
+                    // Provere i dohvatanje entiteta iz rute
+                    var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
+                    if (aktivnost == null)
+                        return GetError("Aktivnost sa zadatim ID-em ne postoji.", 404);
+
+                    var dete = await session.GetAsync<Dete>(deteId);
+                    if (dete == null)
+                        return GetError("Dete sa zadatim ID-em ne postoji.", 404);
+
+                    var lice = await session.GetAsync<AngazovanoLice>(odgovornoLiceJMBG);
+                    if (lice == null)
+                        return GetError("Odgovorno lice sa zadatim JMBG ne postoji.", 404);
+
+                    // Ažuriraj podatke
                     postojeca.Datum = povreda.Datum;
                     postojeca.Opis = povreda.Opis;
                     postojeca.PreduzeteMere = povreda.PreduzeteMere;
-
-                    // Ažuriranje povezanih entiteta
-                    if (povreda.Dete != null)
-                    {
-                        var dete = await session.GetAsync<Dete>(povreda.Dete.ID);
-                        if (dete == null)
-                            return GetError("Dete sa zadatim ID-em ne postoji.", 404);
-                        postojeca.Dete = dete;
-                    }
-
-                    if (povreda.Aktivnost != null)
-                    {
-                        var aktivnost = await session.GetAsync<Aktivnost>(povreda.Aktivnost.Id);
-                        if (aktivnost == null)
-                            return GetError("Aktivnost sa zadatim ID-em ne postoji.", 404);
-                        postojeca.Aktivnost = aktivnost;
-                    }
-
-                    if (povreda.OdgovornoOsoblje != null)
-                    {
-                        var lice = await session.GetAsync<AngazovanoLice>(povreda.OdgovornoOsoblje.JMBG);
-                        if (lice == null)
-                            return GetError("Odgovorno lice sa zadatim JMBG ne postoji.", 404);
-                        postojeca.OdgovornoOsoblje = lice;
-                    }
+                    postojeca.Aktivnost = aktivnost;
+                    postojeca.Dete = dete;
+                    postojeca.OdgovornoOsoblje = lice;
 
                     await session.UpdateAsync(postojeca);
                     await tx.CommitAsync();
-                }
 
-                return true; // uspešno ažurirano
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 return GetError("Došlo je do greške prilikom ažuriranja povrede: " + ex.Message, 500);
             }
         }
+
+
 
         public static async Task<Result<bool, ErrorMessage>> DeletePovredaAsync(int id)
         {
@@ -1134,7 +1054,7 @@ namespace Deciji_Letnji_Program
                     await session.DeleteAsync(povreda);
                     await tx.CommitAsync();
 
-                    return true; // uspešno obrisano
+                    return true; 
                 }
             }
             catch (Exception ex)
@@ -1224,6 +1144,26 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(aktivnost.Naziv))
+                    return GetError("Naziv aktivnosti je obavezan.", 400);
+
+                if (string.IsNullOrWhiteSpace(aktivnost.Tip) ||
+                    !new[] { "Izlet", "Sportski trening", "Kulturni program", "Radionica" }.Contains(aktivnost.Tip))
+                    return GetError("Tip aktivnosti je obavezan i mora biti jedan od: Izlet, Sportski trening, Kulturni program, Radionica.", 400);
+
+                if (aktivnost.MaxUcesnika <= 0)
+                    return GetError("Maksimalan broj učesnika mora biti veći od 0.", 400);
+
+                if (!string.IsNullOrWhiteSpace(aktivnost.StarosnaGrupa))
+                {
+                    var parts = aktivnost.StarosnaGrupa.Split('-');
+                    if (parts.Length != 2 || !int.TryParse(parts[0], out int od) || !int.TryParse(parts[1], out int doo) || od > doo)
+                        return GetError("Starosna grupa mora biti u formatu 'od-do', gde je 'od' <= 'do'.", 400);
+                }
+
+                if (aktivnost.Datum == null)
+                    return GetError("Datum aktivnosti je obavezan.", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 using (ITransaction tx = session.BeginTransaction())
                 {
@@ -1284,6 +1224,26 @@ namespace Deciji_Letnji_Program
                     var postojeca = await session.GetAsync<Aktivnost>(aktivnost.Id);
                     if (postojeca == null)
                         return GetError("Aktivnost sa zadatim ID-em ne postoji.", 404);
+
+                    if (string.IsNullOrWhiteSpace(aktivnost.Naziv))
+                        return GetError("Naziv aktivnosti je obavezan.", 400);
+
+                    if (string.IsNullOrWhiteSpace(aktivnost.Tip) ||
+                        !new[] { "Izlet", "Sportski trening", "Kulturni program", "Radionica" }.Contains(aktivnost.Tip))
+                        return GetError("Tip aktivnosti je obavezan i mora biti jedan od: Izlet, Sportski trening, Kulturni program, Radionica.", 400);
+
+                    if (aktivnost.MaxUcesnika <= 0)
+                        return GetError("Maksimalan broj učesnika mora biti veći od 0.", 400);
+
+                    if (!string.IsNullOrWhiteSpace(aktivnost.StarosnaGrupa))
+                    {
+                        var parts = aktivnost.StarosnaGrupa.Split('-');
+                        if (parts.Length != 2 || !int.TryParse(parts[0], out int od) || !int.TryParse(parts[1], out int doo) || od > doo)
+                            return GetError("Starosna grupa mora biti u formatu 'od-do', gde je 'od' <= 'do'.", 400);
+                    }
+
+                    if (aktivnost.Datum == null)
+                        return GetError("Datum aktivnosti je obavezan.", 400);
 
                     // Ažuriranje osnovnih polja
                     postojeca.Tip = aktivnost.Tip;
@@ -1347,9 +1307,6 @@ namespace Deciji_Letnji_Program
         #endregion
 
         #region Evaluacija
-        //===================================================================================
-        //SUMNJIVO
-        //===================================================================================
         public static async Task<Result<List<EvaluacijaPregled>, ErrorMessage>> GetAllEvaluacijeAsync()
         {
             try
@@ -1371,13 +1328,36 @@ namespace Deciji_Letnji_Program
                                 Datum = e.Aktivnost.Datum,
                                 StarosnaGrupa = e.Aktivnost.StarosnaGrupa,
                                 MaxUcesnika = e.Aktivnost.MaxUcesnika,
-                                Ogranicenja = e.Aktivnost.Ogranicenja
+                                Ogranicenja = e.Aktivnost.Ogranicenja,
+                                PrevoznoSredstvo = e.Aktivnost.PrevoznoSredstvo,
+                                PlanPuta = e.Aktivnost.PlanPuta,
+                                PotrebnaOprema = e.Aktivnost.PotrebnaOprema,
+                                Vodic = e.Aktivnost.Vodic,
+                                Sport = e.Aktivnost.Sport,
+                                PosebnaOprema = e.Aktivnost.PosebnaOprema,
+                                Lokacija = e.Aktivnost.Lokacija != null ? new LokacijaPregled
+                                {
+                                    Naziv = e.Aktivnost.Lokacija.Naziv,
+                                    Tip = e.Aktivnost.Lokacija.Tip,
+                                    Adresa = e.Aktivnost.Lokacija.Adresa,
+                                    Kapacitet = e.Aktivnost.Lokacija.Kapacitet,
+                                    DostupnaOprema = e.Aktivnost.Lokacija.DostupnaOprema
+                                } : null
                             } : null,
                             AngazovanoLice = e.AngazovanoLice != null ? new AngazovanoLicePregled
                             {
                                 JMBG = e.AngazovanoLice.JMBG,
                                 Ime = e.AngazovanoLice.Ime,
-                                Prezime = e.AngazovanoLice.Prezime
+                                Prezime = e.AngazovanoLice.Prezime,
+                                Pol = e.AngazovanoLice.Pol,
+                                Adresa = e.AngazovanoLice.Adresa,
+                                BrojTelefona = e.AngazovanoLice.BrojTelefona,
+                                Email = e.AngazovanoLice.Email,
+                                StrucnaSprema = e.AngazovanoLice.StrucnaSprema,
+                                Volonter = e.AngazovanoLice.Volonter,
+                                Trener = e.AngazovanoLice.Trener,
+                                Animator = e.AngazovanoLice.Animator,
+                                ZdravstveniRadnik = e.AngazovanoLice.ZdravstveniRadnik
                             } : null
                         })
                         .ToListAsync();
@@ -1397,31 +1377,54 @@ namespace Deciji_Letnji_Program
             {
                 using (ISession session = DataLayer.GetSession())
                 {
-                    var evaluacija = await session.GetAsync<Evaluacija>(id);
-                    if (evaluacija == null)
+                    var e = await session.GetAsync<Evaluacija>(id);
+                    if (e == null)
                         return GetError($"Evaluacija sa ID-em {id} ne postoji.", 404);
 
                     var ep = new EvaluacijaPregled
                     {
-                        Id = evaluacija.ID,
-                        Ocena = evaluacija.Ocena,
-                        Datum = evaluacija.Datum,
-                        Opis = evaluacija.Opis,
-                        Aktivnost = evaluacija.Aktivnost != null ? new AktivnostPregled
+                        Id = e.ID,
+                        Ocena = e.Ocena,
+                        Datum = e.Datum,
+                        Opis = e.Opis,
+                        Aktivnost = e.Aktivnost != null ? new AktivnostPregled
                         {
-                            Id = evaluacija.Aktivnost.IdAktivnosti,
-                            Naziv = evaluacija.Aktivnost.Naziv,
-                            Tip = evaluacija.Aktivnost.Tip,
-                            Datum = evaluacija.Aktivnost.Datum,
-                            StarosnaGrupa = evaluacija.Aktivnost.StarosnaGrupa,
-                            MaxUcesnika = evaluacija.Aktivnost.MaxUcesnika,
-                            Ogranicenja = evaluacija.Aktivnost.Ogranicenja
+                            Id = e.Aktivnost.IdAktivnosti,
+                            Naziv = e.Aktivnost.Naziv,
+                            Tip = e.Aktivnost.Tip,
+                            Datum = e.Aktivnost.Datum,
+                            StarosnaGrupa = e.Aktivnost.StarosnaGrupa,
+                            MaxUcesnika = e.Aktivnost.MaxUcesnika,
+                            Ogranicenja = e.Aktivnost.Ogranicenja,
+                            PrevoznoSredstvo = e.Aktivnost.PrevoznoSredstvo,
+                            PlanPuta = e.Aktivnost.PlanPuta,
+                            PotrebnaOprema = e.Aktivnost.PotrebnaOprema,
+                            Vodic = e.Aktivnost.Vodic,
+                            Sport = e.Aktivnost.Sport,
+                            PosebnaOprema = e.Aktivnost.PosebnaOprema,
+                            Lokacija = e.Aktivnost.Lokacija != null ? new LokacijaPregled
+                            {
+                                Naziv = e.Aktivnost.Lokacija.Naziv,
+                                Tip = e.Aktivnost.Lokacija.Tip,
+                                Adresa = e.Aktivnost.Lokacija.Adresa,
+                                Kapacitet = e.Aktivnost.Lokacija.Kapacitet,
+                                DostupnaOprema = e.Aktivnost.Lokacija.DostupnaOprema
+                            } : null
                         } : null,
-                        AngazovanoLice = evaluacija.AngazovanoLice != null ? new AngazovanoLicePregled
+                        AngazovanoLice = e.AngazovanoLice != null ? new AngazovanoLicePregled
                         {
-                            JMBG = evaluacija.AngazovanoLice.JMBG,
-                            Ime = evaluacija.AngazovanoLice.Ime,
-                            Prezime = evaluacija.AngazovanoLice.Prezime
+                            JMBG = e.AngazovanoLice.JMBG,
+                            Ime = e.AngazovanoLice.Ime,
+                            Prezime = e.AngazovanoLice.Prezime,
+                            Pol = e.AngazovanoLice.Pol,
+                            Adresa = e.AngazovanoLice.Adresa,
+                            BrojTelefona = e.AngazovanoLice.BrojTelefona,
+                            Email = e.AngazovanoLice.Email,
+                            StrucnaSprema = e.AngazovanoLice.StrucnaSprema,
+                            Volonter = e.AngazovanoLice.Volonter,
+                            Trener = e.AngazovanoLice.Trener,
+                            Animator = e.AngazovanoLice.Animator,
+                            ZdravstveniRadnik = e.AngazovanoLice.ZdravstveniRadnik
                         } : null
                     };
 
@@ -1433,9 +1436,15 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja evaluacije: " + ex.Message, 500);
             }
         }
-        //====================================================================================
-        //NISAM SIGURAN DA RADI
-        //====================================================================================
+        
+        // primer upotrebe
+        //{
+        //  "idAktivnosti": 1,
+        //  "jmbgLica": "1231231231238",
+        //  "ocena": 10,
+        //  "opis": "asdsa",
+        //  "datum": "2025-10-26T14:36:55.009Z"
+        //}
         public static async Task<Result<bool, ErrorMessage>> AddEvaluacijaAsync(EvaluacijaPregled evaluacija)
         {
             try
@@ -1471,7 +1480,7 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno dodato
+                return true;
             }
             catch (Exception ex)
             {
@@ -1516,7 +1525,7 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno ažurirano
+                return true;
             }
             catch (Exception ex)
             {
@@ -1539,7 +1548,7 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno obrisano
+                return true;
             }
             catch (Exception ex)
             {
@@ -1548,9 +1557,7 @@ namespace Deciji_Letnji_Program
         }
 
         #endregion
-        //=========================================================
-        //VALJDA RADII
-        //=========================================================
+      
         #region Obrok
         public static async Task<Result<List<ObrokPregled>, ErrorMessage>> GetObrociZaDeteAsync(int deteId)
         {
@@ -1562,7 +1569,6 @@ namespace Deciji_Letnji_Program
                     if (dete == null)
                         return GetError("Dete sa datim ID-jem nije pronađeno.", 404);
 
-                    // Eksplicitno učitavanje obroka
                     await NHibernateUtil.InitializeAsync(dete.Obroci);
 
                     var obroci = dete.Obroci.Select(o => new ObrokPregled
@@ -1648,7 +1654,7 @@ namespace Deciji_Letnji_Program
                         })
                         .ToListAsync();
 
-                    return obroci; // uspešno učitano
+                    return obroci;
                 }
             }
             catch (Exception ex)
@@ -1657,7 +1663,6 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        // DataProvider
         public static async Task<Result<ObrokPregled, ErrorMessage>> GetObrokAsync(int id)
         {
             try
@@ -1668,7 +1673,6 @@ namespace Deciji_Letnji_Program
                     if (obrok == null)
                         return GetError($"Obrok sa ID-em {id} ne postoji.", 404);
 
-                    // Mapiranje u ObrokPregled
                     var op = new ObrokPregled
                     {
                         Id = obrok.ID,
@@ -1704,13 +1708,31 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja obroka: " + ex.Message, 500);
             }
         }
-        //==============================================================
-        //Ne znam dal radi lepo zbog ovih veza
-        //==============================================================
         public static async Task<Result<bool, ErrorMessage>> AddObrokAsync(ObrokPregled obrok)
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(obrok.Tip) ||
+                    !(new[] { "Doručak", "Ručak", "Večera" }.Contains(obrok.Tip, StringComparer.OrdinalIgnoreCase)))
+                {
+                    return GetError("Tip obroka nije validan. Unesite 'Doručak', 'Ručak' ili 'Večera'.", 400);
+                }
+
+                if (string.IsNullOrWhiteSpace(obrok.Jelovnik))
+                    return GetError("Jelovnik je obavezno polje. Unesite sadržaj jelovnika.", 400);
+
+                if (string.IsNullOrWhiteSpace(obrok.Uzrast) || !obrok.Uzrast.Contains('-'))
+                    return GetError("Uzrast je obavezno polje u formatu 'od-do' (npr. '6-8').", 400);
+
+                var parts = obrok.Uzrast.Split('-');
+                if (parts.Length != 2 ||
+                    !decimal.TryParse(parts[0], out decimal od) ||
+                    !decimal.TryParse(parts[1], out decimal doVrednost) ||
+                    od > doVrednost)
+                {
+                    return GetError("Uzrast mora biti u formatu 'od-do', gde je od <= do.", 400);
+                }
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     Obrok noviObrok = new Obrok
@@ -1730,7 +1752,7 @@ namespace Deciji_Letnji_Program
                     await session.SaveAsync(noviObrok);
                     await session.FlushAsync();
 
-                    return true; // uspešno dodato
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -1743,6 +1765,27 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(obrok.Tip) ||
+                  !(new[] { "Doručak", "Ručak", "Večera" }.Contains(obrok.Tip, StringComparer.OrdinalIgnoreCase)))
+                {
+                    return GetError("Tip obroka nije validan. Unesite 'Doručak', 'Ručak' ili 'Večera'.", 400);
+                }
+
+                if (string.IsNullOrWhiteSpace(obrok.Jelovnik))
+                    return GetError("Jelovnik je obavezno polje. Unesite sadržaj jelovnika.", 400);
+
+                if (string.IsNullOrWhiteSpace(obrok.Uzrast) || !obrok.Uzrast.Contains('-'))
+                    return GetError("Uzrast je obavezno polje u formatu 'od-do' (npr. '6-8').", 400);
+
+                var parts = obrok.Uzrast.Split('-');
+                if (parts.Length != 2 ||
+                    !decimal.TryParse(parts[0], out decimal od) ||
+                    !decimal.TryParse(parts[1], out decimal doVrednost) ||
+                    od > doVrednost)
+                {
+                    return GetError("Uzrast mora biti u formatu 'od-do', gde je od <= do.", 400);
+                }
+
                 using (ISession session = DataLayer.GetSession())
                 using (ITransaction tx = session.BeginTransaction())
                 {
@@ -1775,7 +1818,7 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno ažurirano
+                return true;
             }
             catch (Exception ex)
             {
@@ -1798,16 +1841,13 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno obrisano
+                return true;
             }
             catch (Exception ex)
             {
                 return GetError("Došlo je do greške prilikom brisanja obroka: " + ex.Message, 500);
             }
         }
-        //===================================================================================================
-        //ODLICNO RADI proverava i uzrast, i da li dete postoji i sve
-        //===================================================================================================
         public static async Task<Result<bool, ErrorMessage>> DodeliObrokDetetuAsync(int deteId, int obrokId)
         {
             try
@@ -1870,7 +1910,7 @@ namespace Deciji_Letnji_Program
                     await tx.CommitAsync();
                 }
 
-                return true; // uspešno dodeljeno
+                return true; 
             }
             catch (Exception ex)
             {
@@ -1903,7 +1943,6 @@ namespace Deciji_Letnji_Program
                             Trener = al.Trener,
                             Animator = al.Animator,
                             ZdravstveniRadnik = al.ZdravstveniRadnik,
-                            // Ne učitavamo veze: Aktivnosti, Evaluacije, Povrede
                             Aktivnosti = null,
                             Evaluacija = null,
                             Povrede = null
@@ -1918,103 +1957,6 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja angažovanih lica: " + ex.Message, 500);
             }
         }
-        //=================================================================================
-        //MOZE I NA OVAJ NACIN DA VRACA I SVE VEZE ALI NE ZNAM DA LI TO ZAPRAVO ZELIMO 
-        //=================================================================================
-
-        //public static async Task<Result<List<AngazovanoLicePregled>, ErrorMessage>> GetAllAngazovanaLicaAsync()
-        //{
-        //    try
-        //    {
-        //        using (ISession session = DataLayer.GetSession())
-        //        {
-        //            var lica = await session.Query<AngazovanoLice>()
-        //                .Select(al => new AngazovanoLicePregled
-        //                {
-        //                    JMBG = al.JMBG,
-        //                    Ime = al.Ime,
-        //                    Prezime = al.Prezime,
-        //                    Pol = al.Pol,
-        //                    Adresa = al.Adresa,
-        //                    BrojTelefona = al.BrojTelefona,
-        //                    Email = al.Email,
-        //                    StrucnaSprema = al.StrucnaSprema,
-        //                    Volonter = al.Volonter,
-        //                    Trener = al.Trener,
-        //                    Animator = al.Animator,
-        //                    ZdravstveniRadnik = al.ZdravstveniRadnik,
-        //                    Aktivnosti = al.Aktivnosti.Select(a => new AktivnostPregled
-        //                    {
-        //                        Id = a.IdAktivnosti,
-        //                        Tip = a.Tip,
-        //                        Naziv = a.Naziv,
-        //                        Datum = a.Datum,
-        //                        StarosnaGrupa = a.StarosnaGrupa,
-        //                        MaxUcesnika = a.MaxUcesnika,
-        //                        Ogranicenja = a.Ogranicenja,
-        //                        PrevoznoSredstvo = a.PrevoznoSredstvo,
-        //                        PlanPuta = a.PlanPuta,
-        //                        PotrebnaOprema = a.PotrebnaOprema,
-        //                        Vodic = a.Vodic,
-        //                        Sport = a.Sport,
-        //                        PosebnaOprema = a.PosebnaOprema,
-        //                        Lokacija = a.Lokacija != null ? new LokacijaPregled
-        //                        {
-        //                            Naziv = a.Lokacija.Naziv,
-        //                            Tip = a.Lokacija.Tip,
-        //                            Adresa = a.Lokacija.Adresa,
-        //                            Kapacitet = a.Lokacija.Kapacitet,
-        //                            DostupnaOprema = a.Lokacija.DostupnaOprema
-        //                        } : null,
-        //                        Evaluacija = a.Evaluacija != null ? new EvaluacijaPregled
-        //                        {
-        //                            Id = a.Evaluacija.ID,
-        //                            Ocena = a.Evaluacija.Ocena,
-        //                            Datum = a.Evaluacija.Datum,
-        //                            Opis = a.Evaluacija.Opis
-        //                        } : null
-        //                    }).ToList(),
-        //                    Evaluacija = al.Evaluacija != null ? new EvaluacijaPregled
-        //                    {
-        //                        Id = al.Evaluacija.ID,
-        //                        Ocena = al.Evaluacija.Ocena,
-        //                        Datum = al.Evaluacija.Datum,
-        //                        Opis = al.Evaluacija.Opis
-        //                    } : null,
-        //                    Povrede = al.Povrede.Select(p => new PovredaPregled
-        //                    {
-        //                        Id = p.ID,
-        //                        Datum = p.Datum,
-        //                        Opis = p.Opis,
-        //                        PreduzeteMere = p.PreduzeteMere,
-        //                        Dete = p.Dete != null ? new DetePregled
-        //                        {
-        //                            Id = p.Dete.IdDeteta,
-        //                            Ime = p.Dete.Ime,
-        //                            Prezime = p.Dete.Prezime
-        //                        } : null,
-        //                        Aktivnost = p.Aktivnost != null ? new AktivnostPregled
-        //                        {
-        //                            Id = p.Aktivnost.IdAktivnosti,
-        //                            Naziv = p.Aktivnost.Naziv
-        //                        } : null,
-        //                        OdgovornoOsoblje = p.OdgovornoOsoblje != null ? new AngazovanoLicePregled
-        //                        {
-        //                            JMBG = p.OdgovornoOsoblje.JMBG,
-        //                            Ime = p.OdgovornoOsoblje.Ime,
-        //                            Prezime = p.OdgovornoOsoblje.Prezime
-        //                        } : null
-        //                    }).ToList()
-        //                }).ToListAsync();
-
-        //            return lica;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return GetError("Došlo je do greške prilikom učitavanja angažovanih lica: " + ex.Message, 500);
-        //    }
-        //}
 
         public static async Task<Result<AngazovanoLicePregled, ErrorMessage>> GetAngazovanoLiceAsync(string jmbg)
         {
@@ -2041,7 +1983,6 @@ namespace Deciji_Letnji_Program
                         Trener = lice.Trener,
                         Animator = lice.Animator,
                         ZdravstveniRadnik = lice.ZdravstveniRadnik
-                        // Bez Evaluacija, Aktivnosti i Povrede
                     };
 
                     return alb;
@@ -2060,8 +2001,38 @@ namespace Deciji_Letnji_Program
                 using (ISession session = DataLayer.GetSession())
                 {
                     // Provera obaveznih polja
-                    if (string.IsNullOrWhiteSpace(lice.JMBG) || string.IsNullOrWhiteSpace(lice.Ime) || string.IsNullOrWhiteSpace(lice.Prezime))
-                        return GetError("JMBG, Ime i Prezime su obavezni.", 400);
+                    if (string.IsNullOrWhiteSpace(lice.JMBG))
+                        return GetError("JMBG je obavezan i mora imati 13 cifara.", 400);
+
+                    if (!Regex.IsMatch(lice.JMBG, @"^\d{13}$"))
+                        return GetError("JMBG mora sadržati tačno 13 cifara.", 400);
+
+                    if (string.IsNullOrWhiteSpace(lice.Ime))
+                        return GetError("Ime je obavezno.", 400);
+
+                    if (string.IsNullOrWhiteSpace(lice.Prezime))
+                        return GetError("Prezime je obavezno.", 400);
+
+                    if (lice.Pol != 'M' && lice.Pol != 'Z')
+                        return GetError("Pol mora biti 'M' ili 'Z'.", 400);
+
+                    if (!string.IsNullOrWhiteSpace(lice.BrojTelefona) &&
+                        !Regex.IsMatch(lice.BrojTelefona, @"^[+0-9 -]{6,20}$"))
+                        return GetError("Broj telefona nije validan. Primer validnog formata: +381601234567.", 400);
+
+                    if (!string.IsNullOrWhiteSpace(lice.Email) &&
+                        !Regex.IsMatch(lice.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                        return GetError("Email adresa nije validna.", 400);
+
+                    // Provera oblasti rada
+                    if (lice.Volonter != 'Y' && lice.Volonter != 'N')
+                        return GetError("Polje Volonter mora biti 'Y' ili 'N'.", 400);
+                    if (lice.Trener != 'Y' && lice.Trener != 'N')
+                        return GetError("Polje Trener mora biti 'Y' ili 'N'.", 400);
+                    if (lice.Animator != 'Y' && lice.Animator != 'N')
+                        return GetError("Polje Animator mora biti 'Y' ili 'N'.", 400);
+                    if (lice.ZdravstveniRadnik != 'Y' && lice.ZdravstveniRadnik != 'N')
+                        return GetError("Polje Zdravstveni radnik mora biti 'Y' ili 'N'.", 400);
 
                     // Provera da li lice već postoji
                     var postoji = await session.GetAsync<AngazovanoLice>(lice.JMBG);
@@ -2087,7 +2058,7 @@ namespace Deciji_Letnji_Program
                     await session.SaveAsync(novoLice);
                     await session.FlushAsync();
 
-                    return true; // uspešno dodato
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2102,6 +2073,40 @@ namespace Deciji_Letnji_Program
             {
                 using (ISession session = DataLayer.GetSession())
                 {
+                    // Provera obaveznih polja
+                    if (string.IsNullOrWhiteSpace(lice.JMBG))
+                        return GetError("JMBG je obavezan i mora imati 13 cifara.", 400);
+
+                    if (!Regex.IsMatch(lice.JMBG, @"^\d{13}$"))
+                        return GetError("JMBG mora sadržati tačno 13 cifara.", 400);
+
+                    if (string.IsNullOrWhiteSpace(lice.Ime))
+                        return GetError("Ime je obavezno.", 400);
+
+                    if (string.IsNullOrWhiteSpace(lice.Prezime))
+                        return GetError("Prezime je obavezno.", 400);
+
+                    if (lice.Pol != 'M' && lice.Pol != 'Z')
+                        return GetError("Pol mora biti 'M' ili 'Z'.", 400);
+
+                    if (!string.IsNullOrWhiteSpace(lice.BrojTelefona) &&
+                        !Regex.IsMatch(lice.BrojTelefona, @"^[+0-9 -]{6,20}$"))
+                        return GetError("Broj telefona nije validan. Primer validnog formata: +381601234567.", 400);
+
+                    if (!string.IsNullOrWhiteSpace(lice.Email) &&
+                        !Regex.IsMatch(lice.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                        return GetError("Email adresa nije validna.", 400);
+
+                    // Provera oblasti rada
+                    if (lice.Volonter != 'Y' && lice.Volonter != 'N')
+                        return GetError("Polje Volonter mora biti 'Y' ili 'N'.", 400);
+                    if (lice.Trener != 'Y' && lice.Trener != 'N')
+                        return GetError("Polje Trener mora biti 'Y' ili 'N'.", 400);
+                    if (lice.Animator != 'Y' && lice.Animator != 'N')
+                        return GetError("Polje Animator mora biti 'Y' ili 'N'.", 400);
+                    if (lice.ZdravstveniRadnik != 'Y' && lice.ZdravstveniRadnik != 'N')
+                        return GetError("Polje Zdravstveni radnik mora biti 'Y' ili 'N'.", 400);
+
                     var postojeci = await session.GetAsync<AngazovanoLice>(lice.JMBG);
                     if (postojeci == null)
                         return GetError($"Angažovano lice sa JMBG-om {lice.JMBG} ne postoji.", 404);
@@ -2121,7 +2126,7 @@ namespace Deciji_Letnji_Program
                     await session.UpdateAsync(postojeci);
                     await session.FlushAsync();
 
-                    return true; // uspešno ažurirano
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2143,7 +2148,7 @@ namespace Deciji_Letnji_Program
                     await session.DeleteAsync(lice);
                     await session.FlushAsync();
 
-                    return true; // uspešno obrisano
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2244,6 +2249,16 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(lokacija.Naziv))
+                    return GetError("Naziv lokacije je obavezno polje.", 400);
+
+                if (string.IsNullOrWhiteSpace(lokacija.Tip) ||
+                    (lokacija.Tip != "zatvoreni prostor" && lokacija.Tip != "otvoreni prostor"))
+                    return GetError("Tip lokacije mora biti 'zatvoreni prostor' ili 'otvoreni prostor'.", 400);
+
+                if (lokacija.Kapacitet <= 0)
+                    return GetError("Kapacitet lokacije mora biti veći od 0.", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     Lokacija novaLokacija = new Lokacija
@@ -2258,7 +2273,7 @@ namespace Deciji_Letnji_Program
                     await session.SaveAsync(novaLokacija);
                     await session.FlushAsync();
 
-                    return true; // uspešno dodato
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2271,6 +2286,16 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(lokacija.Naziv))
+                    return GetError("Naziv lokacije je obavezno polje.", 400);
+
+                if (string.IsNullOrWhiteSpace(lokacija.Tip) ||
+                    (lokacija.Tip != "zatvoreni prostor" && lokacija.Tip != "otvoreni prostor"))
+                    return GetError("Tip lokacije mora biti 'zatvoreni prostor' ili 'otvoreni prostor'.", 400);
+
+                if (lokacija.Kapacitet <= 0)
+                    return GetError("Kapacitet lokacije mora biti veći od 0.", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     var postojeca = await session.GetAsync<Lokacija>(lokacija.Naziv);
@@ -2320,30 +2345,6 @@ namespace Deciji_Letnji_Program
 
         #region TelefonRoditelja
 
-        public static async Task<Result<List<TelefonRoditeljaPregled>, ErrorMessage>> GetAllTelefoniRoditeljaAsync()
-        {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var telefoni = await session.Query<TelefonRoditelja>()
-                        .Select(t => new TelefonRoditeljaPregled
-                        {
-                            Id = t.ID,
-                            Telefon = t.Telefon
-                            // Dete se ovde ne uključuje da bismo izbegli veze
-                        })
-                        .ToListAsync();
-
-                    return telefoni;
-                }
-            }
-            catch (Exception ex)
-            {
-                return GetError("Došlo je do greške prilikom učitavanja telefona roditelja: " + ex.Message, 500);
-            }
-        }
-
         public static async Task<(bool isError, TelefonRoditeljaPregled? ok, ErrorMessage? error)> GetTelefonRoditeljaAsync(int id)
         {
             try
@@ -2359,7 +2360,7 @@ namespace Deciji_Letnji_Program
                     {
                         Id = telefon.ID,
                         Telefon = telefon.Telefon,
-                        Dete = null // ne vraćamo objekat Deteta
+                        Dete = null 
                     };
 
                     return (false, dto, null);
@@ -2375,6 +2376,12 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(telefonDto.Telefon))
+                    return GetError("Polje 'Telefon' je obavezno.", 400);
+
+                if (!Regex.IsMatch(telefonDto.Telefon, @"^[+0-9 -]{6,20}$"))
+                    return GetError("Format telefona nije ispravan. Dozvoljeni su brojevi, plus, razmak i crtica (6–20 karaktera).", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     var dete = await session.GetAsync<Dete>(deteId);
@@ -2390,7 +2397,7 @@ namespace Deciji_Letnji_Program
                     await session.SaveAsync(noviTelefon);
                     await session.FlushAsync();
 
-                    return true; // uspešno dodato
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2403,6 +2410,12 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(telefonDto.Telefon))
+                    return GetError("Polje 'Telefon' je obavezno.", 400);
+
+                if (!Regex.IsMatch(telefonDto.Telefon, @"^[+0-9 -]{6,20}$"))
+                    return GetError("Format telefona nije ispravan. Dozvoljeni su brojevi, plus, razmak i crtica (6–20 karaktera).", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     var telefon = await session.GetAsync<TelefonRoditelja>(telefonDto.Id);
@@ -2414,7 +2427,7 @@ namespace Deciji_Letnji_Program
                     await session.UpdateAsync(telefon);
                     await session.FlushAsync();
 
-                    return true; // uspešno ažurirano
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -2462,7 +2475,13 @@ namespace Deciji_Letnji_Program
                             {
                                 ID = t.Dete.ID,
                                 Ime = t.Dete.Ime,
-                                Prezime = t.Dete.Prezime
+                                Prezime = t.Dete.Prezime,
+                                DatumRodjenja = t.Dete.DatumRodjenja,
+                                Pol = t.Dete.Pol,
+                                Adresa = t.Dete.Adresa,
+                                TelefonDeteta = t.Dete.TelefonDeteta,
+                                EmailDeteta = t.Dete.EmailDeteta,
+                                PosebnePotrebe = t.Dete.PosebnePotrebe
                             }
                         })
                         .ToListAsync();
@@ -2483,38 +2502,6 @@ namespace Deciji_Letnji_Program
 
         #region EmailRoditelja
 
-        public static async Task<Result<List<EmailRoditeljaPregled>, ErrorMessage>> GetAllEmailoviRoditeljaAsync()
-        {
-            try
-            {
-                using (ISession session = DataLayer.GetSession())
-                {
-                    var emailovi = await session.Query<EmailRoditelja>()
-                        .Select(e => new EmailRoditeljaPregled
-                        {
-                            Id = e.ID,
-                            Email = e.Email,
-                            Dete = new DetePregled
-                            {
-                                ID = e.Dete.ID,
-                                Ime = e.Dete.Ime,
-                                Prezime = e.Dete.Prezime
-                            }
-                        })
-                        .ToListAsync();
-
-                    if (emailovi == null || emailovi.Count == 0)
-                        return GetError("Nema pronađenih emailova roditelja.", 404);
-
-                    return emailovi;
-                }
-            }
-            catch (Exception ex)
-            {
-                return GetError("Došlo je do greške prilikom učitavanja emailova roditelja: " + ex.Message, 500);
-            }
-        }
-
         public static async Task<Result<EmailRoditeljaPregled, ErrorMessage>> GetEmailRoditeljaAsync(int id)
         {
             try
@@ -2529,13 +2516,7 @@ namespace Deciji_Letnji_Program
                     var dto = new EmailRoditeljaPregled
                     {
                         Id = email.ID,
-                        Email = email.Email,
-                        Dete = new DetePregled
-                        {
-                            ID = email.Dete.ID,
-                            Ime = email.Dete.Ime,
-                            Prezime = email.Dete.Prezime
-                        }
+                        Email = email.Email
                     };
 
                     return dto;
@@ -2551,6 +2532,12 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(emailDto.Email))
+                    return GetError("Polje 'Email' je obavezno.", 400);
+
+                if (!Regex.IsMatch(emailDto.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    return GetError("Email adresa nije validna. Primer: roditelj@gmail.com", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     var dete = await session.GetAsync<Dete>(deteId);
@@ -2579,6 +2566,12 @@ namespace Deciji_Letnji_Program
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(emailDto.Email))
+                    return GetError("Polje 'Email' je obavezno.", 400);
+
+                if (!Regex.IsMatch(emailDto.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    return GetError("Email adresa nije validna. Primer: roditelj@gmail.com", 400);
+
                 using (ISession session = DataLayer.GetSession())
                 {
                     var email = await session.GetAsync<EmailRoditelja>(emailDto.Id);
@@ -2639,7 +2632,13 @@ namespace Deciji_Letnji_Program
                             {
                                 ID = e.Dete.ID,
                                 Ime = e.Dete.Ime,
-                                Prezime = e.Dete.Prezime
+                                Prezime = e.Dete.Prezime,
+                                DatumRodjenja = e.Dete.DatumRodjenja,
+                                Pol = e.Dete.Pol,
+                                Adresa = e.Dete.Adresa,
+                                TelefonDeteta = e.Dete.TelefonDeteta,
+                                EmailDeteta = e.Dete.EmailDeteta,
+                                PosebnePotrebe = e.Dete.PosebnePotrebe
                             }
                         })
                         .ToListAsync();
@@ -2663,33 +2662,37 @@ namespace Deciji_Letnji_Program
             {
                 using (ISession session = DataLayer.GetSession())
                 {
-                    var ucesca = await session.Query<Ucestvuje>()
-                        .Select(u => new UcestvujePregled
+                    var ucescaEntities = await session.Query<Ucestvuje>()
+                                                     .Fetch(u => u.Dete)
+                                                     .Fetch(u => u.Roditelj)
+                                                     .Fetch(u => u.Aktivnost)
+                                                     .ToListAsync();
+
+                    var ucesca = ucescaEntities.Select(u => new UcestvujePregled
+                    {
+                        ID = u.ID,
+                        Prisustvo = u.Prisustvo.ToString(),
+                        OcenaAktivnosti = u.OcenaAktivnosti,
+                        Komentari = u.Komentari,
+                        Pratilac = u.Pratilac,
+                        Dete = u.Dete != null ? new DetePregled
                         {
-                            ID = u.ID,
-                            Prisustvo = u.Prisustvo.ToString(),
-                            OcenaAktivnosti = u.OcenaAktivnosti,
-                            Komentari = u.Komentari,
-                            Pratilac = u.Pratilac,
-                            Dete = u.Dete != null ? new DetePregled
-                            {
-                                ID = u.Dete.ID,
-                                Ime = u.Dete.Ime,
-                                Prezime = u.Dete.Prezime
-                            } : null,
-                            Roditelj = u.Roditelj != null ? new RoditeljPregled
-                            {
-                                Id = u.Roditelj.ID,
-                                Ime = u.Roditelj.Ime,
-                                Prezime = u.Roditelj.Prezime
-                            } : null,
-                            Aktivnost = u.Aktivnost != null ? new AktivnostPregled
-                            {
-                                Id = u.Aktivnost.IdAktivnosti,
-                                Naziv = u.Aktivnost.Naziv
-                            } : null
-                        })
-                        .ToListAsync();
+                            ID = u.Dete.ID,
+                            Ime = u.Dete.Ime,
+                            Prezime = u.Dete.Prezime
+                        } : null,
+                        Roditelj = u.Roditelj != null ? new RoditeljPregled
+                        {
+                            Id = u.Roditelj.ID,
+                            Ime = u.Roditelj.Ime,
+                            Prezime = u.Roditelj.Prezime
+                        } : null,
+                        Aktivnost = u.Aktivnost != null ? new AktivnostPregled
+                        {
+                            Id = u.Aktivnost.IdAktivnosti,
+                            Naziv = u.Aktivnost.Naziv
+                        } : null
+                    }).ToList();
 
                     return ucesca;
                 }
@@ -2699,6 +2702,7 @@ namespace Deciji_Letnji_Program
                 return GetError("Došlo je do greške prilikom učitavanja učešća: " + ex.Message, 500);
             }
         }
+
 
         public static async Task<Result<UcestvujePregled, ErrorMessage>> GetUcesceAsync(int id)
         {
@@ -2799,25 +2803,6 @@ namespace Deciji_Letnji_Program
                     postojeci.Komentari = ucesceDto.Komentari;
                     postojeci.Pratilac = ucesceDto.Pratilac;
 
-                    // Ažuriranje referenci samo ako su prosleđene
-                    if (ucesceDto.Dete != null)
-                    {
-                        var dete = await session.GetAsync<Dete>(ucesceDto.Dete.ID);
-                        if (dete != null) postojeci.Dete = dete;
-                    }
-
-                    if (ucesceDto.Roditelj != null)
-                    {
-                        var roditelj = await session.GetAsync<Roditelj>(ucesceDto.Roditelj.Id);
-                        if (roditelj != null) postojeci.Roditelj = roditelj;
-                    }
-
-                    if (ucesceDto.Aktivnost != null)
-                    {
-                        var aktivnost = await session.GetAsync<Aktivnost>(ucesceDto.Aktivnost.Id);
-                        if (aktivnost != null) postojeci.Aktivnost = aktivnost;
-                    }
-
                     await session.UpdateAsync(postojeci);
                     await session.FlushAsync();
 
@@ -2857,7 +2842,7 @@ namespace Deciji_Letnji_Program
 
         #region Ucesce
 
-        #region AngazovanoLice - Aktivnost Veze
+        // AngazovanoLice - Aktivnost Veze
 
         // Dodaje angažovano lice na aktivnost
         public static async Task<Result<bool, ErrorMessage>> AddAngazovanoLiceNaAktivnostAsync(string jmbg, int aktivnostId)
@@ -2867,7 +2852,6 @@ namespace Deciji_Letnji_Program
                 using (ISession session = DataLayer.GetSession())
                 using (ITransaction tx = session.BeginTransaction())
                 {
-                    // Učitaj aktivnost i lice
                     var aktivnost = await session.GetAsync<Aktivnost>(aktivnostId);
                     if (aktivnost == null)
                         return GetError($"Aktivnost sa ID-em {aktivnostId} ne postoji.", 404);
@@ -2876,19 +2860,17 @@ namespace Deciji_Letnji_Program
                     if (lice == null)
                         return GetError($"Angažovano lice sa JMBG-om {jmbg} ne postoji.", 404);
 
-                    // Proveri da li je već dodato
                     bool vecPostoji = aktivnost.AngazovanaLica.Any(l => l.JMBG == jmbg);
                     if (vecPostoji)
                         return GetError("Ovo lice je već angažovano na ovoj aktivnosti.", 400);
 
-                    // Dodaj vezu u oba smera
                     aktivnost.AngazovanaLica.Add(lice);
                     lice.Aktivnosti.Add(aktivnost);
 
                     await session.UpdateAsync(aktivnost);
                     await tx.CommitAsync();
 
-                    return true; // uspešno dodato
+                    return true; 
                 }
             }
             catch (Exception ex)
@@ -2913,7 +2895,16 @@ namespace Deciji_Letnji_Program
                                 {
                                     JMBG = al.JMBG,
                                     Ime = al.Ime,
-                                    Prezime = al.Prezime
+                                    Prezime = al.Prezime,
+                                    Pol = al.Pol,
+                                    Adresa = al.Adresa,
+                                    BrojTelefona = al.BrojTelefona,
+                                    Email = al.Email,
+                                    StrucnaSprema = al.StrucnaSprema,
+                                    Volonter = al.Volonter,
+                                    Trener = al.Trener,
+                                    Animator = al.Animator,
+                                    ZdravstveniRadnik = al.ZdravstveniRadnik
                                 })
                                 .ToList();
 
@@ -2926,9 +2917,7 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        // Prikazuje angažovana lica koja **nisu** na toj aktivnosti
-
-        //    // Uklanja angažovano lice sa aktivnosti
+        //Uklanja angažovano lice sa aktivnosti
         public static async Task<Result<bool, ErrorMessage>> RemoveAngazovanoLiceFromAktivnostAsync(string jmbg, int aktivnostId)
         {
             try
@@ -2962,7 +2951,6 @@ namespace Deciji_Letnji_Program
             }
         }
 
-        #endregion
         #endregion
     }
 }

@@ -42,7 +42,6 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .PropertyRef(x => x.AngazovanoLice)
                 .Cascade.All();
 
-
             HasMany(x => x.Povrede)
                 .KeyColumn("Odgovorno_osoblje_JMBG")
                 .Inverse()

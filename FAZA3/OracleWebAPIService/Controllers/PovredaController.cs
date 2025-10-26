@@ -1,9 +1,11 @@
 ﻿using DatabaseAccess;
 using Deciji_Letnji_Program;
+using Deciji_Letnji_Program.Entiteti;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Deciji_Letnji_Program.DataProvider;
 using static Deciji_Letnji_Program.DTOs;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OracleWebAPIService.Controllers
 {
@@ -40,14 +42,47 @@ namespace OracleWebAPIService.Controllers
             return Ok(povreda);
         }
 
+        //[HttpPost]
+        //[Route("DodajPovredu")]
+        //[ProducesResponseType(StatusCodes.Status201Created)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> DodajPovredu([FromBody] PovredaPregled povreda)
+        //{
+        //    (bool isError, bool ok, var error) = await DataProvider.AddPovredaAsync(povreda);
+
+        //    if (isError)
+        //        return StatusCode(error?.StatusCode ?? 400, error?.Message);
+
+        //    return StatusCode(201, "Povreda je uspešno dodata.");
+        //}
+
+
+        //[HttpPut]
+        //[Route("AzurirajPovredu")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> AzurirajPovredu([FromBody] PovredaPregled povreda)
+        //{
+        //    (bool isError, bool ok, var error) = await DataProvider.UpdatePovredaAsync(povreda);
+
+        //    if (isError)
+        //        return StatusCode(error?.StatusCode ?? 400, error?.Message);
+
+        //    return Ok("Povreda je uspešno ažurirana.");
+        //}
+
         [HttpPost]
-        [Route("DodajPovredu")]
+        [Route("DodajPovredu/{aktivnostId}/{deteId}/{odgovornoLiceJMBG}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DodajPovredu([FromBody] PovredaPregled povreda)
+        public async Task<IActionResult> DodajPovredu(int aktivnostId, int deteId, string odgovornoLiceJMBG, [FromBody] PovredaPregled povreda)
         {
-            (bool isError, bool ok, var error) = await DataProvider.AddPovredaAsync(povreda);
+
+            (bool isError, bool ok, var error) = await DataProvider.AddPovredaAsync(aktivnostId, deteId, odgovornoLiceJMBG, povreda);
 
             if (isError)
                 return StatusCode(error?.StatusCode ?? 400, error?.Message);
@@ -55,21 +90,24 @@ namespace OracleWebAPIService.Controllers
             return StatusCode(201, "Povreda je uspešno dodata.");
         }
 
+
+
         [HttpPut]
-        [Route("AzurirajPovredu")]
+        [Route("AzurirajPovredu/{aktivnostId}/{deteId}/{odgovornoLiceJMBG}/{povredaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AzurirajPovredu([FromBody] PovredaPregled povreda)
+        public async Task<IActionResult> AzurirajPovredu(int aktivnostId, int deteId, string odgovornoLiceJMBG, int povredaId, [FromBody] PovredaPregled povreda)
         {
-            (bool isError, bool ok, var error) = await DataProvider.UpdatePovredaAsync(povreda);
+            (bool isError, bool ok, var error) = await DataProvider.UpdatePovredaAsync(aktivnostId, deteId, odgovornoLiceJMBG, povredaId, povreda);
 
             if (isError)
                 return StatusCode(error?.StatusCode ?? 400, error?.Message);
 
             return Ok("Povreda je uspešno ažurirana.");
         }
+
 
         [HttpDelete]
         [Route("ObrisiPovredu/{id}")]

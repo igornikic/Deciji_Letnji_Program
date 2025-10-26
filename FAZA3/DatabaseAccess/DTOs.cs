@@ -51,9 +51,9 @@ namespace Deciji_Letnji_Program
             public int Id { get; set; }
             public string Ime { get; set; }
             public string Prezime { get; set; }
-            public IList<DetePregled> Deca { get; set; }
-            public IList<PrijavaPregled> Prijave { get; set; }
-            public IList<UcestvujePregled> Ucestvuje { get; set; }
+            public IList<DetePregled>? Deca { get; set; }
+            public IList<PrijavaPregled>? Prijave { get; set; }
+            public IList<UcestvujePregled>? Ucestvuje { get; set; }
 
             public string ImePrezime => $"{Ime} {Prezime}";
 
@@ -84,9 +84,9 @@ namespace Deciji_Letnji_Program
             public DateTime Datum { get; set; }
             public string  PreduzeteMere { get; set; }
             public string Opis { get; set; }
-            public DetePregled Dete {  get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
-            public AngazovanoLicePregled OdgovornoOsoblje { get; set; }
+            public DetePregled? Dete {  get; set; }
+            public AktivnostPregled? Aktivnost { get; set; }
+            public AngazovanoLicePregled? OdgovornoOsoblje { get; set; }
             public PovredaPregled() { }
 
             public PovredaPregled(PovredaPregled? p)
@@ -135,8 +135,8 @@ namespace Deciji_Letnji_Program
             public string Jelovnik { get; set; }
             public string Uzrast { get; set; }
             public string  PosebneOpcije { get; set; }
-            public LokacijaPregled Lokacija { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
+            public LokacijaPregled? Lokacija { get; set; }
+            public AktivnostPregled? Aktivnost { get; set; }
             public ObrokPregled() { }
             public ObrokPregled(ObrokPregled? o)
             {
@@ -168,8 +168,8 @@ namespace Deciji_Letnji_Program
             public string Vodic { get; set; }
             public string Sport { get; set; }
             public string PosebnaOprema { get; set; }
-            public LokacijaPregled Lokacija { get; set; }
-            public EvaluacijaPregled Evaluacija { get; set; }
+            public LokacijaPregled? Lokacija { get; set; }
+            public EvaluacijaPregled? Evaluacija { get; set; }
             public AktivnostPregled() { }
             public AktivnostPregled(AktivnostPregled? a)
             {
@@ -265,8 +265,8 @@ namespace Deciji_Letnji_Program
             public int Ocena { get; set; }
             public DateTime Datum { get; set; }
             public string Opis { get; set; }
-            public AktivnostPregled Aktivnost { get; set; }
-            public AngazovanoLicePregled AngazovanoLice { get; set; }
+            public AktivnostPregled? Aktivnost { get; set; }
+            public AngazovanoLicePregled? AngazovanoLice { get; set; }
             public EvaluacijaPregled() { }
             public EvaluacijaPregled(EvaluacijaPregled? e)
             {
@@ -284,7 +284,7 @@ namespace Deciji_Letnji_Program
         {
             public int Id { get; set; }
             public string Telefon { get; set; }
-            public DetePregled Dete { get; set; }
+            public DetePregled? Dete { get; set; }
 
             public TelefonRoditeljaPregled() { }
             public TelefonRoditeljaPregled(TelefonRoditeljaPregled? t)
@@ -302,7 +302,7 @@ namespace Deciji_Letnji_Program
         {
             public int Id { get; set; }
             public string Email { get; set; }
-            public DetePregled Dete { get; set; }
+            public DetePregled? Dete { get; set; }
             public EmailRoditeljaPregled() { }
             public EmailRoditeljaPregled(EmailRoditeljaPregled? e)
             {

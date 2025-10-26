@@ -25,21 +25,5 @@ namespace OracleWebAPIService.Controllers
 
             return Ok("Starateljstvo je uspešno dodato.");
         }
-
-        [HttpGet]
-        [Route("DostupnaDeca/{roditeljId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DostupnaDecaZaStarateljstvo(int roditeljId)
-        {
-            (bool isError, List<DetePregled>? deca, var error) =
-                await DataProvider.GetDecaZaDodavanjeStarateljstvaAsync(roditeljId);
-
-            if (isError)
-                return StatusCode(error?.StatusCode ?? 400, error?.Message);
-
-            return Ok(deca);
-        }
     }
 }

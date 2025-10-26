@@ -11,21 +11,6 @@ namespace OracleWebAPIService.Controllers
     public class TelefonRoditeljaController : ControllerBase
     {
         [HttpGet]
-        [Route("VratiSveTelefoneRoditelja")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> VratiSveTelefoneRoditelja()
-        {
-            (bool isError, List<TelefonRoditeljaPregled>? telefoni, var error) =
-                await DataProvider.GetAllTelefoniRoditeljaAsync();
-
-            if (isError)
-                return StatusCode(error?.StatusCode ?? 500, error?.Message);
-
-            return Ok(telefoni);
-        }
-        [HttpGet]
         [Route("VratiTelefon/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -11,21 +11,6 @@ namespace OracleWebAPIService.Controllers
     public class EmailRoditeljaController : ControllerBase
     {
         [HttpGet]
-        [Route("VratiSveEmailoveRoditelja")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> VratiSveEmailoveRoditelja()
-        {
-            (bool isError, List<EmailRoditeljaPregled>? emailovi, var error) =
-                await DataProvider.GetAllEmailoviRoditeljaAsync();
-
-            if (isError)
-                return StatusCode(error?.StatusCode ?? 500, error?.Message);
-
-            return Ok(emailovi);
-        }
-        [HttpGet]
         [Route("VratiEmailRoditelja/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -52,7 +52,7 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .Table("UCESCE")
                 .ParentKeyColumn("ID_aktivnosti")
                 .ChildKeyColumn("JMBG")
-                .Cascade.SaveUpdate();   
+                .Cascade.SaveUpdate();
 
 
             HasMany(x => x.Ucestvuju)
@@ -60,9 +60,9 @@ namespace Deciji_Letnji_Program.Mapiranja
                 .Inverse()
                 .Cascade.All();
 
-            HasOne(x => x.Evaluacija)
-                            .PropertyRef("Aktivnost")
-                            .Cascade.All();
+            //HasOne(x => x.Evaluacija)
+            //                .PropertyRef("Aktivnost")
+            //                .Cascade.All();
 
 
 
