@@ -1,4 +1,5 @@
 Zadatak: Deciji letnji program
+
 Potrebno je projektovati relacionu bazu podataka koja će pomoći gradskoj upravi u da organizuje letnji
 program za decu koji uključuje različite aktivnosti.
 Za svako dete (učesnika) se pamti: jedinstveni ID, ime, prezime, datum rođenja, pol, adresa, kontakt
